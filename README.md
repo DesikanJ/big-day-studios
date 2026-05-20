@@ -42,9 +42,22 @@ Without Cloudinary, images load from `public/images/` (Figma exports included fo
 
 Category covers: `src/data/categories.ts`.
 
+## GitHub
+
+Repository (create if missing): **[github.com/DesikanJ/big-day-studios](https://github.com/DesikanJ/big-day-studios)**
+
+```powershell
+cd c:\BigDayStudios
+git remote add origin https://github.com/DesikanJ/big-day-studios.git   # skip if already added
+git branch -M main
+git push -u origin main
+```
+
+Create the empty repo first: [New repository](https://github.com/new?name=big-day-studios&description=Big+Day+Studios+photography+website) (no README/license). Full steps: see **DEPLOY.md**.
+
 ## Deploy to Cloudflare Pages
 
-1. Push this repo to GitHub.
+1. Push this repo to GitHub (see above).
 2. Cloudflare Dashboard → Pages → Create project → Connect GitHub.
 3. Build settings:
    - **Build command:** `npm run build`
