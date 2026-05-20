@@ -1,0 +1,4 @@
+# Cloudflare Pages — tells the dashboard where the built site lives
+name = "big-day-studios"
+pages_build_output_dir = "./dist"
+compatibility_date = "2024-09-23"

@@ -26,17 +26,34 @@ If prompted, sign in with GitHub (browser or personal access token).
 
 ## 2. Cloudflare Pages (free hosting)
 
-1. Create a free account at https://dash.cloudflare.com
-2. **Workers & Pages** → **Create** → **Pages** → **Connect to Git**
-3. Authorize GitHub and select **DesikanJ/big-day-studios**
-4. Build settings:
+### Important: use **Pages**, not **Worker**
 
-   | Setting | Value |
-   |---------|--------|
-   | Framework preset | Astro |
-   | Build command | `npm run build` |
-   | Build output directory | `dist` |
-   | Node version | 20 |
+If you see **"Create a Worker"** and only a single **Build command** field (no output directory), you are in the **Worker** flow. That is the wrong type for this Astro **static** site.
+
+1. Click **Back** until you can exit, or open: [Create a Pages project](https://dash.cloudflare.com/?to=/:account/pages/new)
+2. Choose **Connect to Git** (not "Create Worker")
+3. Select **DesikanJ/big-day-studios**
+
+You should then see **Framework preset**, **Build command**, **Build output directory**, etc.
+
+### If the UI only shows "Build command"
+
+Enter:
+
+```
+npm run build
+```
+
+This repo also includes `wrangler.toml` (`pages_build_output_dir = "./dist"`) and `.node-version` (`20`) so Cloudflare can pick up output folder and Node without extra fields.
+
+### Full build settings (when visible)
+
+| Setting | Value |
+|---------|--------|
+| Framework preset | Astro (or None) |
+| Build command | `npm run build` |
+| Build output directory | `dist` |
+| Node version | `20` (or set env var `NODE_VERSION` = `20` under **Settings → Environment variables**) |
 
 5. **Environment variables** (Production):
 
