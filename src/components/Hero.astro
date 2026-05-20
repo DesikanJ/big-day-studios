@@ -1,110 +1,188 @@
 ---
 import OptimizedImage from '@/components/OptimizedImage.astro';
-import { site, whatsappUrl } from '@/config/site';
+import { whatsappUrl } from '@/config/site';
 
-const heroImages = [
-  { src: 'hero-4.png', alt: 'Wedding portrait', width: 480, height: 320 },
-  { src: 'hero-1.png', alt: 'Couple moment', width: 320, height: 479 },
-  { src: 'hero-2.png', alt: 'Bridal portrait', width: 320, height: 480 },
-  { src: 'hero-3.png', alt: 'Celebration', width: 480, height: 320 },
-  { src: 'hero-5.png', alt: 'Family portrait', width: 320, height: 479 },
-];
+/** Figma Desktop-1 (node 29:2) — Group 9 collage + centered copy */
+const FIGMA = { w: 1440, h: 783 } as const;
+
+const heroLead =
+  'Premium wedding, maternity & newborn photography that captures the warmth, tradition, and joy of your most cherished milestones.';
+
+/** Positions inside collage box (1240×688) */
+const collagePhotos = [
+  { src: 'hero-4.png', alt: '', width: 480, height: 320, left: 0, top: 86, w: 179, h: 230 },
+  { src: 'hero-1.png', alt: '', width: 320, height: 479, left: 714, top: 0, w: 179, h: 230 },
+  { src: 'hero-2.png', alt: '', width: 320, height: 480, left: 1061, top: 146, w: 179, h: 230 },
+  { src: 'hero-3.png', alt: '', width: 480, height: 320, left: 971, top: 410, w: 179, h: 230 },
+  { src: 'hero-5.png', alt: '', width: 320, height: 479, left: 42, top: 458, w: 179, h: 230 },
+] as const;
+
+const COLLAGE = { w: 1240, h: 688, left: 94, top: 94 } as const;
 ---
 
-<section class="hero">
-  <div class="hero__collage" aria-hidden="true">
-    {
-      heroImages.map((img, i) => (
-        <div class:list={['hero__tile', `hero__tile--${i + 1}`]}>
-          <OptimizedImage
-            src={img.src}
-            alt=""
-            width={img.width}
-            height={img.height}
-            priority={i === 0}
-            sizes="(max-width: 900px) 33vw, 180px"
-          />
-        </div>
-      ))
-    }
-  </div>
-  <div class="hero__content container">
-    <h1 class="hero__title">
-      Every moment,<br />beautifully yours.
-    </h1>
-    <p class="hero__lead">{site.description}</p>
-    <div class="btn-group">
-      <a href={whatsappUrl()} class="btn btn--primary" target="_blank" rel="noopener noreferrer">
-        Book via WhatsApp
-      </a>
-      <a href="/gallery/" class="btn btn--outline">View gallery</a>
+<section class="hero" aria-label="Introduction">
+  <div class="hero__stage">
+    <div class="hero__collage" aria-hidden="true">
+      {
+        collagePhotos.map((img, i) => (
+          <div
+            class="hero__tile"
+            style={`
+              left: ${(img.left / COLLAGE.w) * 100}%;
+              top: ${(img.top / COLLAGE.h) * 100}%;
+              width: ${(img.w / COLLAGE.w) * 100}%;
+              height: ${(img.h / COLLAGE.h) * 100}%;
+            `}
+          >
+            <OptimizedImage
+              src={img.src}
+              alt={img.alt}
+              width={img.width}
+              height={img.height}
+              priority={i === 0}
+              fill
+              sizes="180px"
+            />
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="hero__content">
+      <h1 class="hero__title">
+        Every moment,<br />beautifully yours.
+      </h1>
+      <p class="hero__lead">{heroLead}</p>
+      <div class="hero__actions">
+        <a href={whatsappUrl()} class="btn btn--primary" target="_blank" rel="noopener noreferrer">
+          Book via Whatsapp
+        </a>
+        <a href="/gallery/" class="btn btn--outline">View gallery</a>
+      </div>
     </div>
   </div>
 </section>
 
 <style>
+  /* Figma first fold: 1440×783 (collage y=94 → stats y=877) */
   .hero {
+    padding: 0;
+    background: var(--color-bg);
+  }
+
+  .hero__stage {
     position: relative;
-    padding: 2rem 0 4rem;
-    overflow: hidden;
+    width: min(100%, 1440px);
+    margin: 0 auto;
+    aspect-ratio: 1440 / 783;
+    min-height: 520px;
+    max-height: 90vh;
   }
 
   .hero__collage {
-    position: relative;
-    max-width: 1240px;
-    margin: 0 auto 2rem;
-    height: clamp(300px, 48vw, 560px);
+    position: absolute;
+    left: calc(94 / 1440 * 100%);
+    top: calc(94 / 783 * 100%);
+    width: calc(1240 / 1440 * 100%);
+    height: calc(688 / 783 * 100%);
+    pointer-events: none;
   }
 
   .hero__tile {
     position: absolute;
     overflow: hidden;
     border-radius: var(--radius);
-    width: clamp(100px, 14vw, 179px);
-  }
-
-  .hero__tile--1 { left: 0; top: 12%; }
-  .hero__tile--2 { left: 57%; top: 0; }
-  .hero__tile--3 { right: 0; top: 21%; }
-  .hero__tile--4 { right: 17%; bottom: 0; }
-  .hero__tile--5 { left: 3%; bottom: 0; }
-
-  @media (max-width: 900px) {
-    .hero__collage {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.5rem;
-      height: auto;
-      padding: 0 1.25rem;
-    }
-    .hero__tile {
-      position: static;
-      width: 100%;
-    }
-    .hero__tile--4,
-    .hero__tile--5 {
-      display: none;
-    }
   }
 
   .hero__content {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: calc(240 / 783 * 100%);
+    width: calc(911 / 1440 * 100%);
+    max-width: 911px;
     text-align: center;
-    position: relative;
-    z-index: 1;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    pointer-events: auto;
   }
 
   .hero__title {
     font-family: var(--font-serif);
     font-weight: 400;
-    font-size: clamp(2.5rem, 8vw, 4.5rem);
-    line-height: 1.1;
-    margin-bottom: 1.25rem;
+    font-size: clamp(2.75rem, 8.33vw, 7.5rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin: 0 0 clamp(1rem, 2.5vw, 1.75rem);
+    color: var(--color-text);
   }
 
   .hero__lead {
     color: var(--color-muted);
-    font-size: clamp(1rem, 2.5vw, 1.25rem);
-    max-width: 40rem;
-    margin: 0 auto 2rem;
+    font-family: var(--font-sans);
+    font-size: clamp(0.875rem, 1.11vw, 1rem);
+    line-height: 1.5;
+    max-width: calc(561 / 911 * 100%);
+    margin: 0 0 clamp(1.25rem, 3vw, 2rem);
+  }
+
+  .hero__actions {
+    width: min(100%, 444px);
+    margin-top: clamp(1.25rem, 2vw, 2.5rem);
+  }
+
+  @media (max-width: 900px) {
+    .hero__stage {
+      aspect-ratio: auto;
+      min-height: 640px;
+      padding: 1rem 1.25rem 2rem;
+    }
+
+    .hero__collage {
+      left: 1.25rem;
+      right: 1.25rem;
+      width: auto;
+      top: 5rem;
+      height: 42%;
+      opacity: 0.85;
+    }
+
+    .hero__content {
+      position: relative;
+      left: auto;
+      transform: none;
+      top: auto;
+      width: 100%;
+      max-width: none;
+      margin-top: 48%;
+      padding-top: 1rem;
+    }
+
+    .hero__lead {
+      max-width: 36rem;
+    }
+
+    .hero__actions {
+      margin-top: 1.5rem;
+    }
+
+    /* Hide far-edge tiles on small screens to reduce clutter */
+    .hero__tile:nth-child(3) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .hero__tile:nth-child(2),
+    .hero__tile:nth-child(4) {
+      display: none;
+    }
+
+    .hero__content {
+      margin-top: 52%;
+    }
   }
 </style>
