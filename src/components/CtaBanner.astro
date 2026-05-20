@@ -1,0 +1,71 @@
+---
+import OptimizedImage from '@/components/OptimizedImage.astro';
+import { whatsappUrl } from '@/config/site';
+---
+
+<section class="cta">
+  <div class="cta__bg">
+    <OptimizedImage
+      src="cta-banner.png"
+      alt=""
+      width={1440}
+      height={440}
+      sizes="100vw"
+      class="cta__img"
+    />
+    <div class="cta__overlay"></div>
+  </div>
+  <div class="container cta__content">
+    <h2 class="cta__title">Ready to create memories?</h2>
+    <p class="cta__lead">Book your session today — we reply on WhatsApp within hours.</p>
+    <a href={whatsappUrl()} class="btn btn--primary" target="_blank" rel="noopener noreferrer">
+      Book via WhatsApp
+    </a>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative;
+    margin: 2rem 0 0;
+    min-height: 280px;
+    display: flex;
+    align-items: center;
+  }
+
+  .cta__bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .cta__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .cta__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgb(3 3 3 / 0.92) 0%, rgb(3 3 3 / 0.6) 100%);
+  }
+
+  .cta__content {
+    position: relative;
+    z-index: 1;
+    padding: 4rem 0;
+    text-align: center;
+  }
+
+  .cta__title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    margin-bottom: 0.75rem;
+  }
+
+  .cta__lead {
+    color: var(--color-muted);
+    margin-bottom: 1.5rem;
+  }
+</style>

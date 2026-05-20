@@ -1,0 +1,99 @@
+---
+import { site, whatsappUrl } from '@/config/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container footer__grid">
+    <div>
+      <p class="footer__brand">{site.name}</p>
+      <p class="footer__muted">{site.description}</p>
+    </div>
+    <div>
+      <p class="footer__heading">Explore</p>
+      <ul class="footer__links">
+        <li><a href="/gallery/">Gallery</a></li>
+        <li><a href="/#services">Services</a></li>
+        <li><a href="/contact/">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer__heading">Book a session</p>
+      <a href={whatsappUrl()} class="footer__wa" target="_blank" rel="noopener noreferrer">
+        WhatsApp us
+      </a>
+      <p class="footer__muted">{site.location}</p>
+    </div>
+  </div>
+  <div class="container footer__bottom">
+    <p>© {year} {site.name}. All rights reserved.</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    margin-top: 4rem;
+    padding: 3rem 0 2rem;
+    border-top: 1px solid var(--color-border);
+    background: #0a0a0a;
+  }
+
+  .footer__grid {
+    display: grid;
+    gap: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .footer__grid {
+      grid-template-columns: 2fr 1fr 1fr;
+    }
+  }
+
+  .footer__brand {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .footer__heading {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 0.75rem;
+  }
+
+  .footer__muted {
+    color: var(--color-muted);
+    font-size: 0.9rem;
+  }
+
+  .footer__links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .footer__links a:hover {
+    color: var(--color-accent-light);
+  }
+
+  .footer__wa {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    color: var(--color-accent-light);
+    font-weight: 500;
+  }
+
+  .footer__bottom {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-muted);
+    font-size: 0.8125rem;
+  }
+</style>

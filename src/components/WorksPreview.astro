@@ -1,0 +1,68 @@
+---
+import OptimizedImage from '@/components/OptimizedImage.astro';
+
+const works = [
+  { src: 'gallery-1.png', alt: 'Wedding work', w: 1160, h: 773 },
+  { src: 'gallery-2.png', alt: 'Portrait work', w: 1160, h: 773 },
+  { src: 'gallery-3.png', alt: 'Celebration work', w: 1160, h: 773 },
+];
+---
+
+<section class="works">
+  <div class="container works__header">
+    <p class="section-label">Our Works</p>
+    <h2 class="section-title">Moments We've Preserved</h2>
+  </div>
+  <div class="works__scroll">
+    {
+      works.map((item) => (
+        <div class="works__item">
+          <OptimizedImage
+            src={item.src}
+            alt={item.alt}
+            width={item.w}
+            height={item.h}
+            sizes="(max-width: 768px) 85vw, 420px"
+          />
+        </div>
+      ))
+    }
+  </div>
+  <div class="container" style="text-align: center; margin-top: 2rem">
+    <a href="/gallery/" class="btn btn--outline">View full gallery</a>
+  </div>
+</section>
+
+<style>
+  .works {
+    padding: 4rem 0;
+    background: #0a0a0a;
+  }
+
+  .works__header {
+    margin-bottom: 2rem;
+  }
+
+  .works__scroll {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 0 1.25rem 1rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .works__item {
+    flex: 0 0 min(85vw, 420px);
+    scroll-snap-align: start;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--color-surface);
+  }
+
+  .works__item img {
+    width: 100%;
+    aspect-ratio: 3/2;
+    object-fit: cover;
+  }
+</style>

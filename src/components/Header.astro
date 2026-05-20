@@ -1,0 +1,137 @@
+---
+import { site } from '@/config/site';
+
+const path = Astro.url.pathname;
+const nav = [
+  { href: '/#services', label: 'Services' },
+  { href: '/gallery/', label: 'Gallery' },
+  { href: '/#testimonials', label: 'Reviews' },
+  { href: '/contact/', label: 'Contact' },
+];
+---
+
+<header class="header">
+  <div class="container header__inner">
+    <a href="/" class="header__logo">{site.name}</a>
+    <nav class="header__nav" aria-label="Main">
+      {
+        nav.map((item) => (
+          <a
+            href={item.href}
+            class:list={['header__link', { 'is-active': path === item.href }]}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+    <a href="/contact/" class="header__cta">Contact</a>
+    <button type="button" class="header__menu" aria-label="Open menu" aria-expanded="false" id="menu-toggle">
+      <span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgb(3 3 3 / 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgb(51 58 58 / 0.5);
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: var(--header-h);
+    gap: 1.5rem;
+  }
+
+  .header__logo {
+    font-family: var(--font-serif);
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    text-transform: capitalize;
+    white-space: nowrap;
+  }
+
+  .header__nav {
+    display: none;
+    gap: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .header__nav {
+      display: flex;
+    }
+    .header__menu {
+      display: none;
+    }
+  }
+
+  .header__link {
+    font-size: 0.8125rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    transition: color 0.2s;
+  }
+
+  .header__link:hover,
+  .header__link.is-active {
+    color: var(--color-text);
+  }
+
+  .header__cta {
+    display: none;
+    font-size: 0.8125rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  @media (min-width: 768px) {
+    .header__cta {
+      display: block;
+    }
+  }
+
+  .header__menu {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .header__menu span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--color-text);
+  }
+
+  .header.is-open .header__nav {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: var(--header-h);
+    left: 0;
+    right: 0;
+    padding: 1.5rem;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const header = document.querySelector('.header');
+  toggle?.addEventListener('click', () => {
+    const open = header?.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', String(!!open));
+  });
+</script>

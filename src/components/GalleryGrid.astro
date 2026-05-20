@@ -1,0 +1,54 @@
+---
+import OptimizedImage from '@/components/OptimizedImage.astro';
+import type { GalleryPhoto } from '@/data/galleries';
+
+interface Props {
+  photos: GalleryPhoto[];
+}
+
+const { photos } = Astro.props;
+---
+
+<div class="gallery-grid">
+  {
+    photos.map((photo, i) => (
+      <figure class="gallery-grid__item">
+        <OptimizedImage
+          src={photo.src}
+          alt={photo.alt}
+          width={photo.width}
+          height={photo.height}
+          priority={i < 2}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        />
+      </figure>
+    ))
+  }
+</div>
+
+<style>
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  .gallery-grid__item {
+    margin: 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--color-surface);
+  }
+
+  .gallery-grid__item img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .gallery-grid__item:hover img {
+    transform: scale(1.03);
+  }
+</style>

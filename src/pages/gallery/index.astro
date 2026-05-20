@@ -1,0 +1,95 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import OptimizedImage from '@/components/OptimizedImage.astro';
+import { categories } from '@/data/categories';
+
+const sorted = [...categories].sort((a, b) => a.order - b.order);
+---
+
+<BaseLayout title="Gallery" description="Browse wedding, maternity, newborn and kids photography by Big Day Studios, Chennai.">
+  <section class="page-hero container">
+    <p class="section-label">Gallery</p>
+    <h1 class="section-title">Our Photography Collections</h1>
+    <p class="section-lead">Choose a category to explore recent work from our Chennai studio.</p>
+  </section>
+  <section class="container gallery-index">
+    {
+      sorted.map((cat) => (
+        <a href={`/gallery/${cat.slug}/`} class="gallery-index__card">
+          <OptimizedImage
+            src={cat.coverImage}
+            alt={cat.title}
+            width={640}
+            height={420}
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
+          <div class="gallery-index__overlay">
+            <h2>{cat.title}</h2>
+            <p>{cat.tagline}</p>
+          </div>
+        </a>
+      ))
+    }
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding: 3rem 0 2rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .gallery-index {
+    display: grid;
+    gap: 1.5rem;
+    padding-bottom: 4rem;
+  }
+
+  @media (min-width: 768px) {
+    .gallery-index {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .gallery-index__card {
+    position: relative;
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: block;
+  }
+
+  .gallery-index__card img {
+    width: 100%;
+    aspect-ratio: 16/10;
+    object-fit: cover;
+    transition: transform 0.4s;
+  }
+
+  .gallery-index__card:hover img {
+    transform: scale(1.04);
+  }
+
+  .gallery-index__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.5rem;
+    background: linear-gradient(transparent 40%, rgb(0 0 0 / 0.85));
+  }
+
+  .gallery-index__overlay h2 {
+    font-family: var(--font-serif);
+    font-size: 1.75rem;
+    font-weight: 400;
+  }
+
+  .gallery-index__overlay p {
+    color: var(--color-muted);
+    font-size: 0.9rem;
+  }
+</style>

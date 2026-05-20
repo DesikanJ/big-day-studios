@@ -1,0 +1,66 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import GalleryGrid from '@/components/GalleryGrid.astro';
+import { categories, getCategory } from '@/data/categories';
+import { getGallery } from '@/data/galleries';
+import { whatsappUrl } from '@/config/site';
+
+export function getStaticPaths() {
+  return categories.map((cat) => ({ params: { slug: cat.slug } }));
+}
+
+const { slug } = Astro.params;
+const category = getCategory(slug!);
+const gallery = getGallery(slug!);
+
+if (!category || !gallery) {
+  return Astro.redirect('/gallery/');
+}
+---
+
+<BaseLayout
+  title={category.title}
+  description={category.description}
+  ogImage={`/images/${category.coverImage}`}
+>
+  <section class="page-hero container">
+    <a href="/gallery/" class="back-link">← All galleries</a>
+    <p class="section-label">{category.tagline}</p>
+    <h1 class="section-title">{category.title}</h1>
+    <p class="section-lead">{category.description}</p>
+    <div class="btn-group" style="margin-top: 1.5rem">
+      <a
+        href={whatsappUrl(`Hi! I'd like to book a ${category.title} session.`)}
+        class="btn btn--primary"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Book this session
+      </a>
+    </div>
+  </section>
+  <section class="container" style="padding-bottom: 4rem">
+    <GalleryGrid photos={gallery.photos} />
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding: 3rem 0 2rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .back-link {
+    align-self: flex-start;
+    font-size: 0.875rem;
+    color: var(--color-muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .back-link:hover {
+    color: var(--color-accent-light);
+  }
+</style>

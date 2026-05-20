@@ -1,0 +1,40 @@
+---
+import { imageUrl, srcSet } from '@/lib/cloudinary';
+
+interface Props {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  sizes?: string;
+  priority?: boolean;
+  class?: string;
+}
+
+const {
+  src,
+  alt,
+  width,
+  height,
+  sizes = '100vw',
+  priority = false,
+  class: className,
+} = Astro.props;
+
+const widths = [400, 640, 960, 1280, 1600].filter((w) => w <= width * 2 || w <= 1600);
+const mainSrc = imageUrl(src, { width: Math.min(width, 1280), quality: 'auto', format: 'auto' });
+const set = srcSet(src, widths.length ? widths : [640, 1280], { quality: 'auto', format: 'auto' });
+---
+
+<img
+  src={mainSrc}
+  srcset={set}
+  sizes={sizes}
+  alt={alt}
+  width={width}
+  height={height}
+  loading={priority ? 'eager' : 'lazy'}
+  decoding={priority ? 'sync' : 'async'}
+  fetchpriority={priority ? 'high' : 'auto'}
+  class={className}
+/>

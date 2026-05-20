@@ -1,0 +1,117 @@
+---
+import OptimizedImage from '@/components/OptimizedImage.astro';
+import { site, whatsappUrl } from '@/config/site';
+
+const heroImages = [
+  { src: 'hero-4.png', alt: 'Wedding portrait', width: 480, height: 320 },
+  { src: 'hero-1.png', alt: 'Couple moment', width: 320, height: 479 },
+  { src: 'hero-2.png', alt: 'Bridal portrait', width: 320, height: 480 },
+  { src: 'hero-3.png', alt: 'Celebration', width: 480, height: 320 },
+  { src: 'hero-5.png', alt: 'Family portrait', width: 320, height: 479 },
+];
+---
+
+<section class="hero">
+  <div class="hero__collage" aria-hidden="true">
+    {
+      heroImages.map((img, i) => (
+        <div class:list={['hero__tile', `hero__tile--${i + 1}`]}>
+          <OptimizedImage
+            src={img.src}
+            alt=""
+            width={img.width}
+            height={img.height}
+            priority={i === 0}
+            sizes="(max-width: 768px) 40vw, 180px"
+          />
+        </div>
+      ))
+    }
+  </div>
+  <div class="hero__content container">
+    <h1 class="hero__title">
+      Every moment,<br />beautifully yours.
+    </h1>
+    <p class="hero__lead">{site.description}</p>
+    <div class="btn-group">
+      <a href={whatsappUrl()} class="btn btn--primary" target="_blank" rel="noopener noreferrer">
+        Book via WhatsApp
+      </a>
+      <a href="/gallery/" class="btn btn--outline">View gallery</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    padding: 2rem 0 4rem;
+    overflow: hidden;
+  }
+
+  .hero__collage {
+    position: relative;
+    max-width: 1240px;
+    margin: 0 auto 2rem;
+    height: clamp(280px, 45vw, 520px);
+  }
+
+  .hero__tile {
+    position: absolute;
+    overflow: hidden;
+    background: var(--color-surface);
+    border-radius: var(--radius);
+  }
+
+  .hero__tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero__tile--1 { left: 0; top: 12%; width: 14%; aspect-ratio: 179/230; }
+  .hero__tile--2 { left: 57%; top: 0; width: 14%; aspect-ratio: 179/230; }
+  .hero__tile--3 { right: 0; top: 21%; width: 14%; aspect-ratio: 179/230; }
+  .hero__tile--4 { right: 17%; bottom: 0; width: 14%; aspect-ratio: 179/230; }
+  .hero__tile--5 { left: 3%; bottom: 0; width: 14%; aspect-ratio: 179/230; }
+
+  @media (max-width: 900px) {
+    .hero__collage {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      height: auto;
+      padding: 0 1.25rem;
+    }
+    .hero__tile {
+      position: static;
+      width: 100% !important;
+      aspect-ratio: 3/4;
+    }
+    .hero__tile--4,
+    .hero__tile--5 {
+      display: none;
+    }
+  }
+
+  .hero__content {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero__title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    line-height: 1.1;
+    margin-bottom: 1.25rem;
+  }
+
+  .hero__lead {
+    color: var(--color-muted);
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    max-width: 40rem;
+    margin: 0 auto 2rem;
+  }
+</style>

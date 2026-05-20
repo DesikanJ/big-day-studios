@@ -1,0 +1,150 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { site, whatsappUrl } from '@/config/site';
+
+const formKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY;
+---
+
+<BaseLayout title="Contact" description="Contact Big Day Studios in Chennai for wedding, maternity and newborn photography.">
+  <section class="contact container">
+    <div class="contact__intro">
+      <p class="section-label">Contact</p>
+      <h1 class="section-title">Let's plan your session</h1>
+      <p class="section-lead">
+        The fastest way to reach us is WhatsApp. Or send a message below — we typically reply within a few hours.
+      </p>
+      <div class="contact__direct">
+        <a href={whatsappUrl()} class="btn btn--primary" target="_blank" rel="noopener noreferrer">
+          Chat on WhatsApp
+        </a>
+        <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
+        <p>{site.phone}</p>
+        <p class="contact__location">{site.location}</p>
+      </div>
+    </div>
+    {
+      formKey ? (
+        <form
+          class="contact__form"
+          action="https://api.web3forms.com/submit"
+          method="POST"
+        >
+          <input type="hidden" name="access_key" value={formKey} />
+          <input type="hidden" name="subject" value="New enquiry — Big Day Studios" />
+          <input type="checkbox" name="botcheck" class="sr-only" tabindex="-1" autocomplete="off" />
+          <label>
+            <span>Name</span>
+            <input type="text" name="name" required autocomplete="name" />
+          </label>
+          <label>
+            <span>Phone / WhatsApp</span>
+            <input type="tel" name="phone" required autocomplete="tel" />
+          </label>
+          <label>
+            <span>Session type</span>
+            <select name="session">
+              <option value="Wedding">Wedding</option>
+              <option value="Maternity">Maternity</option>
+              <option value="Newborn">Newborn & Baby</option>
+              <option value="Birthday / Kids">Birthday & Kids</option>
+              <option value="Other">Other</option>
+            </select>
+          </label>
+          <label>
+            <span>Message</span>
+            <textarea name="message" rows="4" required placeholder="Preferred dates, location, etc." />
+          </label>
+          <button type="submit" class="btn btn--primary">Send message</button>
+        </form>
+      ) : (
+        <p class="contact__note">
+          Add <code>PUBLIC_WEB3FORMS_ACCESS_KEY</code> to <code>.env</code> to enable the contact form.
+          WhatsApp booking works without it.
+        </p>
+      )
+    }
+  </section>
+</BaseLayout>
+
+<style>
+  .contact {
+    display: grid;
+    gap: 3rem;
+    padding: 3rem 0 4rem;
+  }
+
+  @media (min-width: 900px) {
+    .contact {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+    }
+  }
+
+  .contact__intro {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .contact__intro .section-title,
+  .contact__intro .section-lead {
+    text-align: left;
+  }
+
+  .contact__direct {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+
+  .contact__direct a:not(.btn) {
+    color: var(--color-accent-light);
+  }
+
+  .contact__location {
+    color: var(--color-muted);
+  }
+
+  .contact__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  .contact__form label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: 0.875rem;
+    color: var(--color-muted);
+  }
+
+  .contact__form input,
+  .contact__form select,
+  .contact__form textarea {
+    font: inherit;
+    padding: 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-bg);
+    color: var(--color-text);
+  }
+
+  .contact__note {
+    color: var(--color-muted);
+    padding: 1.5rem;
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius);
+  }
+
+  .contact__note code {
+    color: var(--color-accent-light);
+    font-size: 0.85em;
+  }
+</style>
