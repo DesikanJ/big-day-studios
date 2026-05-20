@@ -21,9 +21,9 @@ const sorted = [...categories].sort((a, b) => a.order - b.order);
             <OptimizedImage
               src={cat.coverImage}
               alt={cat.title}
-              width={420}
-              height={290}
-              sizes="(max-width: 640px) 100vw, 50vw"
+              width={1160}
+              height={773}
+              sizes="(max-width: 640px) 100vw, 280px"
             />
           </div>
           <div class="category-card__body">
@@ -61,8 +61,9 @@ const sorted = [...categories].sort((a, b) => a.order - b.order);
 
   .category-card {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.1fr 1fr;
     gap: 0;
+    align-items: stretch;
     background: var(--color-bg);
     border: 1px solid var(--color-border);
     border-radius: var(--radius);
@@ -81,15 +82,14 @@ const sorted = [...categories].sort((a, b) => a.order - b.order);
   }
 
   .category-card__media {
-    min-height: 180px;
-    background: var(--color-surface);
+    min-width: 0;
+    align-self: stretch;
   }
 
-  .category-card__media img {
-    width: 100%;
+  .category-card__media :global(.photo-frame) {
     height: 100%;
-    object-fit: cover;
-    min-height: 180px;
+    min-height: 200px;
+    aspect-ratio: 3 / 2;
   }
 
   .category-card__body {

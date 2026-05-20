@@ -45,6 +45,7 @@ const works = [
 
   .works__scroll {
     display: flex;
+    align-items: flex-start;
     gap: 1.5rem;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
@@ -57,12 +58,5 @@ const works = [
     scroll-snap-align: start;
     border-radius: var(--radius);
     overflow: hidden;
-    background: var(--color-surface);
-  }
-
-  .works__item img {
-    width: 100%;
-    aspect-ratio: 3/2;
-    object-fit: cover;
   }
 </style>

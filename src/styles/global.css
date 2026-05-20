@@ -41,9 +41,9 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-img,
-picture {
+img {
   max-width: 100%;
+  height: auto;
   display: block;
 }
 

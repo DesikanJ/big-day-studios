@@ -37,6 +37,8 @@ Without Cloudinary, images load from `public/images/` (Figma exports included fo
 
 ## Adding photos
 
+See **[docs/UPDATE-IMAGES.md](docs/UPDATE-IMAGES.md)** for step-by-step instructions.
+
 1. **Launch:** Replace files in `public/images/` or edit `src/data/galleries.ts`.
 2. **Scale:** Upload to Cloudinary under folder `big-day/`, set `PUBLIC_CLOUDINARY_CLOUD_NAME`, use public IDs in `galleries.ts` (e.g. `wedding/IMG_001`).
 
