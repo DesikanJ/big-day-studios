@@ -9,7 +9,7 @@ export default defineConfig({
       },
     },
   },
-  site: 'https://bigdaystudios.com',
+  site: 'https://bigdaystudios.in',
   compressHTML: true,
   build: {
     inlineStylesheets: 'auto',

@@ -60,7 +60,8 @@ This repo also includes `wrangler.toml` (`pages_build_output_dir = "./dist"`) an
    ```
    PUBLIC_WHATSAPP_NUMBER=91XXXXXXXXXX
    PUBLIC_WEB3FORMS_ACCESS_KEY=your_key
-   PUBLIC_SITE_URL=https://your-domain.com
+   PUBLIC_SITE_URL=https://bigdaystudios.in
+   PUBLIC_WHATSAPP_NUMBER=919840451199
    ```
 
 6. Deploy → note the `*.pages.dev` URL
