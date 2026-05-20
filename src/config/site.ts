@@ -4,7 +4,7 @@ export const site = {
   description:
     'Premium wedding, maternity & newborn photography in Chennai. Warm, cinematic portraits for your most cherished milestones.',
   location: 'Chennai, Tamil Nadu',
-  email: 'hello@bigdaystudios.com',
+  email: 'pari@bigdaystudios.com',
   phone: '+91 98404 51199',
   googleRating: '4.9',
   stats: [
