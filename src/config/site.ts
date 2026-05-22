@@ -1,3 +1,6 @@
+/** Public Cloudinary cloud name (safe to commit — visible in image URLs) */
+export const CLOUDINARY_CLOUD_NAME = 'dtpsk76yw';
+
 export const site = {
   name: 'Big Day Studios',
   tagline: 'Every moment, beautifully yours.',

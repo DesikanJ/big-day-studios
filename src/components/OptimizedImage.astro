@@ -83,8 +83,15 @@ const lqip = placeholder && cloud ? placeholderUrl(src) : null;
 <script>
   document.querySelectorAll('.photo-img--fade').forEach((img) => {
     const mark = () => img.classList.add('is-loaded');
-    if (img.complete) mark();
-    else img.addEventListener('load', mark, { once: true });
+    const fail = () => {
+      img.classList.add('is-loaded');
+      img.style.opacity = '1';
+    };
+    if (img.complete && img.naturalWidth > 0) mark();
+    else {
+      img.addEventListener('load', mark, { once: true });
+      img.addEventListener('error', fail, { once: true });
+    }
   });
 </script>
 
@@ -116,8 +123,12 @@ const lqip = placeholder && cloud ? placeholderUrl(src) : null;
   }
 
   .photo-img--fade {
-    opacity: 0;
+    opacity: 1;
     transition: opacity 0.35s ease;
+  }
+
+  .photo-img--fade:not(.is-loaded) {
+    opacity: 0.85;
   }
 
   .photo-img--fade.is-loaded {
