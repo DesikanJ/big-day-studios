@@ -18,16 +18,25 @@ export function usesCloudinary(): boolean {
   return Boolean(import.meta.env.PUBLIC_CLOUDINARY_CLOUD_NAME);
 }
 
+export function usesCloudinaryForSrc(src: string): boolean {
+  return usesCloudinary() && !isLocalImage(src);
+}
+
 function cloudName(): string | undefined {
   return import.meta.env.PUBLIC_CLOUDINARY_CLOUD_NAME;
 }
 
-function folder(): string {
-  return import.meta.env.PUBLIC_CLOUDINARY_FOLDER ?? 'big-day';
+/** Only prepend when PUBLIC_CLOUDINARY_FOLDER is set (nested paths like big-day/Wedding/...) */
+function publicId(src: string): string {
+  if (src.includes('/')) return src;
+  const base = import.meta.env.PUBLIC_CLOUDINARY_FOLDER?.trim();
+  return base ? `${base}/${src}` : src;
 }
 
-function publicId(src: string): string {
-  return src.includes('/') ? src : `${folder()}/${src}`;
+const LOCAL_IMAGE_PATTERN = /^(gallery-|hero-|category-|why-choose|cta-banner|testimonial-avatar)/;
+
+export function isLocalImage(src: string): boolean {
+  return LOCAL_IMAGE_PATTERN.test(src) || /\.(png|jpe?g|webp)$/i.test(src);
 }
 
 /** Width steps tuned for phones → desktop (avoid 20+ variants). */
@@ -47,8 +56,9 @@ export function responsiveWidths(
 export function imageUrl(src: string, transform: ImageTransform = {}): string {
   const cloud = cloudName();
 
-  if (!cloud || src.startsWith('http') || src.startsWith('/')) {
-    if (src.startsWith('http') || src.startsWith('/')) return src;
+  if (src.startsWith('http') || src.startsWith('/')) return src;
+
+  if (!cloud || isLocalImage(src)) {
     return `/images/${src}`;
   }
 

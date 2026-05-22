@@ -1,11 +1,11 @@
 import { getCategoryCoverSrc } from '@/data/galleries';
-import { imageUrl } from '@/lib/cloudinary';
+import { imageUrl, isLocalImage, usesCloudinary } from '@/lib/cloudinary';
 
-/** Full URL for OG tags; path or Cloudinary id for <img> via OptimizedImage */
+/** Full URL for OG tags */
 export function categoryCoverForOg(slug: string, siteOrigin: string): string {
   const src = getCategoryCoverSrc(slug);
   if (src.startsWith('http')) return src;
-  if (src.includes('/') && import.meta.env.PUBLIC_CLOUDINARY_CLOUD_NAME) {
+  if (usesCloudinary() && !isLocalImage(src)) {
     return imageUrl(src, { width: 1200, quality: 'auto:good' });
   }
   return new URL(`/images/${src.replace(/^\//, '')}`, siteOrigin).href;

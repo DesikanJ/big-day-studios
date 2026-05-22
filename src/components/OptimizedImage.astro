@@ -4,7 +4,7 @@ import {
   placeholderUrl,
   responsiveWidths,
   srcSet,
-  usesCloudinary,
+  usesCloudinaryForSrc,
 } from '@/lib/cloudinary';
 
 interface Props {
@@ -32,7 +32,7 @@ const {
   placeholder = true,
 } = Astro.props;
 
-const cloud = usesCloudinary();
+const cloud = usesCloudinaryForSrc(src);
 const widths = responsiveWidths(width);
 const defaultW = widths[widths.length - 1] ?? Math.min(width, 1280);
 const mainSrc = imageUrl(src, { width: defaultW, dpr: cloud ? 'auto' : undefined });

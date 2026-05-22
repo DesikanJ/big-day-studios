@@ -74,6 +74,10 @@ In **Workers & Pages** → **big-day-studios** → **Settings** → **Environmen
 
 Do **not** put API Secret in Cloudflare unless you run sync in CI (optional). Secret is only needed on your machine for `sync:galleries`.
 
+**Critical:** `PUBLIC_CLOUDINARY_CLOUD_NAME` must be set on Cloudflare or the site will look for images at `/images/...` and show broken/placeholder photos only.
+
+Do **not** set `PUBLIC_CLOUDINARY_FOLDER` unless your files live under a parent folder. Your photos are at the account root (`TruptiRw11woborder-1_v3auwo`), not `big-day/...`.
+
 ---
 
 ## When you add new photos later
