@@ -1,12 +1,6 @@
 /**
- * Lists images from each Cloudinary folder (except samples) and writes
- * src/data/galleries.generated.ts for the static site build.
- *
- * Requires in .env:
- *   PUBLIC_CLOUDINARY_CLOUD_NAME
- *   CLOUDINARY_API_KEY
- *   CLOUDINARY_API_SECRET
- * Optional: PUBLIC_CLOUDINARY_FOLDER (parent folder, e.g. big-day)
+ * Lists images from each Cloudinary Media Library folder (asset_folder)
+ * and writes src/data/galleries.generated.ts
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -16,7 +10,6 @@ import { v2 as cloudinary } from 'cloudinary';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '..');
 
-/** Must match src/data/categories.ts cloudinaryFolder values */
 const CATEGORY_FOLDERS = [
   { slug: 'wedding', folder: 'Wedding', title: 'Wedding Photography' },
   { slug: 'maternity', folder: 'Maternity', title: 'Maternity Shoot' },
@@ -45,32 +38,25 @@ function loadEnv() {
   }
 }
 
-function folderPrefix(folderName) {
-  const base = process.env.PUBLIC_CLOUDINARY_FOLDER?.trim();
-  if (base) return `${base}/${folderName}`;
-  return folderName;
-}
-
-async function listImages(prefix) {
+/** Media Library folders use asset_folder, not public_id prefixes */
+async function listImagesByAssetFolder(folderName) {
   const resources = [];
   let next_cursor;
+
   do {
-    const result = await cloudinary.api.resources({
-      type: 'upload',
-      resource_type: 'image',
-      prefix: `${prefix}/`,
-      max_results: 500,
-      next_cursor,
-    });
-    resources.push(...result.resources);
+    let query = cloudinary.search
+      .expression(`asset_folder="${folderName}"`)
+      .sort_by('created_at', 'desc')
+      .max_results(500);
+    if (next_cursor) query = query.next_cursor(next_cursor);
+    const result = await query.execute();
+    resources.push(...(result.resources ?? []));
     next_cursor = result.next_cursor;
   } while (next_cursor);
 
   return resources.filter((r) => {
-    const parts = r.public_id.split('/');
-    const leaf = parts[parts.length - 1]?.toLowerCase() ?? '';
-    if (EXCLUDED.has(leaf)) return false;
-    return !parts.some((p) => EXCLUDED.has(p.toLowerCase()));
+    const folder = (r.asset_folder ?? '').toLowerCase();
+    return !EXCLUDED.has(folder) && !r.public_id.toLowerCase().includes('/samples/');
   });
 }
 
@@ -87,13 +73,11 @@ async function main() {
 
   if (!cloud || !key || !secret) {
     console.error(`
-Missing Cloudinary credentials. Add to .env:
+Missing Cloudinary credentials in .env:
 
-  PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
-  CLOUDINARY_API_KEY=your_api_key
-  CLOUDINARY_API_SECRET=your_api_secret
-
-Get API Key + Secret: Cloudinary Dashboard → Settings → API Keys
+  PUBLIC_CLOUDINARY_CLOUD_NAME=
+  CLOUDINARY_API_KEY=
+  CLOUDINARY_API_SECRET=
 `);
     process.exit(1);
   }
@@ -103,9 +87,8 @@ Get API Key + Secret: Cloudinary Dashboard → Settings → API Keys
   const galleries = [];
 
   for (const cat of CATEGORY_FOLDERS) {
-    const prefix = folderPrefix(cat.folder);
-    console.log(`Fetching: ${prefix}/`);
-    const images = await listImages(prefix);
+    console.log(`Fetching folder: ${cat.folder}`);
+    const images = await listImagesByAssetFolder(cat.folder);
     console.log(`  → ${images.length} image(s)`);
 
     const photos = images.map((img, i) => ({
@@ -140,7 +123,7 @@ ${g.photos.map((p) => `      { src: '${esc(p.src)}', alt: '${esc(p.alt)}', width
   const outPath = path.join(root, 'src/data/galleries.generated.ts');
   fs.writeFileSync(outPath, out, 'utf8');
   console.log(`\nWrote ${outPath}`);
-  console.log('Commit this file and push, or run sync before each build.');
+  console.log('Next: git add src/data/galleries.generated.ts && git commit && git push');
 }
 
 main().catch((err) => {

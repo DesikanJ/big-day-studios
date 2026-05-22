@@ -39,13 +39,9 @@ CLOUDINARY_API_KEY=your_api_key_here
 CLOUDINARY_API_SECRET=your_api_secret_here
 ```
 
-If all folders live inside a parent folder (e.g. `big-day/Wedding/`), also set:
+Your folders are under **Home** (e.g. `Wedding`, `Baby Photoshoot`). You do **not** need `PUBLIC_CLOUDINARY_FOLDER` — the sync script uses Cloudinary’s **asset folder** labels, not file paths.
 
-```env
-PUBLIC_CLOUDINARY_FOLDER=big-day
-```
-
-If folders are directly under Home (e.g. `Wedding/photo.jpg`), **leave `PUBLIC_CLOUDINARY_FOLDER` empty** or remove that line.
+If sync shows `0 images` but you see files in the UI, wait until uploads finish (check the upload bar at the bottom of Cloudinary), then run sync again.
 
 ### 4. Run sync on your PC
 
