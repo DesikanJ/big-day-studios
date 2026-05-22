@@ -1,5 +1,11 @@
 ---
-import { imageUrl, srcSet } from '@/lib/cloudinary';
+import {
+  imageUrl,
+  placeholderUrl,
+  responsiveWidths,
+  srcSet,
+  usesCloudinary,
+} from '@/lib/cloudinary';
 
 interface Props {
   src: string;
@@ -9,8 +15,9 @@ interface Props {
   sizes?: string;
   priority?: boolean;
   class?: string;
-  /** When true, fills parent (parent must have size). Default: preserve aspect ratio in a frame. */
   fill?: boolean;
+  /** LQIP blur while loading (Cloudinary only). Default true. */
+  placeholder?: boolean;
 }
 
 const {
@@ -22,61 +29,99 @@ const {
   priority = false,
   class: className,
   fill = false,
+  placeholder = true,
 } = Astro.props;
 
-const widths = [400, 640, 960, 1280, 1600].filter((w) => w <= width * 2 || w <= 1600);
-const mainSrc = imageUrl(src, { width: Math.min(width, 1280), quality: 'auto', format: 'auto' });
-const set = srcSet(src, widths.length ? widths : [640, 1280], { quality: 'auto', format: 'auto' });
+const cloud = usesCloudinary();
+const widths = responsiveWidths(width);
+const defaultW = widths[widths.length - 1] ?? Math.min(width, 1280);
+const mainSrc = imageUrl(src, { width: defaultW, dpr: cloud ? 'auto' : undefined });
+const set = srcSet(src, widths);
+const lqip = placeholder && cloud ? placeholderUrl(src) : null;
 ---
 
 {
   fill ? (
-    <img
-      src={mainSrc}
-      srcset={set}
-      sizes={sizes}
-      alt={alt}
-      width={width}
-      height={height}
-      loading={priority ? 'eager' : 'lazy'}
-      decoding={priority ? 'sync' : 'async'}
-      fetchpriority={priority ? 'high' : 'auto'}
-      class:list={['photo-img', 'photo-img--fill', className]}
-    />
-  ) : (
     <span
-      class:list={['photo-frame', className]}
-      style={`--photo-ar: ${width} / ${height}`}
+      class:list={['photo-wrap', 'photo-wrap--fill', className]}
+      style={lqip ? `background-image:url(${lqip})` : undefined}
     >
       <img
         src={mainSrc}
-        srcset={set}
-        sizes={sizes}
+        srcset={set || undefined}
+        sizes={set ? sizes : undefined}
         alt={alt}
         width={width}
         height={height}
         loading={priority ? 'eager' : 'lazy'}
         decoding={priority ? 'sync' : 'async'}
         fetchpriority={priority ? 'high' : 'auto'}
-        class="photo-img"
+        class:list={['photo-img', 'photo-img--fill', lqip && 'photo-img--fade']}
+      />
+    </span>
+  ) : (
+    <span
+      class:list={['photo-frame', className]}
+      style={`--photo-ar: ${width} / ${height};${lqip ? `background-image:url(${lqip})` : ''}`}
+    >
+      <img
+        src={mainSrc}
+        srcset={set || undefined}
+        sizes={set ? sizes : undefined}
+        alt={alt}
+        width={width}
+        height={height}
+        loading={priority ? 'eager' : 'lazy'}
+        decoding={priority ? 'sync' : 'async'}
+        fetchpriority={priority ? 'high' : 'auto'}
+        class:list={['photo-img', lqip && 'photo-img--fade']}
       />
     </span>
   )
 }
 
+<script>
+  document.querySelectorAll('.photo-img--fade').forEach((img) => {
+    const mark = () => img.classList.add('is-loaded');
+    if (img.complete) mark();
+    else img.addEventListener('load', mark, { once: true });
+  });
+</script>
+
 <style>
-  .photo-frame {
+  .photo-frame,
+  .photo-wrap {
     display: block;
+    background-color: var(--color-surface);
+    background-size: cover;
+    background-position: center;
+  }
+
+  .photo-frame {
     position: relative;
     width: 100%;
     aspect-ratio: var(--photo-ar);
     overflow: hidden;
-    background: var(--color-surface);
+  }
+
+  .photo-wrap--fill {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
   }
 
   .photo-img {
     display: block;
     max-width: 100%;
+  }
+
+  .photo-img--fade {
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+
+  .photo-img--fade.is-loaded {
+    opacity: 1;
   }
 
   .photo-frame .photo-img {
@@ -95,5 +140,12 @@ const set = srcSet(src, widths.length ? widths : [640, 1280], { quality: 'auto',
     max-width: none;
     object-fit: cover;
     object-position: center;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .photo-img--fade {
+      transition: none;
+      opacity: 1;
+    }
   }
 </style>
