@@ -1,6 +1,7 @@
 ---
 import OptimizedImage from '@/components/OptimizedImage.astro';
 import { categories } from '@/data/categories';
+import { getCategoryCoverSrc, getGallery } from '@/data/galleries';
 
 const sorted = [...categories].sort((a, b) => a.order - b.order);
 ---
@@ -15,23 +16,27 @@ const sorted = [...categories].sort((a, b) => a.order - b.order);
   </div>
   <div class="container categories__grid">
     {
-      sorted.map((cat) => (
-        <a href={`/gallery/${cat.slug}/`} class="category-card">
-          <div class="category-card__media">
-            <OptimizedImage
-              src={cat.coverImage}
-              alt={cat.title}
-              width={1160}
-              height={773}
-              sizes="(max-width: 640px) 100vw, 280px"
-            />
-          </div>
-          <div class="category-card__body">
-            <h3 class="category-card__title">{cat.title}</h3>
-            <p class="category-card__tagline">{cat.tagline}</p>
-          </div>
-        </a>
-      ))
+      sorted.map((cat) => {
+        const cover = getCategoryCoverSrc(cat.slug);
+        const first = getGallery(cat.slug)?.photos[0];
+        return (
+          <a href={`/gallery/${cat.slug}/`} class="category-card">
+            <div class="category-card__media">
+              <OptimizedImage
+                src={cover}
+                alt={cat.title}
+                width={first?.width ?? 1160}
+                height={first?.height ?? 773}
+                sizes="(max-width: 640px) 100vw, 280px"
+              />
+            </div>
+            <div class="category-card__body">
+              <h3 class="category-card__title">{cat.title}</h3>
+              <p class="category-card__tagline">{cat.tagline}</p>
+            </div>
+          </a>
+        );
+      })
     }
   </div>
 </section>

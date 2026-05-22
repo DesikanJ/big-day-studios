@@ -1,6 +1,11 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { categories } from '@/data/categories';
 import { site, whatsappUrl } from '@/config/site';
+
+const sessionOptions = [...categories]
+  .sort((a, b) => a.order - b.order)
+  .map((c) => c.title);
 
 const formKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY;
 ---
@@ -43,10 +48,7 @@ const formKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY;
           <label>
             <span>Session type</span>
             <select name="session">
-              <option value="Wedding">Wedding</option>
-              <option value="Maternity">Maternity</option>
-              <option value="Newborn">Newborn & Baby</option>
-              <option value="Birthday / Kids">Birthday & Kids</option>
+              {sessionOptions.map((title) => <option value={title}>{title}</option>)}
               <option value="Other">Other</option>
             </select>
           </label>

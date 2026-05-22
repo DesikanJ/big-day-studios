@@ -10,13 +10,15 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "sync:galleries": "node scripts/sync-cloudinary-galleries.mjs"
   },
   "dependencies": {
     "astro": "^5.7.10"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
+    "cloudinary": "^2.6.0",
     "typescript": "^5.8.3"
   }
 }

@@ -41,6 +41,8 @@ See **[docs/UPDATE-IMAGES.md](docs/UPDATE-IMAGES.md)** for step-by-step instruct
 
 For fast, sharp photos on every device, see **[docs/IMAGES-PERFORMANCE.md](docs/IMAGES-PERFORMANCE.md)** (Cloudinary recommended).
 
+To pull all category folders from Cloudinary into gallery pages, see **[docs/CLOUDINARY-GALLERIES.md](docs/CLOUDINARY-GALLERIES.md)**.
+
 1. **Launch:** Replace files in `public/images/` or edit `src/data/galleries.ts`.
 2. **Scale:** Upload to Cloudinary under folder `big-day/`, set `PUBLIC_CLOUDINARY_CLOUD_NAME`, use public IDs in `galleries.ts` (e.g. `wedding/IMG_001`).
 

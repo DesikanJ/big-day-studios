@@ -1,11 +1,22 @@
 ---
 import OptimizedImage from '@/components/OptimizedImage.astro';
+import { getGallery } from '@/data/galleries';
 
-const works = [
+const wedding = getGallery('wedding')?.photos ?? [];
+const fallback = [
   { src: 'gallery-1.png', alt: 'Wedding work', w: 1160, h: 773 },
   { src: 'gallery-2.png', alt: 'Portrait work', w: 1160, h: 773 },
   { src: 'gallery-3.png', alt: 'Celebration work', w: 1160, h: 773 },
 ];
+
+const works = (wedding.length >= 3 ? wedding.slice(0, 3) : wedding.length > 0 ? wedding : fallback).map(
+  (p) => ({
+    src: p.src,
+    alt: p.alt,
+    w: p.width,
+    h: p.height,
+  }),
+);
 ---
 
 <section class="works">

@@ -3,6 +3,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import GalleryGrid from '@/components/GalleryGrid.astro';
 import { categories, getCategory } from '@/data/categories';
 import { getGallery } from '@/data/galleries';
+import { categoryCoverForOg } from '@/lib/category-cover';
 import { whatsappUrl } from '@/config/site';
 
 export function getStaticPaths() {
@@ -12,8 +13,10 @@ export function getStaticPaths() {
 const { slug } = Astro.params;
 const category = getCategory(slug!);
 const gallery = getGallery(slug!);
+const photos = gallery?.photos ?? [];
+const siteOrigin = Astro.site?.toString() ?? 'https://bigdaystudios.in';
 
-if (!category || !gallery) {
+if (!category) {
   return Astro.redirect('/gallery/');
 }
 ---
@@ -21,7 +24,7 @@ if (!category || !gallery) {
 <BaseLayout
   title={category.title}
   description={category.description}
-  ogImage={`/images/${category.coverImage}`}
+  ogImage={categoryCoverForOg(category.slug, siteOrigin)}
 >
   <section class="page-hero container">
     <a href="/gallery/" class="back-link">← All galleries</a>
@@ -39,8 +42,16 @@ if (!category || !gallery) {
       </a>
     </div>
   </section>
-  <section class="container" style="padding-bottom: 4rem">
-    <GalleryGrid photos={gallery.photos} />
+  <section class="container gallery-page">
+    {
+      photos.length > 0 ? (
+        <GalleryGrid photos={photos} />
+      ) : (
+        <p class="gallery-empty">
+          Photos for this collection are being prepared. Please check back soon or message us on WhatsApp.
+        </p>
+      )
+    }
   </section>
 </BaseLayout>
 
@@ -62,5 +73,17 @@ if (!category || !gallery) {
 
   .back-link:hover {
     color: var(--color-accent-light);
+  }
+
+  .gallery-page {
+    padding-bottom: 4rem;
+  }
+
+  .gallery-empty {
+    text-align: center;
+    color: var(--color-muted);
+    padding: 3rem 1rem;
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius);
   }
 </style>

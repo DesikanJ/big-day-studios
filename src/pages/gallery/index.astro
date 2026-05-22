@@ -2,11 +2,15 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import OptimizedImage from '@/components/OptimizedImage.astro';
 import { categories } from '@/data/categories';
+import { getCategoryCoverSrc, getGallery } from '@/data/galleries';
 
 const sorted = [...categories].sort((a, b) => a.order - b.order);
 ---
 
-<BaseLayout title="Gallery" description="Browse wedding, maternity, newborn and kids photography by Big Day Studios, Chennai.">
+<BaseLayout
+  title="Gallery"
+  description="Browse wedding, maternity, baby, birthday, family and celebrity photography by Big Day Studios, Chennai."
+>
   <section class="page-hero container">
     <p class="section-label">Gallery</p>
     <h1 class="section-title">Our Photography Collections</h1>
@@ -14,21 +18,25 @@ const sorted = [...categories].sort((a, b) => a.order - b.order);
   </section>
   <section class="container gallery-index">
     {
-      sorted.map((cat) => (
-        <a href={`/gallery/${cat.slug}/`} class="gallery-index__card">
-          <OptimizedImage
-            src={cat.coverImage}
-            alt={cat.title}
-            width={640}
-            height={420}
-            sizes="(max-width: 768px) 100vw, 50vw"
-          />
-          <div class="gallery-index__overlay">
-            <h2>{cat.title}</h2>
-            <p>{cat.tagline}</p>
-          </div>
-        </a>
-      ))
+      sorted.map((cat) => {
+        const cover = getCategoryCoverSrc(cat.slug);
+        const first = getGallery(cat.slug)?.photos[0];
+        return (
+          <a href={`/gallery/${cat.slug}/`} class="gallery-index__card">
+            <OptimizedImage
+              src={cover}
+              alt={cat.title}
+              width={first?.width ?? 1160}
+              height={first?.height ?? 773}
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+            <div class="gallery-index__overlay">
+              <h2>{cat.title}</h2>
+              <p>{cat.tagline}</p>
+            </div>
+          </a>
+        );
+      })
     }
   </section>
 </BaseLayout>
@@ -54,6 +62,12 @@ const sorted = [...categories].sort((a, b) => a.order - b.order);
     }
   }
 
+  @media (min-width: 1100px) {
+    .gallery-index {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
   .gallery-index__card {
     position: relative;
     border-radius: var(--radius);
@@ -61,15 +75,13 @@ const sorted = [...categories].sort((a, b) => a.order - b.order);
     display: block;
   }
 
-  .gallery-index__card img {
-    width: 100%;
-    aspect-ratio: 16/10;
-    object-fit: cover;
-    transition: transform 0.4s;
+  .gallery-index__card :global(.photo-frame) {
+    aspect-ratio: 16 / 10;
   }
 
-  .gallery-index__card:hover img {
-    transform: scale(1.04);
+  .gallery-index__card:hover :global(.photo-frame) {
+    transform: scale(1.02);
+    transition: transform 0.4s ease;
   }
 
   .gallery-index__overlay {
@@ -80,6 +92,7 @@ const sorted = [...categories].sort((a, b) => a.order - b.order);
     justify-content: flex-end;
     padding: 1.5rem;
     background: linear-gradient(transparent 40%, rgb(0 0 0 / 0.85));
+    pointer-events: none;
   }
 
   .gallery-index__overlay h2 {
