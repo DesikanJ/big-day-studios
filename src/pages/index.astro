@@ -7,14 +7,23 @@ import WhyChoose from '@/components/WhyChoose.astro';
 import WorksPreview from '@/components/WorksPreview.astro';
 import Testimonials from '@/components/Testimonials.astro';
 import CtaBanner from '@/components/CtaBanner.astro';
+import LocalAreas from '@/components/LocalAreas.astro';
+import SeoFaq from '@/components/SeoFaq.astro';
+import { site } from '@/config/site';
+import { faqPageJsonLd } from '@/lib/seo';
 ---
 
-<BaseLayout>
+<BaseLayout
+  description={site.description}
+  jsonLd={[faqPageJsonLd()]}
+>
   <Hero />
   <StatsBar />
   <CategoryGrid />
   <WhyChoose />
   <WorksPreview />
   <Testimonials />
+  <LocalAreas />
+  <SeoFaq />
   <CtaBanner />
 </BaseLayout>

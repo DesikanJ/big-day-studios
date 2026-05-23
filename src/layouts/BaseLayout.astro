@@ -3,31 +3,62 @@ import '@/styles/global.css';
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
 import { site } from '@/config/site';
+import {
+  localBusinessJsonLd,
+  webSiteJsonLd,
+  pageTitle,
+  truncateDescription,
+} from '@/lib/seo';
 
 interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  /** Extra schema.org objects (breadcrumb, Service, FAQPage, etc.) */
+  jsonLd?: Record<string, unknown>[];
+  noindex?: boolean;
 }
 
-const { title, description = site.description, ogImage = '/images/gallery-1.png' } = Astro.props;
-const pageTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.tagline}`;
-const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://bigdaystudios.com');
-const og = new URL(ogImage, Astro.site ?? 'https://bigdaystudios.com');
+const {
+  title,
+  description = site.description,
+  ogImage = '/images/gallery-1.png',
+  jsonLd = [],
+  noindex = false,
+} = Astro.props;
+
+const metaTitle = title ? pageTitle(title) : pageTitle();
+const metaDescription = truncateDescription(description);
+const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url);
+const og = new URL(ogImage, Astro.site ?? site.url);
+
+const structuredData = [localBusinessJsonLd(), webSiteJsonLd(), ...jsonLd];
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en-IN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content={description} />
+    <meta name="description" content={metaDescription} />
+    <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
+    <meta name="author" content={site.name} />
+    <meta name="geo.region" content="IN-TN" />
+    <meta name="geo.placename" content="Chennai" />
+    <meta name="geo.position" content={`${site.seo.geo.latitude};${site.seo.geo.longitude}`} />
+    <meta name="ICBM" content={`${site.seo.geo.latitude}, ${site.seo.geo.longitude}`} />
     <link rel="canonical" href={canonical} />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content={pageTitle} />
-    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content={site.seo.locale} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={metaTitle} />
+    <meta property="og:description" content={metaDescription} />
     <meta property="og:image" content={og} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={metaTitle} />
+    <meta name="twitter:description" content={metaDescription} />
+    <meta name="twitter:image" content={og} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -37,17 +68,22 @@ const og = new URL(ogImage, Astro.site ?? 'https://bigdaystudios.com');
       href="https://fonts.googleapis.com/css2?family=Bilbo+Swash+Caps&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif&family=Playfair+Display:wght@500;600&display=swap"
       rel="stylesheet"
     />
-    <title>{pageTitle}</title>
-    <script type="application/ld+json" set:html={JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'LocalBusiness',
-      name: site.name,
-      description: site.description,
-      address: { '@type': 'PostalAddress', addressLocality: 'Chennai', addressRegion: 'TN', addressCountry: 'IN' },
-      aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.9', reviewCount: '1000' },
-    })} />
+    <title>{metaTitle}</title>
+    {
+      structuredData.map((schema) => (
+        <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+      ))
+    }
   </head>
-  <body>
+  <body itemscope itemtype="https://schema.org/LocalBusiness">
+    <meta itemprop="name" content={site.name} />
+    <meta itemprop="telephone" content={site.phone} />
+    <meta itemprop="email" content={site.email} />
+    <span itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
+      <meta itemprop="addressLocality" content="Chennai" />
+      <meta itemprop="addressRegion" content="Tamil Nadu" />
+      <meta itemprop="addressCountry" content="IN" />
+    </span>
     <Header />
     <main>
       <slot />

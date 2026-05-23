@@ -1,10 +1,12 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import GalleryGrid from '@/components/GalleryGrid.astro';
+import SeoBreadcrumbs from '@/components/SeoBreadcrumbs.astro';
 import { categories, getCategory } from '@/data/categories';
 import { getGallery } from '@/data/galleries';
 import { categoryCoverForOg } from '@/lib/category-cover';
 import { whatsappUrl } from '@/config/site';
+import { breadcrumbJsonLd, servicePageJsonLd, truncateDescription } from '@/lib/seo';
 
 export function getStaticPaths() {
   return categories.map((cat) => ({ params: { slug: cat.slug } }));
@@ -22,12 +24,26 @@ if (!category) {
 ---
 
 <BaseLayout
-  title={category.title}
-  description={category.description}
+  title={category.seoTitle}
+  description={truncateDescription(category.seoDescription)}
   ogImage={categoryCoverForOg(category.slug, siteOrigin)}
+  jsonLd={[
+    breadcrumbJsonLd([
+      { name: 'Home', path: '/' },
+      { name: 'Gallery', path: '/gallery/' },
+      { name: category.title, path: `/gallery/${category.slug}/` },
+    ]),
+    servicePageJsonLd(category),
+  ]}
 >
   <section class="page-hero container">
-    <a href="/gallery/" class="back-link">← All galleries</a>
+    <SeoBreadcrumbs
+      items={[
+        { label: 'Home', href: '/' },
+        { label: 'Gallery', href: '/gallery/' },
+        { label: category.title },
+      ]}
+    />
     <p class="section-label">{category.tagline}</p>
     <h1 class="section-title">{category.title}</h1>
     <p class="section-lead">{category.description}</p>
@@ -62,17 +78,6 @@ if (!category) {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-  }
-
-  .back-link {
-    align-self: flex-start;
-    font-size: 0.875rem;
-    color: var(--color-muted);
-    margin-bottom: 0.5rem;
-  }
-
-  .back-link:hover {
-    color: var(--color-accent-light);
   }
 
   .gallery-page {

@@ -1,0 +1,64 @@
+---
+import { site } from '@/config/site';
+
+const areas = site.seo.areasServed;
+---
+
+<section class="local-areas" aria-labelledby="local-areas-heading">
+  <div class="container local-areas__inner">
+    <p class="section-label">Chennai & nearby</p>
+    <h2 id="local-areas-heading" class="local-areas__title">
+      Photography across Chennai and surrounding areas
+    </h2>
+    <p class="local-areas__lead">
+      Based in Chennai, we photograph weddings, maternity sessions, newborns, birthdays, and families
+      across the city — studio sessions and on-location shoots. Travelling for events in nearby
+      towns on request.
+    </p>
+    <ul class="local-areas__list">
+      {areas.map((area) => <li>{area}</li>)}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .local-areas {
+    padding: 3rem 0;
+    border-top: 1px solid var(--color-border);
+    background: rgb(10 10 10 / 0.6);
+  }
+
+  .local-areas__inner {
+    max-width: 48rem;
+  }
+
+  .local-areas__title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 400;
+    margin: 0 0 1rem;
+  }
+
+  .local-areas__lead {
+    color: var(--color-muted);
+    line-height: 1.6;
+    margin: 0 0 1.25rem;
+  }
+
+  .local-areas__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .local-areas__list li {
+    font-size: 0.8125rem;
+    padding: 0.35rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    color: var(--color-muted);
+  }
+</style>

@@ -7,6 +7,9 @@ export type Category = {
   title: string;
   tagline: string;
   description: string;
+  /** Meta title & description (local SEO — Chennai keywords) */
+  seoTitle: string;
+  seoDescription: string;
   /** Cloudinary folder name (must match Media Library exactly) */
   cloudinaryFolder: string;
   order: number;
@@ -21,6 +24,9 @@ export const categories: Category[] = [
     tagline: 'Elegant & Cinematic',
     description:
       'Timeless wedding portraits and candid moments — from engagement to the last dance.',
+    seoTitle: 'Wedding Photographer in Chennai',
+    seoDescription:
+      'Cinematic wedding photography in Chennai — candid ceremonies, traditional rituals & portraits. Big Day Studios covers weddings across Tamil Nadu.',
     cloudinaryFolder: 'Wedding',
     order: 1,
     coverFallback: 'category-wedding.png',
@@ -31,6 +37,9 @@ export const categories: Category[] = [
     tagline: 'Celebrate Motherhood',
     description:
       'Soft, glowing maternity portraits in our comfortable Chennai studio.',
+    seoTitle: 'Maternity Photoshoot Chennai',
+    seoDescription:
+      'Maternity photography in Chennai — glowing studio portraits & on-location shoots. Celebrate motherhood with Big Day Studios.',
     cloudinaryFolder: 'Maternity',
     order: 2,
     coverFallback: 'category-maternity.png',
@@ -41,6 +50,9 @@ export const categories: Category[] = [
     tagline: 'Adorable & Safe',
     description:
       'Gentle newborn and baby sessions with a fully equipped, temperature-controlled setup.',
+    seoTitle: 'Baby & Newborn Photoshoot Chennai',
+    seoDescription:
+      'Baby and newborn photoshoots in Chennai — safe, temperature-controlled studio with themed sets. Book your baby session today.',
     cloudinaryFolder: 'Baby Photoshoot',
     order: 3,
     coverFallback: 'gallery-5.png',
@@ -51,6 +63,9 @@ export const categories: Category[] = [
     tagline: 'Fun & Vibrant',
     description:
       'Colourful birthday celebrations and kids portraits full of joy and personality.',
+    seoTitle: 'Birthday Photoshoot Chennai',
+    seoDescription:
+      'Kids birthday photography in Chennai — vibrant party coverage & portrait sessions. Fun, colourful memories by Big Day Studios.',
     cloudinaryFolder: 'Birthday',
     order: 4,
     coverFallback: 'gallery-6.png',
@@ -61,6 +76,9 @@ export const categories: Category[] = [
     tagline: 'Together Forever',
     description:
       'Warm, natural family portraits — indoors or on location — that you will cherish for years.',
+    seoTitle: 'Family Photoshoot Chennai',
+    seoDescription:
+      'Family photography in Chennai — natural studio & outdoor portraits for all ages. Book a family session with Big Day Studios.',
     cloudinaryFolder: 'Family Photoshoot',
     order: 5,
     coverFallback: 'gallery-1.png',
@@ -71,6 +89,9 @@ export const categories: Category[] = [
     tagline: 'Red Carpet Ready',
     description:
       'Polished, high-impact portraits and event coverage with a cinematic finish.',
+    seoTitle: 'Celebrity & Event Photography Chennai',
+    seoDescription:
+      'Celebrity and event photography in Chennai — polished portraits and red-carpet coverage with a cinematic finish.',
     cloudinaryFolder: 'Celebrity',
     order: 6,
     coverFallback: 'gallery-2.png',
