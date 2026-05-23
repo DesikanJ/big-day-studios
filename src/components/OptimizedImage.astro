@@ -16,6 +16,8 @@ interface Props {
   priority?: boolean;
   class?: string;
   fill?: boolean;
+  /** Preserve original aspect ratio (masonry galleries). Default false = crop to frame. */
+  natural?: boolean;
   /** LQIP blur while loading (Cloudinary only). Default true. */
   placeholder?: boolean;
 }
@@ -29,6 +31,7 @@ const {
   priority = false,
   class: className,
   fill = false,
+  natural = false,
   placeholder = true,
 } = Astro.props;
 
@@ -61,7 +64,7 @@ const lqip = placeholder && cloud ? placeholderUrl(src) : null;
     </span>
   ) : (
     <span
-      class:list={['photo-frame', className]}
+      class:list={['photo-frame', natural && 'photo-frame--natural', className]}
       style={`--photo-ar: ${width} / ${height};${lqip ? `background-image:url(${lqip})` : ''}`}
     >
       <img
@@ -133,6 +136,19 @@ const lqip = placeholder && cloud ? placeholderUrl(src) : null;
 
   .photo-img--fade.is-loaded {
     opacity: 1;
+  }
+
+  .photo-frame--natural {
+    aspect-ratio: auto;
+    overflow: hidden;
+    border-radius: var(--radius);
+  }
+
+  .photo-frame--natural .photo-img {
+    position: static;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
   }
 
   .photo-frame .photo-img {
