@@ -20,6 +20,8 @@ interface Props {
   natural?: boolean;
   /** LQIP blur while loading (Cloudinary only). Default true. */
   placeholder?: boolean;
+  /** Cap default `src` width (smaller = faster first paint). */
+  maxWidth?: number;
 }
 
 const {
@@ -33,11 +35,13 @@ const {
   fill = false,
   natural = false,
   placeholder = true,
+  maxWidth = 1280,
 } = Astro.props;
 
 const cloud = usesCloudinaryForSrc(src);
-const widths = responsiveWidths(width);
-const defaultW = widths[widths.length - 1] ?? Math.min(width, 1280);
+const cap = Math.min(width, maxWidth);
+const widths = responsiveWidths(cap, maxWidth);
+const defaultW = widths[widths.length - 1] ?? cap;
 const mainSrc = imageUrl(src, { width: defaultW, dpr: cloud ? 'auto' : undefined });
 const set = srcSet(src, widths);
 const lqip = placeholder && cloud ? placeholderUrl(src) : null;
@@ -138,6 +142,16 @@ const lqip = placeholder && cloud ? placeholderUrl(src) : null;
     opacity: 1;
   }
 
+  .photo-frame:not(.photo-frame--natural) .photo-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    object-position: center;
+  }
+
   .photo-frame--natural {
     aspect-ratio: auto;
     overflow: hidden;
@@ -149,16 +163,6 @@ const lqip = placeholder && cloud ? placeholderUrl(src) : null;
     width: 100%;
     height: auto;
     object-fit: contain;
-  }
-
-  .photo-frame .photo-img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    max-width: none;
-    object-fit: cover;
-    object-position: center;
   }
 
   .photo-img--fill {

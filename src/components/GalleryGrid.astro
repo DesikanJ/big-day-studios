@@ -31,7 +31,8 @@ const lightboxSlides = photos.map((p) => ({
             width={photo.width}
             height={photo.height}
             natural
-            priority={i < 3}
+            priority={i < 2}
+            maxWidth={i < 2 ? 1024 : 768}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         </button>
@@ -114,7 +115,6 @@ const lightboxSlides = photos.map((p) => ({
   .gallery-masonry {
     columns: 1;
     column-gap: 0.75rem;
-    content-visibility: auto;
   }
 
   @media (min-width: 520px) {

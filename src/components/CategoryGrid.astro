@@ -27,6 +27,8 @@ const sorted = [...categories].sort((a, b) => a.order - b.order);
                 alt={cat.title}
                 width={first?.width ?? 1160}
                 height={first?.height ?? 773}
+                maxWidth={560}
+                priority={cat.order <= 2}
                 sizes="(max-width: 640px) 100vw, 280px"
               />
             </div>

@@ -48,7 +48,10 @@ const placeholderGalleries: Gallery[] = [
 function mergeGalleries(): Gallery[] {
   return categories.map((cat) => {
     const synced = galleriesGenerated.find((g) => g.categorySlug === cat.slug);
-    if (synced?.photos.length) return synced;
+    if (synced?.photos.length) {
+      const photos = synced.photos.filter((p) => !UNAVAILABLE_CLOUDINARY_IDS.has(p.src));
+      if (photos.length) return { ...synced, photos };
+    }
     return placeholderGalleries.find((g) => g.categorySlug === cat.slug) ?? { categorySlug: cat.slug, photos: [] };
   });
 }
@@ -59,10 +62,14 @@ export function getGallery(categorySlug: string): Gallery | undefined {
   return galleries.find((g) => g.categorySlug === categorySlug);
 }
 
-/** Cover image: first synced photo, else local fallback */
+/** Deleted/missing in Cloudinary — excluded from galleries and covers */
+const UNAVAILABLE_CLOUDINARY_IDS = new Set(['Pariaarclicks009_yp3bp8']);
+
+/** Cover image: first available synced photo, else local fallback */
 export function getCategoryCoverSrc(slug: string): string {
   const cat = categories.find((c) => c.slug === slug);
   const gallery = getGallery(slug);
-  if (gallery?.photos[0]?.src) return gallery.photos[0].src;
+  const cover = gallery?.photos[0];
+  if (cover?.src) return cover.src;
   return cat?.coverFallback ?? 'gallery-1.png';
 }
