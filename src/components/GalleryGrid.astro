@@ -15,13 +15,13 @@ const lightboxSlides = photos.map((p) => ({
 }));
 ---
 
-<div class="gallery-masonry" data-gallery>
+<div class="gallery-grid" data-gallery>
   {
     photos.map((photo, i) => (
-      <figure class="gallery-masonry__item">
+      <figure class="gallery-grid__item">
         <button
           type="button"
-          class="gallery-masonry__trigger"
+          class="gallery-grid__trigger"
           data-index={i}
           aria-label={`View larger: ${photo.alt}`}
         >
@@ -30,9 +30,8 @@ const lightboxSlides = photos.map((p) => ({
             alt={photo.alt}
             width={photo.width}
             height={photo.height}
-            natural
             priority={i < 2}
-            maxWidth={i < 2 ? 1024 : 768}
+            maxWidth={768}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         </button>
@@ -90,7 +89,7 @@ const lightboxSlides = photos.map((p) => ({
       img.removeAttribute('src');
     }
 
-    gallery.querySelectorAll('.gallery-masonry__trigger').forEach((btn) => {
+    gallery.querySelectorAll('.gallery-grid__trigger').forEach((btn) => {
       btn.addEventListener('click', () => open(Number(btn.dataset.index)));
     });
 
@@ -112,36 +111,17 @@ const lightboxSlides = photos.map((p) => ({
 </script>
 
 <style>
-  .gallery-masonry {
-    columns: 1;
-    column-gap: 0.75rem;
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
   }
 
-  @media (min-width: 520px) {
-    .gallery-masonry {
-      columns: 2;
-    }
+  .gallery-grid__item {
+    margin: 0;
   }
 
-  @media (min-width: 960px) {
-    .gallery-masonry {
-      columns: 3;
-      column-gap: 1rem;
-    }
-  }
-
-  .gallery-masonry__item {
-    margin: 0 0 0.75rem;
-    break-inside: avoid;
-  }
-
-  @media (min-width: 960px) {
-    .gallery-masonry__item {
-      margin-bottom: 1rem;
-    }
-  }
-
-  .gallery-masonry__trigger {
+  .gallery-grid__trigger {
     display: block;
     width: 100%;
     padding: 0;
@@ -153,14 +133,18 @@ const lightboxSlides = photos.map((p) => ({
     transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
 
-  .gallery-masonry__trigger:hover {
+  .gallery-grid__trigger:hover {
     transform: translateY(-2px);
     box-shadow: 0 12px 32px rgb(0 0 0 / 0.45);
   }
 
-  .gallery-masonry__trigger:focus-visible {
+  .gallery-grid__trigger:focus-visible {
     outline: 2px solid var(--color-accent-light);
     outline-offset: 3px;
+  }
+
+  .gallery-grid__trigger :global(.photo-frame) {
+    aspect-ratio: 4 / 3;
   }
 
   /* Lightbox */

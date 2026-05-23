@@ -14,6 +14,9 @@ export type Gallery = {
   photos: GalleryPhoto[];
 };
 
+/** Deleted/missing in Cloudinary — excluded from galleries and covers */
+const UNAVAILABLE_CLOUDINARY_IDS = new Set(['Pariaarclicks009_yp3bp8']);
+
 /** Placeholder photos until Cloudinary sync runs */
 const placeholderGalleries: Gallery[] = [
   {
@@ -61,9 +64,6 @@ export const galleries: Gallery[] = mergeGalleries();
 export function getGallery(categorySlug: string): Gallery | undefined {
   return galleries.find((g) => g.categorySlug === categorySlug);
 }
-
-/** Deleted/missing in Cloudinary — excluded from galleries and covers */
-const UNAVAILABLE_CLOUDINARY_IDS = new Set(['Pariaarclicks009_yp3bp8']);
 
 /** Cover image: first available synced photo, else local fallback */
 export function getCategoryCoverSrc(slug: string): string {
