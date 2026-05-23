@@ -133,8 +133,7 @@ p {
   border-color: var(--color-accent-light);
 }
 
-.btn-group,
-.hero__actions {
+.btn-group {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;

@@ -55,9 +55,9 @@ const COLLAGE = { w: 1240, h: 688, left: 94, top: 94 } as const;
       <p class="hero__lead">{heroLead}</p>
       <div class="hero__actions">
         <a href={whatsappUrl()} class="btn btn--primary" target="_blank" rel="noopener noreferrer">
-          Book via Whatsapp
+          Book via WhatsApp
         </a>
-        <a href="/gallery/" class="btn btn--outline">View gallery</a>
+        <a href="/gallery/" class="btn btn--outline">View Gallery</a>
       </div>
     </div>
   </div>
@@ -130,8 +130,22 @@ const COLLAGE = { w: 1240, h: 688, left: 94, top: 94 } as const;
   }
 
   .hero__actions {
-    width: min(100%, 444px);
-    margin-top: clamp(1.25rem, 2vw, 2.5rem);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    justify-content: center;
+    gap: clamp(0.75rem, 1.5vw, 1rem);
+    width: 100%;
+    max-width: 28rem;
+    margin-top: clamp(1.25rem, 2.5vw, 2rem);
+  }
+
+  .hero__actions :global(.btn) {
+    flex: 1 1 0;
+    min-width: 0;
+    padding-inline: clamp(1rem, 2vw, 1.5rem);
+    white-space: nowrap;
   }
 
   @media (max-width: 900px) {
@@ -167,11 +181,25 @@ const COLLAGE = { w: 1240, h: 688, left: 94, top: 94 } as const;
 
     .hero__actions {
       margin-top: 1.5rem;
+      max-width: 100%;
     }
 
     /* Hide far-edge tiles on small screens to reduce clutter */
     .hero__tile:nth-child(3) {
       display: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero__actions {
+      flex-direction: column;
+      align-items: stretch;
+      max-width: 16.5rem;
+    }
+
+    .hero__actions :global(.btn) {
+      flex: none;
+      width: 100%;
     }
   }
 
