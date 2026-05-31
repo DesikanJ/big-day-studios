@@ -3,7 +3,7 @@ import { site } from '@/config/site';
 ---
 
 <section class="stats" aria-label="Studio highlights">
-  <div class="container stats__inner">
+  <div class="stats__inner">
     {
       site.stats.map((stat) => (
         <div class="stats__item">
@@ -17,37 +17,79 @@ import { site } from '@/config/site';
 
 <style>
   .stats {
-    border-block: 1px solid var(--color-border);
-    padding: 2rem 0;
+    position: relative;
+    height: clamp(120px, calc(146 / 1440 * 100vw), 146px);
+    border-top: 0.4px solid transparent;
+    border-image: var(--gradient-border) 1;
+    background: transparent;
   }
 
   .stats__inner {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
-
-  @media (min-width: 768px) {
-    .stats__inner {
-      grid-template-columns: repeat(4, 1fr);
-    }
+    position: relative;
+    width: min(var(--figma-max), 100%);
+    height: 100%;
+    margin: 0 auto;
   }
 
   .stats__item {
+    position: absolute;
+    top: calc(40 / 146 * 100%);
+    width: calc(160 / 1440 * 100%);
+    min-width: 120px;
     text-align: center;
-    padding: 0.5rem;
+  }
+
+  .stats__item:nth-child(1) {
+    left: calc(145 / 1440 * 100%);
+  }
+
+  .stats__item:nth-child(2) {
+    left: calc(475 / 1440 * 100%);
+  }
+
+  .stats__item:nth-child(3) {
+    left: calc(805 / 1440 * 100%);
+  }
+
+  .stats__item:nth-child(4) {
+    left: calc(1135 / 1440 * 100%);
   }
 
   .stats__value {
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    font-weight: 500;
-    margin-bottom: 0.25rem;
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 2.64vw, 38px);
+    font-weight: 400;
+    line-height: 40px;
+    text-transform: uppercase;
+    margin: 0 0 14px;
   }
 
   .stats__label {
-    font-size: 0.6875rem;
-    letter-spacing: 0.08em;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: 0;
     text-transform: uppercase;
     color: var(--color-muted);
+    margin: 0;
+  }
+
+  @media (max-width: 900px) {
+    .stats {
+      height: auto;
+    }
+
+    .stats__inner {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      padding: 2rem var(--figma-gutter);
+    }
+
+    .stats__item {
+      position: static;
+      width: auto;
+      min-width: 0;
+    }
   }
 </style>

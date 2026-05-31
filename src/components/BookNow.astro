@@ -1,0 +1,368 @@
+---
+import OptimizedImage from '@/components/OptimizedImage.astro';
+import { categories } from '@/data/categories';
+import { packages } from '@/data/packages';
+import { site, whatsappUrl } from '@/config/site';
+
+const sessionOptions = [...categories].sort((a, b) => a.order - b.order).map((c) => c.title);
+const packageOptions = packages.map((p) => p.name);
+const rawFormKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY?.trim();
+const formKey =
+  rawFormKey && rawFormKey !== 'your_access_key_here' ? rawFormKey : undefined;
+
+const social = site.seo.sameAs;
+---
+
+<section class="book-now" id="book-now" aria-labelledby="book-now-heading">
+  <div class="book-now__banner" aria-hidden="true">
+    <OptimizedImage
+      src="cta-banner.png"
+      alt=""
+      width={1440}
+      height={440}
+      sizes="100vw"
+      fill
+      class="book-now__banner-img"
+    />
+  </div>
+
+  <div class="book-now__intro">
+    <h2 id="book-now-heading" class="book-now__title">
+      Big Day Studios is a Chennai based photographer specialising in Wedding, maternity, New born
+      and Birthday celebrations. Let's capture your story.
+    </h2>
+    <p class="book-now__lead">
+      Limited slots available every week. Reach out now to check availability for your date — we'd
+      love to be part of your celebration.
+    </p>
+  </div>
+
+  <div class="book-now__panel">
+    <aside class="book-now__aside">
+      <h3 class="book-now__aside-title">Get in touch</h3>
+
+      <div class="book-now__block">
+        <p class="book-now__block-label">Contact</p>
+        <a href={`mailto:${site.email}`} class="book-now__block-link">{site.email}</a>
+        <a href={`tel:${site.phone.replace(/\s/g, '')}`} class="book-now__block-link">
+          Phone {site.phone}
+        </a>
+        <a href={whatsappUrl()} class="book-now__block-link" target="_blank" rel="noopener noreferrer">
+          Chat on whatsapp
+        </a>
+      </div>
+
+      <div class="book-now__block">
+        <p class="book-now__block-label">Address</p>
+        <p class="book-now__block-text">Chennai, Tamil Nadu</p>
+      </div>
+
+      {
+        social.length > 0 && (
+          <div class="book-now__block">
+            <p class="book-now__block-label">Social Media</p>
+            <div class="book-now__social">
+              {social.map((url) => (
+                <a href={url} class="book-now__social-btn" target="_blank" rel="noopener noreferrer">
+                  ↗
+                </a>
+              ))}
+            </div>
+          </div>
+        )
+      }
+    </aside>
+
+    <div class="book-now__form-col">
+      {
+        formKey ? (
+          <form class="book-now__form" action="https://api.web3forms.com/submit" method="POST">
+            <input type="hidden" name="access_key" value={formKey} />
+            <input type="hidden" name="subject" value="New booking enquiry — Big Day Studios" />
+            <input type="checkbox" name="botcheck" class="sr-only" tabindex="-1" autocomplete="off" />
+
+            <div class="book-now__fields">
+              <label class="book-now__field">
+                <span class="sr-only">First name</span>
+                <input type="text" name="first_name" required placeholder="First name" autocomplete="given-name" />
+              </label>
+              <label class="book-now__field">
+                <span class="sr-only">Last name</span>
+                <input type="text" name="last_name" required placeholder="Last name" autocomplete="family-name" />
+              </label>
+              <label class="book-now__field book-now__field--span">
+                <span class="sr-only">Select service</span>
+                <select name="session" required>
+                  <option value="" disabled selected>
+                    Select service
+                  </option>
+                  {sessionOptions.map((title) => (
+                    <option value={title}>{title}</option>
+                  ))}
+                  <option value="Other">Other</option>
+                </select>
+              </label>
+              <label class="book-now__field">
+                <span class="sr-only">Preferred rate</span>
+                <input type="text" name="preferred_rate" placeholder="Preferred rate" autocomplete="off" />
+              </label>
+              <label class="book-now__field">
+                <span class="sr-only">Package interest</span>
+                <select name="package">
+                  <option value="" disabled selected>
+                    Package interest
+                  </option>
+                  {packageOptions.map((name) => (
+                    <option value={name}>{name}</option>
+                  ))}
+                  <option value="Not sure yet">Not sure yet</option>
+                </select>
+              </label>
+              <label class="book-now__field book-now__field--span book-now__field--message">
+                <span class="sr-only">Message</span>
+                <textarea name="message" rows="4" placeholder="Message (optional)" />
+              </label>
+            </div>
+
+            <button type="submit" class="btn btn--primary book-now__submit">Let's talk</button>
+          </form>
+        ) : (
+          <div class="book-now__fallback">
+            <p>Message us on WhatsApp to check availability — we reply within a few hours.</p>
+            <a href={whatsappUrl()} class="btn btn--primary" target="_blank" rel="noopener noreferrer">
+              Let's talk on WhatsApp
+            </a>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .book-now {
+    background: var(--color-bg);
+    padding-bottom: 120px;
+  }
+
+  .book-now__banner {
+    position: relative;
+    height: 440px;
+    max-width: var(--figma-max);
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  .book-now__intro {
+    max-width: 1028px;
+    margin: 0 auto;
+    padding: 160px var(--figma-gutter) 0;
+    text-align: center;
+  }
+
+  .book-now__title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 4.17vw, 60px);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 30px;
+  }
+
+  .book-now__lead {
+    color: var(--color-muted);
+    font-size: 16px;
+    line-height: 18px;
+    max-width: 988px;
+    margin: 0 auto;
+  }
+
+  .book-now__panel {
+    max-width: var(--figma-max);
+    margin: 218px auto 0;
+    padding: 0 var(--figma-gutter);
+    display: grid;
+    gap: 48px;
+    position: relative;
+  }
+
+  @media (min-width: 1100px) {
+    .book-now__panel {
+      grid-template-columns: 330px 1fr;
+      gap: 112px;
+      align-items: start;
+    }
+
+    .book-now__panel::before,
+    .book-now__panel::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--gradient-border-soft);
+      pointer-events: none;
+    }
+
+    .book-now__panel::before {
+      left: calc(330px + 56px);
+    }
+
+    .book-now__panel::after {
+      right: calc(360px + 56px);
+    }
+  }
+
+  .book-now__aside-title {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 3.06vw, 44px);
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+
+  .book-now__block {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 10px 0;
+    margin-bottom: 30px;
+  }
+
+  .book-now__block-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-text);
+  }
+
+  .book-now__block-link,
+  .book-now__block-text {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--color-muted);
+  }
+
+  .book-now__block-link:hover {
+    color: var(--color-accent-light);
+  }
+
+  .book-now__social {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .book-now__social-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    height: 44px;
+    padding: 0 12px;
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    background-image: linear-gradient(var(--color-bg), var(--color-bg)), var(--gradient-border);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    font-size: 14px;
+    color: var(--color-text);
+  }
+
+  .book-now__fields {
+    display: grid;
+    gap: 30px;
+  }
+
+  @media (min-width: 768px) {
+    .book-now__fields {
+      grid-template-columns: 360px 360px;
+      column-gap: 24px;
+      row-gap: 30px;
+      justify-content: end;
+    }
+
+    .book-now__field--span {
+      grid-column: 1 / -1;
+      max-width: 744px;
+      justify-self: end;
+    }
+  }
+
+  .book-now__field {
+    display: block;
+    min-height: 60px;
+    background: var(--color-surface-form);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .book-now__field--message {
+    min-height: 140px;
+    border: 1px solid var(--color-border);
+  }
+
+  .book-now__field input,
+  .book-now__field select,
+  .book-now__field textarea {
+    width: 100%;
+    height: 100%;
+    min-height: 60px;
+    font: inherit;
+    font-size: 16px;
+    padding: 20px 15px;
+    border: none;
+    background: transparent;
+    color: var(--color-text);
+  }
+
+  .book-now__field textarea {
+    min-height: 140px;
+    resize: vertical;
+    padding: 20px;
+  }
+
+  .book-now__field input::placeholder,
+  .book-now__field textarea::placeholder {
+    color: var(--color-text);
+    opacity: 0.6;
+  }
+
+  .book-now__field select {
+    appearance: none;
+    cursor: pointer;
+    color: rgb(255 255 255 / 0.6);
+  }
+
+  .book-now__submit {
+    width: min(100%, 316px);
+    margin: 50px auto 0;
+    display: flex;
+    background: var(--gradient-btn-alt);
+  }
+
+  .book-now__fallback {
+    padding: 2rem;
+    border: 1px solid var(--color-border);
+    text-align: center;
+    color: var(--color-muted);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    align-items: center;
+  }
+
+  @media (max-width: 768px) {
+    .book-now__banner {
+      height: 240px;
+    }
+
+    .book-now__intro {
+      padding-top: 3rem;
+    }
+
+    .book-now__panel {
+      margin-top: 3rem;
+    }
+  }
+</style>

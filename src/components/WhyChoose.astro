@@ -1,75 +1,49 @@
 ---
-import OptimizedImage from '@/components/OptimizedImage.astro';
 ---
 
 <section class="why">
-  <div class="container why__grid">
-    <div class="why__media">
-      <OptimizedImage
-        src="why-choose.png"
-        alt="Photographer with family in studio"
-        width={480}
-        height={620}
-        sizes="(max-width: 900px) 100vw, 480px"
-      />
-    </div>
-    <div class="why__content">
-      <p class="section-label" style="text-align: left">Why Choose us</p>
-      <h2 class="why__title">Premium quality,<br />honest pricing.</h2>
-      <p class="why__lead">
-        We believe every family deserves beautiful photographs — not just those with luxury budgets.
-        Our studio is built for Chennai families who value quality, warmth, and professionalism without compromise.
-      </p>
-      <ul class="why__features">
-        <li class="why__feature">
-          <h3>Safe, Comfortable Studio</h3>
-          <p>Fully equipped for newborns, maternity & kids</p>
-        </li>
-        <li class="why__feature">
-          <h3>On-Time, Every Time</h3>
-          <p>We respect your schedule and your moments</p>
-        </li>
-      </ul>
-    </div>
+  <div class="why__inner">
+    <h2 class="section-title why__title">Premium quality, honest pricing.</h2>
+    <p class="why__lead">
+      We believe every family deserves beautiful photographs — not just those with luxury budgets. Our
+      studio is built for Chennai families who value quality, warmth, and professionalism without
+      compromise.
+    </p>
+    <ul class="why__features">
+      <li class="why__feature">
+        <h3>Safe, Comfortable Studio</h3>
+        <p>Fully equipped for new borns, maternity & kids</p>
+      </li>
+      <li class="why__feature">
+        <h3>On-Time, Every Time</h3>
+        <p>We respect your schedule and your moments</p>
+      </li>
+    </ul>
   </div>
 </section>
 
 <style>
   .why {
-    padding: 4rem 0;
-    background: linear-gradient(180deg, var(--color-bg) 0%, #0a0a0a 100%);
+    padding: 294px var(--figma-gutter) 120px;
+    background: var(--color-bg);
   }
 
-  .why__grid {
-    display: grid;
-    gap: 2.5rem;
-    align-items: center;
-  }
-
-  @media (min-width: 900px) {
-    .why__grid {
-      grid-template-columns: 1fr 1.1fr;
-    }
-  }
-
-  .why__media img {
-    width: 100%;
-    border-radius: var(--radius);
-    object-fit: cover;
+  .why__inner {
+    max-width: 910px;
+    margin: 0 auto;
+    text-align: center;
   }
 
   .why__title {
-    font-family: var(--font-serif);
-    font-size: clamp(2rem, 4vw, 3rem);
-    line-height: 1.15;
-    margin: 0.5rem 0 1rem;
-    text-align: left;
+    margin-bottom: 40px;
   }
 
   .why__lead {
     color: var(--color-muted);
-    margin-bottom: 2rem;
-    max-width: 36rem;
+    font-size: 16px;
+    line-height: 18px;
+    max-width: 894px;
+    margin: 0 auto 62px;
   }
 
   .why__features {
@@ -77,31 +51,49 @@ import OptimizedImage from '@/components/OptimizedImage.astro';
     padding: 0;
     margin: 0;
     display: grid;
-    gap: 1rem;
+    gap: 40px;
+    max-width: 800px;
+    margin-inline: auto;
   }
 
-  @media (min-width: 600px) {
+  @media (min-width: 820px) {
     .why__features {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(2, minmax(0, 380px));
+      justify-content: center;
+      gap: 40px;
     }
   }
 
   .why__feature {
-    border: 1px solid var(--color-accent-light);
+    min-height: 138px;
+    padding: 30px 40px;
+    text-align: left;
+    border: 1px solid transparent;
     border-radius: var(--radius);
-    padding: 1.25rem;
-    background: transparent;
+    background-image: linear-gradient(var(--color-bg), var(--color-bg)), var(--gradient-border);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
   }
 
   .why__feature h3 {
-    font-family: var(--font-feature);
-    font-size: 1.125rem;
-    color: var(--color-accent-light);
-    margin-bottom: 0.5rem;
+    font-family: var(--font-sans);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    text-transform: uppercase;
+    color: var(--color-text);
+    margin-bottom: 18px;
   }
 
   .why__feature p {
-    color: var(--color-placeholder);
-    font-size: 0.9rem;
+    color: var(--color-muted);
+    font-size: 16px;
+    line-height: 18px;
+  }
+
+  @media (max-width: 768px) {
+    .why {
+      padding: 4rem var(--figma-gutter) 3rem;
+    }
   }
 </style>

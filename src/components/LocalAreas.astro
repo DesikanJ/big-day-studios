@@ -5,7 +5,7 @@ const areas = site.seo.areasServed;
 ---
 
 <section class="local-areas" aria-labelledby="local-areas-heading">
-  <div class="container local-areas__inner">
+  <div class="local-areas__inner">
     <p class="section-label">Chennai & nearby</p>
     <h2 id="local-areas-heading" class="local-areas__title">
       Photography across Chennai and surrounding areas
@@ -23,13 +23,15 @@ const areas = site.seo.areasServed;
 
 <style>
   .local-areas {
-    padding: 3rem 0;
+    padding: 3rem var(--figma-gutter);
     border-top: 1px solid var(--color-border);
     background: rgb(10 10 10 / 0.6);
   }
 
   .local-areas__inner {
+    width: 100%;
     max-width: 48rem;
+    margin-inline: auto;
   }
 
   .local-areas__title {

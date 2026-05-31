@@ -3,13 +3,16 @@ export const CLOUDINARY_CLOUD_NAME = 'dtpsk76yw';
 
 export const site = {
   name: 'Big Day Studios',
+  /** Header/footer brand mark (PNG in public/images/) */
+  logo: '/images/logo.png',
+  logoAlt: 'Big Day Studios — wedding and portrait photography, Chennai',
   tagline: 'Every moment, beautifully yours.',
   url: 'https://bigdaystudios.in',
   description:
     'Premium wedding, maternity, newborn & family photography in Chennai. Cinematic portraits, studio & on-location shoots across Tamil Nadu.',
   location: 'Chennai, Tamil Nadu',
   email: 'pari@bigdaystudios.com',
-  phone: '+91 98404 51199',
+  phone: '+91 79042 68507',
   googleRating: '4.9',
   stats: [
     { value: '1000+', label: 'Happy Families' },

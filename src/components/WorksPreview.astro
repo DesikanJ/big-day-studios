@@ -1,73 +1,377 @@
 ---
 import OptimizedImage from '@/components/OptimizedImage.astro';
+import { categories } from '@/data/categories';
 import { getGallery } from '@/data/galleries';
 
-const wedding = getGallery('wedding')?.photos ?? [];
 const fallback = [
   { src: 'gallery-1.png', alt: 'Wedding work', w: 1160, h: 773 },
   { src: 'gallery-2.png', alt: 'Portrait work', w: 1160, h: 773 },
   { src: 'gallery-3.png', alt: 'Celebration work', w: 1160, h: 773 },
+  { src: 'gallery-4.png', alt: 'Studio portrait', w: 1160, h: 773 },
+  { src: 'gallery-5.png', alt: 'Baby portrait', w: 832, h: 1159 },
+  { src: 'gallery-6.png', alt: 'Birthday portrait', w: 795, h: 1159 },
 ];
 
-const works = (wedding.length >= 3 ? wedding.slice(0, 3) : wedding.length > 0 ? wedding : fallback).map(
-  (p) => ({
+const pool = categories.flatMap((cat) => getGallery(cat.slug)?.photos ?? []).slice(0, 12);
+const works = (pool.length >= 6 ? pool : pool.length > 0 ? pool : fallback)
+  .slice(0, 12)
+  .map((p) => ({
     src: p.src,
     alt: p.alt,
     w: p.width,
     h: p.height,
-  }),
-);
+  }));
+
+const heroWorks = works.slice(0, 3);
 ---
 
-<section class="works">
-  <div class="container works__header">
-    <p class="section-label">Our Works</p>
-    <h2 class="section-title">Moments We've Preserved</h2>
+<section class="works" id="works" data-works-section>
+  <!-- Temporary overlay — only during iris scroll, removed once settled -->
+  <div class="works__lens-scene" data-works-lens-scene aria-hidden="true">
+    <h2 class="section-title works__lens-title" data-works-lens-title aria-hidden="true">
+      Moments We've Preserved
+    </h2>
+    <div class="works__lens-row">
+      {
+        heroWorks.map((item, i) => (
+          <div class="works__lens-cell" data-lens-cell={i}>
+            <OptimizedImage
+              src={item.src}
+              alt={item.alt}
+              width={item.w}
+              height={item.h}
+              sizes="(max-width: 640px) 30vw, 392px"
+            />
+          </div>
+        ))
+      }
+    </div>
   </div>
-  <div class="works__scroll">
-    {
-      works.map((item) => (
-        <div class="works__item">
-          <OptimizedImage
-            src={item.src}
-            alt={item.alt}
-            width={item.w}
-            height={item.h}
-            sizes="(max-width: 768px) 85vw, 420px"
-          />
-        </div>
-      ))
-    }
-  </div>
-  <div class="container" style="text-align: center; margin-top: 2rem">
-    <a href="/gallery/" class="btn btn--outline">View full gallery</a>
+
+  <div class="works__inner" data-works-inner>
+    <div class="works__title-wrap">
+      <h2 class="section-title works__title">Moments We've Preserved</h2>
+    </div>
+
+    <div class="works__grid" data-works-grid>
+      {
+        works.map((item, i) => (
+          <div class:list={['works__item', i < 3 && 'works__item--hero']} data-works-hero={i < 3 ? i : undefined}>
+            <OptimizedImage
+              src={item.src}
+              alt={item.alt}
+              width={item.w}
+              height={item.h}
+              sizes="(max-width: 640px) 100vw, 392px"
+            />
+          </div>
+        ))
+      }
+    </div>
   </div>
 </section>
 
 <style>
   .works {
-    padding: 4rem 0;
-    background: #0a0a0a;
+    margin-top: -20vh;
+    margin-top: -20lvh;
+    padding: 20vh var(--figma-gutter) 120px;
+    padding-top: 20lvh;
+    background: var(--color-bg);
+    position: relative;
+    z-index: 4;
   }
 
-  .works__header {
-    margin-bottom: 2rem;
+  :global(html.lens-photos-active) .works:not(.is-settled) {
+    z-index: 6;
+    background: transparent;
   }
 
-  .works__scroll {
+  /* Normal in-flow section once animation completes */
+  .works.is-settled {
+    margin-top: 0;
+    padding-top: 6rem;
+    z-index: 1;
+    background: var(--color-bg);
+  }
+
+  .works__lens-scene {
+    position: fixed;
+    inset: 0;
+    z-index: 7;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--figma-gutter);
+    pointer-events: none;
+  }
+
+  .works__lens-scene.is-active {
     display: flex;
-    align-items: flex-start;
-    gap: 1.5rem;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    padding: 0 1.25rem 1rem;
-    -webkit-overflow-scrolling: touch;
+  }
+
+  .works.is-settled .works__lens-scene {
+    display: none !important;
+  }
+
+  .works__lens-title {
+    max-width: min(900px, 92vw);
+    margin: 0 auto;
+    text-align: center;
+    line-height: 1.15;
+    opacity: 0;
+    transform: translateY(8px);
+    will-change: opacity, transform;
+  }
+
+  .works__lens-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(8px, 2.5vw, 72px);
+    width: min(1320px, 100%);
+    margin-top: clamp(1.5rem, 4vh, 3rem);
+  }
+
+  .works__lens-cell {
+    flex: 1 1 0;
+    max-width: 392px;
+    overflow: hidden;
+    border-radius: var(--radius);
+    transform: scale(0.08);
+    opacity: 0;
+    transform-origin: center center;
+    will-change: transform, opacity;
+  }
+
+  .works__lens-cell :global(.photo-frame) {
+    aspect-ratio: 392 / 440;
+    width: 100%;
+  }
+
+  .works__inner {
+    max-width: var(--figma-max);
+    margin: 0 auto;
+  }
+
+  /* Hidden during overlay animation — visible once settled in document flow */
+  .works:not(.is-settled) .works__inner {
+    visibility: hidden;
+  }
+
+  .works.is-settled .works__inner {
+    visibility: visible;
+  }
+
+  .works__title-wrap {
+    min-height: clamp(3.5rem, 8vw, 5.5rem);
+    margin: 0 auto 3.5rem;
+    max-width: 900px;
+  }
+
+  .works__title {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    line-height: 1.15;
+  }
+
+  .works__grid {
+    display: grid;
+    gap: 72px 72px;
+    grid-template-columns: 1fr;
+    justify-content: center;
+  }
+
+  @media (min-width: 640px) {
+    .works__grid {
+      grid-template-columns: repeat(2, minmax(0, 392px));
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .works__grid {
+      grid-template-columns: repeat(3, 392px);
+      justify-content: center;
+    }
   }
 
   .works__item {
-    flex: 0 0 min(85vw, 420px);
-    scroll-snap-align: start;
-    border-radius: var(--radius);
     overflow: hidden;
+    border-radius: var(--radius);
+  }
+
+  .works__item :global(.photo-frame) {
+    aspect-ratio: 392 / 440;
+    width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    .works.is-settled {
+      padding-top: 4rem;
+    }
+
+    .works__title-wrap {
+      margin-bottom: 2rem;
+    }
+
+    .works__grid {
+      gap: 1.5rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .works {
+      margin-top: 0;
+      padding-top: 4rem;
+    }
+
+    .works__lens-scene {
+      display: none !important;
+    }
+
+    .works:not(.is-settled) .works__inner,
+    .works.is-settled .works__inner {
+      visibility: visible;
+    }
   }
 </style>
+
+<script>
+  const section = document.getElementById('works') as HTMLElement | null;
+  const shutter = document.querySelector('[data-shutter-scroll]') as HTMLElement | null;
+  const lensScene = document.querySelector('[data-works-lens-scene]') as HTMLElement | null;
+  const lensTitle = document.querySelector('[data-works-lens-title]') as HTMLElement | null;
+  const lensCells = [...document.querySelectorAll('[data-lens-cell]')] as HTMLElement[];
+
+  const TITLE_IN = 0.38;
+  const TITLE_FULL = 0.46;
+  const PHOTOS_START = 0.46;
+  const PHOTOS_END = 0.82;
+
+  if (section && shutter && lensScene && lensTitle && lensCells.length === 3) {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const clamp = (v: number, lo = 0, hi = 1) => Math.min(hi, Math.max(lo, v));
+    const easeOut = (t: number) => 1 - (1 - t) ** 3;
+    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
+    let settled = false;
+
+    const getProgress = () => {
+      const rect = shutter.getBoundingClientRect();
+      const range = shutter.offsetHeight - window.innerHeight;
+      if (range <= 0) return 1;
+      return clamp(-rect.top / range);
+    };
+
+    const settle = () => {
+      if (settled) return;
+      settled = true;
+      section.classList.add('is-settled');
+      lensScene.classList.remove('is-active');
+      lensScene.setAttribute('aria-hidden', 'true');
+      document.documentElement.classList.remove('lens-photos-active');
+    };
+
+    const unsettle = () => {
+      settled = false;
+      section.classList.remove('is-settled');
+    };
+
+    const resetOverlay = () => {
+      lensScene.classList.remove('is-active');
+      lensScene.setAttribute('aria-hidden', 'true');
+      lensTitle.style.opacity = '0';
+      lensTitle.style.transform = 'translateY(8px)';
+      lensCells.forEach((cell) => {
+        cell.style.transform = 'scale(0.08)';
+        cell.style.opacity = '0';
+      });
+    };
+
+    const updateScene = () => {
+      if (reducedMotion.matches) {
+        settle();
+        return;
+      }
+
+      const p = getProgress();
+      const shutterRect = shutter.getBoundingClientRect();
+
+      /* Iris section gone — lock into normal page flow */
+      if (shutterRect.bottom <= 0) {
+        settle();
+        return;
+      }
+
+      /* Already settled — stay in document flow, never re-show overlay */
+      if (settled) {
+        if (p < TITLE_IN - 0.05 && shutterRect.bottom > window.innerHeight * 0.5) {
+          unsettle();
+        } else {
+          return;
+        }
+      }
+
+      if (p < TITLE_IN) {
+        resetOverlay();
+        return;
+      }
+
+      lensScene.classList.add('is-active');
+      lensScene.setAttribute('aria-hidden', 'false');
+
+      if (p < TITLE_FULL) {
+        const t = easeOut((p - TITLE_IN) / (TITLE_FULL - TITLE_IN));
+        lensTitle.style.opacity = String(t);
+        lensTitle.style.transform = `translateY(${lerp(8, 0, t)}px)`;
+        lensCells.forEach((cell) => {
+          cell.style.transform = 'scale(0.08)';
+          cell.style.opacity = '0';
+        });
+        return;
+      }
+
+      lensTitle.style.opacity = '1';
+      lensTitle.style.transform = 'translateY(0)';
+
+      if (p < PHOTOS_START) return;
+
+      const photoT = easeOut((p - PHOTOS_START) / (PHOTOS_END - PHOTOS_START));
+
+      lensCells.forEach((cell, i) => {
+        const stagger = i * 0.08;
+        const local = clamp((photoT - stagger) / (1 - stagger * 0.75));
+        const scale = lerp(0.08, 1, easeOut(local));
+        const opacity = lerp(0, 1, easeOut(local));
+        cell.style.transform = `scale(${scale})`;
+        cell.style.opacity = String(opacity);
+      });
+
+      if (p >= PHOTOS_END) {
+        settle();
+      }
+    };
+
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        updateScene();
+        ticking = false;
+      });
+    };
+
+    updateScene();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    reducedMotion.addEventListener('change', () => {
+      if (reducedMotion.matches) settle();
+      else unsettle();
+      updateScene();
+    });
+  }
+</script>

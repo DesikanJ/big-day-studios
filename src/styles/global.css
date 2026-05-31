@@ -2,12 +2,15 @@
   --color-bg: #030303;
   --color-surface: #171717;
   --color-surface-2: #292929;
+  --color-surface-form: #0a0a0a;
   --color-border: #333a3a;
   --color-text: #ffffff;
   --color-muted: #92a2a1;
   --color-accent: #ae720c;
   --color-accent-light: #efbf79;
   --color-gold: #d9ae5d;
+  --color-price: #b57518;
+  --color-price-note: #afa18c;
   --color-quote: #ebebe6;
   --color-placeholder: #d9d9d9;
 
@@ -16,9 +19,43 @@
   --font-display: 'Bilbo Swash Caps', cursive;
   --font-feature: 'Playfair Display', Georgia, serif;
 
-  --container: min(1320px, 100% - 2.5rem);
-  --header-h: 4.5rem;
+  /* Figma Desktop-1 (1440px artboard) */
+  --figma-max: 1440px;
+  --figma-gutter: 60px;
+  --container: min(var(--figma-max), 100%);
+  --header-h: 80px;
   --radius: 2px;
+
+  --gradient-border: linear-gradient(
+    -69deg,
+    #b57518 0%,
+    #392302 43%,
+    #b48643 100%
+  );
+  --gradient-border-soft: linear-gradient(
+    -69deg,
+    #b48643 0%,
+    #392302 57%,
+    #b57518 100%
+  );
+  --gradient-btn: linear-gradient(
+    235deg,
+    #b57518 0%,
+    #693f01 27%,
+    #b48643 100%
+  );
+  --gradient-btn-alt: linear-gradient(-69deg, #b57518 0%, #b48643 100%);
+  --gradient-card: linear-gradient(224deg, #3b3020 0%, #030303 26%);
+  --gradient-card-dark: linear-gradient(224deg, #030303 0%, #030303 26%);
+  --gradient-card-featured: linear-gradient(224deg, #452f0f 0%, #030303 26%);
+  --gradient-hero: linear-gradient(
+    to top left,
+    #f7b251 0%,
+    #4d3a1f 27%,
+    #281f11 36%,
+    #16110a 45%,
+    #030303 82%
+  );
 }
 
 *,
@@ -29,16 +66,24 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 body {
   margin: 0;
   font-family: var(--font-sans);
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: 16px;
+  line-height: 1.125;
   color: var(--color-text);
   background: var(--color-bg);
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --figma-gutter: 1.25rem;
+  }
 }
 
 img {
@@ -73,13 +118,14 @@ p {
 }
 
 .container {
-  width: var(--container);
+  width: 100%;
+  max-width: var(--figma-max);
   margin-inline: auto;
 }
 
 .section-label {
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 3vw, 2.125rem);
+  font-size: clamp(1.75rem, 2.36vw, 34px);
   line-height: 1.3;
   color: var(--color-accent);
   text-align: center;
@@ -88,16 +134,19 @@ p {
 .section-title {
   font-family: var(--font-serif);
   font-weight: 400;
-  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-size: clamp(2.25rem, 5vw, 72px);
   line-height: 1.15;
   text-align: center;
+  letter-spacing: 0;
 }
 
 .section-lead {
   color: var(--color-muted);
-  font-size: clamp(0.95rem, 2vw, 1.125rem);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 18px;
   text-align: center;
-  max-width: 42rem;
+  max-width: 745px;
   margin-inline: auto;
 }
 
@@ -105,15 +154,25 @@ p {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0.875rem 1.75rem;
+  gap: 10px;
+  padding: 16px 30px;
   font-family: var(--font-sans);
-  font-size: 0.9375rem;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
   border-radius: var(--radius);
   border: 1px solid transparent;
   cursor: pointer;
   transition: opacity 0.2s, transform 0.2s;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .btn {
+    white-space: normal;
+    text-align: center;
+  }
 }
 
 .btn:hover {
@@ -122,20 +181,34 @@ p {
 }
 
 .btn--primary {
-  background: var(--color-accent-light);
+  background: var(--gradient-btn);
   color: #000;
-  border-color: var(--color-accent-light);
+  border: 1px solid transparent;
+  background-image: var(--gradient-btn), var(--gradient-border);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
 }
 
 .btn--outline {
   background: transparent;
   color: var(--color-accent);
-  border-color: var(--color-accent-light);
+  border: 1px solid transparent;
+  background-image: linear-gradient(var(--color-bg), var(--color-bg)), var(--gradient-border);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
 }
 
 .btn-group {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 10px;
   justify-content: center;
+}
+
+.figma-border-box {
+  border: 1px solid transparent;
+  background-image: linear-gradient(var(--color-bg), var(--color-bg)), var(--gradient-border);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border-radius: var(--radius);
 }

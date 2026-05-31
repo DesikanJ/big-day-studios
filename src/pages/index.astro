@@ -1,12 +1,14 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import Hero from '@/components/Hero.astro';
-import StatsBar from '@/components/StatsBar.astro';
+import GoldZone from '@/components/GoldZone.astro';
+import FirstFold from '@/components/FirstFold.astro';
+import Header from '@/components/Header.astro';
 import CategoryGrid from '@/components/CategoryGrid.astro';
-import WhyChoose from '@/components/WhyChoose.astro';
+import ShutterTransition from '@/components/ShutterTransition.astro';
 import WorksPreview from '@/components/WorksPreview.astro';
+import WhyChoose from '@/components/WhyChoose.astro';
 import Testimonials from '@/components/Testimonials.astro';
-import CtaBanner from '@/components/CtaBanner.astro';
+import BookNow from '@/components/BookNow.astro';
 import LocalAreas from '@/components/LocalAreas.astro';
 import SeoFaq from '@/components/SeoFaq.astro';
 import { site } from '@/config/site';
@@ -16,14 +18,18 @@ import { faqPageJsonLd } from '@/lib/seo';
 <BaseLayout
   description={site.description}
   jsonLd={[faqPageJsonLd()]}
+  hideHeader
 >
-  <Hero />
-  <StatsBar />
-  <CategoryGrid />
-  <WhyChoose />
+  <Header forceSiteNav />
+  <GoldZone>
+    <FirstFold />
+    <CategoryGrid />
+  </GoldZone>
+  <ShutterTransition />
   <WorksPreview />
+  <WhyChoose />
   <Testimonials />
+  <BookNow />
   <LocalAreas />
   <SeoFaq />
-  <CtaBanner />
 </BaseLayout>

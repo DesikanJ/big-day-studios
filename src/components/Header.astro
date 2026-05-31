@@ -1,79 +1,159 @@
 ---
 import { site } from '@/config/site';
 
+interface Props {
+  /** Use full site nav even on homepage (scroll header) */
+  forceSiteNav?: boolean;
+}
+
+const { forceSiteNav = false } = Astro.props;
 const path = Astro.url.pathname;
+const isHome = !forceSiteNav && (path === '/' || path === '');
 const nav = [
   { href: '/#services', label: 'Services' },
   { href: '/gallery/', label: 'Gallery' },
   { href: '/#testimonials', label: 'Reviews' },
-  { href: '/contact/', label: 'Contact' },
+  { href: '/#book-now', label: 'Contact' },
 ];
 ---
 
-<header class="header">
-  <div class="container header__inner">
-    <a href="/" class="header__logo">{site.name}</a>
-    <nav class="header__nav" aria-label="Main">
+<header class:list={['header', { 'header--home': isHome, 'header--site-nav': forceSiteNav }]}>
+  <div class="header__inner">
+    <div class="header__side header__side--left">
       {
-        nav.map((item) => (
-          <a
-            href={item.href}
-            class:list={['header__link', { 'is-active': path === item.href }]}
+        isHome && (
+          <button
+            type="button"
+            class="header__menu header__menu--left"
+            aria-label="Open menu"
+            aria-expanded="false"
+            id="menu-toggle"
           >
-            {item.label}
-          </a>
-        ))
+            <span></span><span></span><span></span>
+          </button>
+        )
       }
-    </nav>
-    <a href="/contact/" class="header__cta">Contact</a>
-    <button type="button" class="header__menu" aria-label="Open menu" aria-expanded="false" id="menu-toggle">
-      <span></span><span></span>
-    </button>
+    </div>
+
+    <a href="/" class="header__logo" aria-label={`${site.name} — home`}>
+      <img
+        src={site.logo}
+        alt={site.logoAlt}
+        width={140}
+        height={56}
+        class="header__logo-img"
+        loading="eager"
+        decoding="async"
+      />
+    </a>
+
+    <div class="header__side header__side--right">
+      {
+        !isHome && (
+          <nav class="header__nav" aria-label="Main">
+            {
+              nav.map((item) => (
+                <a
+                  href={item.href}
+                  class:list={['header__link', { 'is-active': path === item.href }]}
+                >
+                  {item.label}
+                </a>
+              ))
+            }
+          </nav>
+        )
+      }
+      {
+        !isHome && (
+          <button
+            type="button"
+            class="header__menu"
+            aria-label="Open menu"
+            aria-expanded="false"
+            id="menu-toggle"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        )
+      }
+    </div>
   </div>
+  {
+    isHome && (
+      <nav class="header__nav header__nav--drawer" aria-label="Main">
+        {
+          nav.map((item) => (
+            <a href={item.href} class="header__link">
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+    )
+  }
 </header>
 
 <style>
   .header {
-    position: sticky;
-    top: 0;
+    position: relative;
     z-index: 100;
     background: rgb(3 3 3 / 0.92);
     backdrop-filter: blur(8px);
     border-bottom: 1px solid rgb(51 58 58 / 0.5);
   }
 
+  .header--home {
+    background: transparent;
+    backdrop-filter: none;
+    border-bottom: none;
+  }
+
   .header__inner {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    max-width: var(--figma-max);
+    margin: 0 auto;
+    min-height: var(--header-h);
+    padding: 40px var(--figma-gutter) 0;
+  }
+
+  .header__side--left {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    min-height: var(--header-h);
-    gap: 1.5rem;
   }
 
   .header__logo {
-    font-family: var(--font-serif);
-    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
-    text-transform: capitalize;
-    white-space: nowrap;
+    justify-self: center;
+    text-align: center;
+    line-height: 0;
+  }
+
+  .header__logo-img {
+    display: block;
+    height: clamp(2rem, 3.5vw, 2.75rem);
+    width: auto;
+    max-width: 160px;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .header__side--right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1.5rem;
   }
 
   .header__nav {
     display: none;
-    gap: 2rem;
-  }
-
-  @media (min-width: 768px) {
-    .header__nav {
-      display: flex;
-    }
-    .header__menu {
-      display: none;
-    }
+    gap: 1.5rem;
   }
 
   .header__link {
-    font-size: 0.8125rem;
-    letter-spacing: 0.12em;
+    font-size: 13px;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--color-muted);
     transition: color 0.2s;
@@ -84,24 +164,11 @@ const nav = [
     color: var(--color-text);
   }
 
-  .header__cta {
-    display: none;
-    font-size: 0.8125rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-
-  @media (min-width: 768px) {
-    .header__cta {
-      display: block;
-    }
-  }
-
   .header__menu {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    padding: 0.5rem;
+    padding: 0;
     background: none;
     border: none;
     cursor: pointer;
@@ -109,21 +176,91 @@ const nav = [
 
   .header__menu span {
     display: block;
-    width: 22px;
+    width: 34px;
     height: 2px;
     background: var(--color-text);
+  }
+
+  .header__menu--left {
+    margin-top: 11px;
+  }
+
+  .header__nav--drawer {
+    display: none;
+  }
+
+  .header--home.is-open .header__nav--drawer {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    padding: 1.5rem var(--figma-gutter);
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+    gap: 1rem;
+    z-index: 101;
+  }
+
+  @media (min-width: 1100px) {
+    .header:not(.header--home) .header__nav {
+      display: flex;
+    }
+  }
+
+  .header--site-nav {
+    position: relative;
+    z-index: 100;
+  }
+
+  .header--site-nav .header__inner {
+    padding-top: 0;
+  }
+
+  @media (min-width: 1100px) {
+    .header--site-nav .header__nav {
+      display: flex;
+    }
+
+    .header--site-nav .header__menu {
+      display: none;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .header:not(.header--home) .header__menu {
+      display: none;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .header__inner {
+      padding-top: 0;
+      min-height: 4.5rem;
+    }
+
+    .header__menu--left {
+      margin-top: 0;
+    }
   }
 
   .header.is-open .header__nav {
     display: flex;
     flex-direction: column;
     position: absolute;
-    top: var(--header-h);
+    top: 100%;
     left: 0;
     right: 0;
-    padding: 1.5rem;
+    padding: 1.5rem var(--figma-gutter);
     background: var(--color-bg);
     border-bottom: 1px solid var(--color-border);
+  }
+
+  @media (max-width: 767px) {
+    .header.is-open .header__nav {
+      display: flex;
+    }
   }
 </style>
 

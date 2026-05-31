@@ -11,7 +11,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "sync:galleries": "node scripts/sync-cloudinary-galleries.mjs"
+    "sync:galleries": "node scripts/sync-cloudinary-galleries.mjs",
+    "export:simulator": "node scripts/export-simulator-data.mjs"
   },
   "dependencies": {
     "astro": "^5.7.10"

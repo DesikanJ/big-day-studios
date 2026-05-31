@@ -1,120 +1,365 @@
 ---
 import OptimizedImage from '@/components/OptimizedImage.astro';
 import { categories } from '@/data/categories';
-import { getCategoryCoverSrc, getGallery } from '@/data/galleries';
+import { getCategoryCoverSrc } from '@/data/galleries';
 
 const sorted = [...categories].sort((a, b) => a.order - b.order);
+
+/** Figma Desktop-1 category image frame */
+const IMG_W = 370;
+const IMG_H = 407;
 ---
 
 <section class="categories" id="services">
-  <div class="container categories__header">
-    <p class="section-label">What we do</p>
-    <h2 class="section-title">Our Photography Services</h2>
-    <p class="section-lead">
-      From the first heartbeat to the last dance — we capture every chapter of your story with warmth and artistry.
-    </p>
-  </div>
-  <div class="container categories__grid">
+  <div class="categories__track" data-categories-track>
     {
-      sorted.map((cat) => {
-        const cover = getCategoryCoverSrc(cat.slug);
-        const first = getGallery(cat.slug)?.photos[0];
-        return (
-          <a href={`/gallery/${cat.slug}/`} class="category-card">
-            <div class="category-card__media">
-              <OptimizedImage
-                src={cover}
-                alt={cat.title}
-                width={first?.width ?? 1160}
-                height={first?.height ?? 773}
-                maxWidth={560}
-                priority={cat.order <= 2}
-                sizes="(max-width: 640px) 100vw, 280px"
-              />
-            </div>
-            <div class="category-card__body">
-              <h3 class="category-card__title">{cat.title}</h3>
-              <p class="category-card__tagline">{cat.tagline}</p>
+      sorted.map((cat, i) => (
+        <div
+          class:list={['category-stage', i === 0 && 'category-stage--first']}
+          data-category-stage={i}
+        >
+          <a href={`/gallery/${cat.slug}/`} class="category-panel" data-category-panel>
+            {i === 0 && (
+              <header class="categories__header">
+                <h2 class="section-title categories__title">Our Photography Services</h2>
+                <p class="section-lead categories__lead">
+                  From the first heartbeat to the last dance — we capture every chapter of your
+                  story with warmth and artistry.
+                </p>
+              </header>
+            )}
+
+            <div class="category-panel__stack">
+              <div class="category-panel__media" data-parallax-layer="media">
+                <OptimizedImage
+                  src={getCategoryCoverSrc(cat.slug)}
+                  alt={cat.title}
+                  width={IMG_W}
+                  height={IMG_H}
+                  crop="fill"
+                  maxWidth={740}
+                  priority={i === 0}
+                  sizes="370px"
+                />
+              </div>
+
+              <div class="category-panel__copy" data-parallax-layer="copy">
+                <h3 class="category-panel__title">{cat.title}</h3>
+                <p class="category-panel__tagline">{cat.tagline}</p>
+                <p class="category-panel__desc">{cat.description}</p>
+              </div>
             </div>
           </a>
-        );
-      })
+        </div>
+      ))
     }
   </div>
 </section>
 
 <style>
   .categories {
-    padding: 4rem 0;
+    background: transparent;
+    position: relative;
+  }
+
+  .categories__track {
+    position: relative;
+  }
+
+  /* Extra scroll runway = slower, smoother parallax transitions */
+  .category-stage {
+    height: 165vh;
+    height: 165lvh;
+    position: relative;
+  }
+
+  .category-stage--first {
+    height: 185vh;
+    height: 185lvh;
+  }
+
+  .category-stage:last-child {
+    height: 130vh;
+    height: 130lvh;
+  }
+
+  .category-panel {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    height: 100svh;
+    max-height: 940px;
+    padding: 0 var(--figma-gutter);
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    overflow: hidden;
+  }
+
+  .category-stage--first .category-panel {
+    max-height: 1000px;
   }
 
   .categories__header {
-    margin-bottom: 3rem;
+    flex-shrink: 0;
+    width: min(100%, 631px);
+    padding-top: clamp(2.5rem, 8vh, 5.5rem);
+    margin-bottom: clamp(1.5rem, 4vh, 2.75rem);
+  }
+
+  .categories__title {
+    margin: 0 auto 1.25rem;
+  }
+
+  .categories__lead {
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  .category-panel__stack {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    align-items: center;
+    gap: 1.875rem;
+    width: 100%;
+    margin-top: auto;
+    margin-bottom: auto;
   }
 
-  .categories__grid {
-    display: grid;
-    gap: 1.5rem;
+  /* Figma: image @ y:424 on first block, y:216 on 940px blocks */
+  .category-stage--first .category-panel__stack {
+    margin-top: 0;
+    margin-bottom: clamp(2rem, 8vh, 5rem);
   }
 
-  @media (min-width: 640px) {
-    .categories__grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
+  .category-panel__media {
+    width: 370px;
+    max-width: min(370px, calc(100vw - 2 * var(--figma-gutter)));
+    flex-shrink: 0;
+    transform-origin: center top;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
   }
 
-  .category-card {
-    display: grid;
-    grid-template-columns: 1.1fr 1fr;
-    gap: 0;
-    align-items: stretch;
-    background: var(--color-bg);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
+  .category-panel__media :global(.photo-frame) {
+    width: 100%;
+    aspect-ratio: 370 / 407;
+    border-radius: 2px;
     overflow: hidden;
-    transition: border-color 0.2s;
   }
 
-  .category-card:hover {
-    border-color: var(--color-accent);
+  .category-panel__copy {
+    width: min(100%, 370px);
+    flex-shrink: 0;
+    transform-origin: center top;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
   }
 
-  @media (max-width: 520px) {
-    .category-card {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .category-card__media {
-    min-width: 0;
-    align-self: stretch;
-  }
-
-  .category-card__media :global(.photo-frame) {
-    height: 100%;
-    min-height: 200px;
-    aspect-ratio: 3 / 2;
-  }
-
-  .category-card__body {
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .category-card__title {
+  .category-panel__title {
     font-family: var(--font-serif);
-    font-size: 1.5rem;
+    font-size: 30px;
     font-weight: 400;
-    margin-bottom: 0.35rem;
+    line-height: 1.33;
+    margin: 0 0 0.875rem;
+    color: var(--color-text);
   }
 
-  .category-card__tagline {
+  .category-panel__tagline {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.3;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-accent-light);
+    margin: 0 0 0.75rem;
+  }
+
+  .category-panel__desc {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.35;
     color: var(--color-muted);
-    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .category-stage {
+      height: 150vh;
+      height: 150lvh;
+    }
+
+    .category-stage--first {
+      height: 165vh;
+      height: 165lvh;
+    }
+
+    .category-panel__title {
+      font-size: clamp(1.5rem, 6vw, 30px);
+    }
+
+    .categories__header {
+      padding-top: 2rem;
+    }
   }
 </style>
+
+<script>
+  const track = document.querySelector('[data-categories-track]');
+  const stages = track?.querySelectorAll('[data-category-stage]');
+
+  if (stages?.length) {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const clamp = (v: number, min = 0, max = 1) => Math.min(max, Math.max(min, v));
+    const smoothstep = (t: number) => t * t * (3 - 2 * t);
+    const easeOutCubic = (t: number) => 1 - (1 - t) ** 3;
+    const easeInOutCubic = (t: number) =>
+      t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
+
+    type LayerState = {
+      mediaY: number;
+      copyY: number;
+      mediaScale: number;
+      mediaOp: number;
+      copyOp: number;
+    };
+
+    type LayerTarget = LayerState;
+
+    const layers: LayerState[] = [];
+    const targets: LayerTarget[] = [];
+
+    stages.forEach((stage) => {
+      const panel = stage.querySelector('[data-category-panel]');
+      const media = panel?.querySelector('[data-parallax-layer="media"]') as HTMLElement | null;
+      const copy = panel?.querySelector('[data-parallax-layer="copy"]') as HTMLElement | null;
+      layers.push({ mediaY: 0, copyY: 0, mediaScale: 1, mediaOp: 1, copyOp: 1 });
+      targets.push({ mediaY: 0, copyY: 0, mediaScale: 1, mediaOp: 1, copyOp: 1 });
+      if (media) media.style.opacity = '1';
+      if (copy) copy.style.opacity = '1';
+    });
+
+    const LERP = 0.09;
+    let animating = false;
+    let rafId = 0;
+
+    const lerp = (from: number, to: number, t: number) => from + (to - from) * t;
+
+    const resetLayer = (el: HTMLElement | null) => {
+      if (!el) return;
+      el.style.transform = '';
+      el.style.opacity = '';
+    };
+
+    const computeTargets = () => {
+      const vh = window.innerHeight;
+
+      stages.forEach((stage, i) => {
+        const target = targets[i]!;
+        const rect = stage.getBoundingClientRect();
+        const stageH = stage.offsetHeight;
+        const scrollRange = Math.max(1, stageH - vh);
+        const progress = clamp(-rect.top / scrollRange);
+
+        /* Longer, overlapping enter / leave curves */
+        const settle = smoothstep(easeOutCubic(clamp(progress / 0.68)));
+        const leave = smoothstep(easeInOutCubic(clamp((progress - 0.42) / 0.58)));
+
+        if (i === 0) {
+          target.mediaY = -leave * 36;
+          target.copyY = -leave * 18;
+          target.mediaScale = 1 - leave * 0.03;
+          target.mediaOp = 1 - leave * 0.22;
+          target.copyOp = 1 - leave * 0.28;
+          return;
+        }
+
+        const enterMediaY = (1 - settle) * 96;
+        const enterCopyY = (1 - settle) * 52;
+        const leaveMediaY = leave * 32;
+        const leaveCopyY = leave * 16;
+
+        target.mediaY = enterMediaY - leaveMediaY;
+        target.copyY = enterCopyY - leaveCopyY;
+        target.mediaScale = 0.88 + settle * 0.12 - leave * 0.03;
+        target.mediaOp = 0.45 + settle * 0.55 - leave * 0.18;
+        target.copyOp = settle * (1 - leave * 0.35);
+      });
+    };
+
+    const applyLayers = () => {
+      stages.forEach((stage, i) => {
+        const panel = stage.querySelector('[data-category-panel]');
+        const media = panel?.querySelector('[data-parallax-layer="media"]') as HTMLElement | null;
+        const copy = panel?.querySelector('[data-parallax-layer="copy"]') as HTMLElement | null;
+        const state = layers[i]!;
+        const target = targets[i]!;
+
+        if (!media || !copy) return;
+
+        if (reducedMotion.matches) {
+          resetLayer(media);
+          resetLayer(copy);
+          return;
+        }
+
+        state.mediaY = lerp(state.mediaY, target.mediaY, LERP);
+        state.copyY = lerp(state.copyY, target.copyY, LERP);
+        state.mediaScale = lerp(state.mediaScale, target.mediaScale, LERP);
+        state.mediaOp = lerp(state.mediaOp, target.mediaOp, LERP);
+        state.copyOp = lerp(state.copyOp, target.copyOp, LERP);
+
+        media.style.transform = `translate3d(0, ${state.mediaY.toFixed(2)}px, 0) scale(${state.mediaScale.toFixed(4)})`;
+        media.style.opacity = state.mediaOp.toFixed(3);
+        copy.style.transform = `translate3d(0, ${state.copyY.toFixed(2)}px, 0)`;
+        copy.style.opacity = state.copyOp.toFixed(3);
+      });
+    };
+
+    const needsMoreFrames = () =>
+      layers.some((state, i) => {
+        const target = targets[i]!;
+        return (
+          Math.abs(state.mediaY - target.mediaY) > 0.08 ||
+          Math.abs(state.copyY - target.copyY) > 0.08 ||
+          Math.abs(state.mediaScale - target.mediaScale) > 0.0008 ||
+          Math.abs(state.mediaOp - target.mediaOp) > 0.008 ||
+          Math.abs(state.copyOp - target.copyOp) > 0.008
+        );
+      });
+
+    const frame = () => {
+      applyLayers();
+      if (needsMoreFrames()) {
+        rafId = requestAnimationFrame(frame);
+      } else {
+        animating = false;
+      }
+    };
+
+    const kick = () => {
+      computeTargets();
+      if (reducedMotion.matches) {
+        applyLayers();
+        return;
+      }
+      if (!animating) {
+        animating = true;
+        rafId = requestAnimationFrame(frame);
+      }
+    };
+
+    kick();
+    window.addEventListener('scroll', kick, { passive: true });
+    window.addEventListener('resize', kick, { passive: true });
+    reducedMotion.addEventListener('change', () => {
+      cancelAnimationFrame(rafId);
+      animating = false;
+      kick();
+    });
+  }
+</script>

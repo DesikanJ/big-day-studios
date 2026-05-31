@@ -1,0 +1,49 @@
+---
+/** Golden wedge background — spans hero + services until Works section */
+---
+
+<div class="gold-zone">
+  <div class="gold-zone__bg" aria-hidden="true"></div>
+  <slot />
+</div>
+
+<style>
+  .gold-zone {
+    position: relative;
+    isolation: isolate;
+    background-color: var(--color-bg);
+  }
+
+  .gold-zone__bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: var(--gradient-hero);
+    transition: opacity 0.35s ease;
+  }
+
+  .gold-zone__bg.is-hidden {
+    opacity: 0;
+  }
+
+  .gold-zone > :not(.gold-zone__bg) {
+    position: relative;
+    z-index: 1;
+  }
+</style>
+
+<script>
+  const zone = document.querySelector('.gold-zone');
+  const bg = zone?.querySelector('.gold-zone__bg');
+
+  if (zone && bg) {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        bg.classList.toggle('is-hidden', !entry.isIntersecting);
+      },
+      { threshold: 0 },
+    );
+    observer.observe(zone);
+  }
+</script>

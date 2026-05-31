@@ -17,6 +17,8 @@ interface Props {
   /** Extra schema.org objects (breadcrumb, Service, FAQPage, etc.) */
   jsonLd?: Record<string, unknown>[];
   noindex?: boolean;
+  /** Homepage uses FirstFold header instead */
+  hideHeader?: boolean;
 }
 
 const {
@@ -25,6 +27,7 @@ const {
   ogImage = '/images/gallery-1.png',
   jsonLd = [],
   noindex = false,
+  hideHeader = false,
 } = Astro.props;
 
 const metaTitle = title ? pageTitle(title) : pageTitle();
@@ -60,6 +63,7 @@ const structuredData = [localBusinessJsonLd(), webSiteJsonLd(), ...jsonLd];
     <meta name="twitter:description" content={metaDescription} />
     <meta name="twitter:image" content={og} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/images/logo.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
@@ -84,7 +88,7 @@ const structuredData = [localBusinessJsonLd(), webSiteJsonLd(), ...jsonLd];
       <meta itemprop="addressRegion" content="Tamil Nadu" />
       <meta itemprop="addressCountry" content="IN" />
     </span>
-    <Header />
+    {!hideHeader && <Header />}
     <main>
       <slot />
     </main>

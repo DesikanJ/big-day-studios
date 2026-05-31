@@ -2,22 +2,19 @@
 import OptimizedImage from '@/components/OptimizedImage.astro';
 import { whatsappUrl } from '@/config/site';
 
-/** Figma Desktop-1 (node 29:2) — Group 9 collage + centered copy */
-const FIGMA = { w: 1440, h: 783 } as const;
-
+/** Figma Desktop-1 — Group 9 @ (94,143) 1274×675, fold ends @ y:877 */
 const heroLead =
   'Premium wedding, maternity & newborn photography that captures the warmth, tradition, and joy of your most cherished milestones.';
 
-/** Positions inside collage box (1240×688) */
-const collagePhotos = [
-  { src: 'hero-4.png', alt: '', width: 480, height: 320, left: 0, top: 86, w: 179, h: 230 },
-  { src: 'hero-1.png', alt: '', width: 320, height: 479, left: 714, top: 0, w: 179, h: 230 },
-  { src: 'hero-2.png', alt: '', width: 320, height: 480, left: 1061, top: 146, w: 179, h: 230 },
-  { src: 'hero-3.png', alt: '', width: 480, height: 320, left: 971, top: 410, w: 179, h: 230 },
-  { src: 'hero-5.png', alt: '', width: 320, height: 479, left: 42, top: 458, w: 179, h: 230 },
-] as const;
+const COLLAGE = { w: 1274, h: 675, left: 94, top: 143 } as const;
 
-const COLLAGE = { w: 1240, h: 688, left: 94, top: 94 } as const;
+const collagePhotos = [
+  { src: 'hero-4.png', alt: '', width: 480, height: 320, left: 0, top: 37, w: 179, h: 230 },
+  { src: 'hero-1.png', alt: '', width: 320, height: 479, left: 759, top: 0, w: 151, h: 194 },
+  { src: 'hero-2.png', alt: '', width: 320, height: 480, left: 1095, top: 79, w: 179, h: 230 },
+  { src: 'hero-3.png', alt: '', width: 480, height: 320, left: 972, top: 445, w: 179, h: 230 },
+  { src: 'hero-5.png', alt: '', width: 320, height: 479, left: 89, top: 449, w: 162, h: 210 },
+] as const;
 ---
 
 <section class="hero" aria-label="Introduction">
@@ -48,44 +45,40 @@ const COLLAGE = { w: 1240, h: 688, left: 94, top: 94 } as const;
       }
     </div>
 
-    <div class="hero__content">
-      <h1 class="hero__title">
-        Every moment,<br />beautifully yours.
-      </h1>
-      <p class="hero__lead">{heroLead}</p>
-      <div class="hero__actions">
-        <a href={whatsappUrl()} class="btn btn--primary" target="_blank" rel="noopener noreferrer">
-          Book via WhatsApp
-        </a>
-        <a href="/gallery/" class="btn btn--outline">View Gallery</a>
-      </div>
+    <h1 class="hero__title">
+      Every moment,<br />beautifully yours.
+    </h1>
+    <p class="hero__lead">{heroLead}</p>
+    <div class="hero__actions">
+      <a href={whatsappUrl()} class="btn btn--primary" target="_blank" rel="noopener noreferrer">
+        Book via Whatsapp
+      </a>
+      <a href="/gallery/" class="btn btn--outline">View gallery</a>
     </div>
   </div>
 </section>
 
 <style>
-  /* Figma first fold: 1440×783 (collage y=94 → stats y=877) */
   .hero {
-    padding: 0 0 clamp(2rem, 5vw, 3.5rem);
-    background: var(--color-bg);
+    padding: 0;
+    background: transparent;
   }
 
   .hero__stage {
     position: relative;
-    width: min(100%, 1440px);
+    width: min(100%, var(--figma-max));
     margin: 0 auto;
-    aspect-ratio: 1440 / 783;
-    min-height: 520px;
-    max-height: 90vh;
+    height: clamp(520px, calc(877 / 1440 * 100vw), 877px);
   }
 
   .hero__collage {
     position: absolute;
     left: calc(94 / 1440 * 100%);
-    top: calc(94 / 783 * 100%);
-    width: calc(1240 / 1440 * 100%);
-    height: calc(688 / 783 * 100%);
+    top: calc(143 / 877 * 100%);
+    width: calc(1274 / 1440 * 100%);
+    height: calc(675 / 877 * 100%);
     pointer-events: none;
+    z-index: 1;
   }
 
   .hero__tile {
@@ -94,66 +87,70 @@ const COLLAGE = { w: 1240, h: 688, left: 94, top: 94 } as const;
     border-radius: var(--radius);
   }
 
-  .hero__content {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    top: calc(240 / 783 * 100%);
-    width: calc(911 / 1440 * 100%);
-    max-width: 911px;
-    text-align: center;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
-    pointer-events: auto;
-  }
-
   .hero__title {
+    position: absolute;
+    z-index: 2;
+    left: calc(265 / 1440 * 100%);
+    top: calc(240 / 877 * 100%);
+    width: calc(911 / 1440 * 100%);
+    margin: 0;
     font-family: var(--font-serif);
     font-weight: 400;
-    font-size: clamp(2.75rem, 8.33vw, 7.5rem);
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    margin: 0 0 clamp(1rem, 2.5vw, 1.75rem);
+    font-size: clamp(2.75rem, 8.333vw, 120px);
+    line-height: 1.04;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    text-align: center;
     color: var(--color-text);
+    pointer-events: none;
   }
 
   .hero__lead {
+    position: absolute;
+    z-index: 2;
+    left: calc(440 / 1440 * 100%);
+    top: calc(552 / 877 * 100%);
+    width: calc(561 / 1440 * 100%);
+    margin: 0;
     color: var(--color-muted);
     font-family: var(--font-sans);
-    font-size: clamp(0.875rem, 1.11vw, 1rem);
-    line-height: 1.5;
-    max-width: calc(561 / 911 * 100%);
-    margin: 0 0 clamp(1.25rem, 3vw, 2rem);
+    font-size: 16px;
+    line-height: 1.25;
+    text-align: center;
+    pointer-events: none;
   }
 
   .hero__actions {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: stretch;
-    justify-content: center;
-    gap: clamp(0.75rem, 1.5vw, 1rem);
-    width: 100%;
-    max-width: 28rem;
-    margin-top: clamp(1.25rem, 2.5vw, 2rem);
-    margin-bottom: 0.5rem;
+    position: absolute;
+    z-index: 2;
+    left: calc(498 / 1440 * 100%);
+    top: calc(682 / 877 * 100%);
+    width: calc(444 / 1440 * 100%);
+    height: calc(52 / 877 * 100%);
+    min-height: 52px;
+    pointer-events: auto;
   }
 
   .hero__actions :global(.btn) {
-    flex: 1 1 0;
-    min-width: 0;
-    padding-inline: clamp(1rem, 2vw, 1.5rem);
-    white-space: nowrap;
+    position: absolute;
+    top: 0;
+    flex: none;
+    padding: 16px 30px;
+  }
+
+  .hero__actions :global(.btn--primary) {
+    left: 0;
+  }
+
+  .hero__actions :global(.btn--outline) {
+    left: calc(264 / 444 * 100%);
   }
 
   @media (max-width: 900px) {
     .hero__stage {
-      aspect-ratio: auto;
+      height: auto;
       min-height: 640px;
-      padding: 1rem 1.25rem 2rem;
+      padding: 5rem 1.25rem 2rem;
     }
 
     .hero__collage {
@@ -161,46 +158,48 @@ const COLLAGE = { w: 1240, h: 688, left: 94, top: 94 } as const;
       right: 1.25rem;
       width: auto;
       top: 5rem;
-      height: 42%;
+      height: 40%;
       opacity: 0.85;
     }
 
-    .hero__content {
+    .hero__title,
+    .hero__lead,
+    .hero__actions {
       position: relative;
       left: auto;
-      transform: none;
       top: auto;
       width: 100%;
       max-width: none;
-      margin-top: 48%;
+    }
+
+    .hero__title {
+      margin-top: 46%;
       padding-top: 1rem;
+      font-size: clamp(2.5rem, 10vw, 4rem);
     }
 
     .hero__lead {
-      max-width: 36rem;
+      margin-top: 1rem;
     }
 
     .hero__actions {
-      margin-top: 1.5rem;
-      max-width: 100%;
-    }
-
-    /* Hide far-edge tiles on small screens to reduce clutter */
-    .hero__tile:nth-child(3) {
-      display: none;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .hero__actions {
+      position: relative;
+      display: flex;
       flex-direction: column;
-      align-items: stretch;
-      max-width: 16.5rem;
+      align-items: center;
+      gap: 10px;
+      width: min(100%, 20rem);
+      height: auto;
+      margin: 1.5rem auto 0;
     }
 
     .hero__actions :global(.btn) {
-      flex: none;
+      position: static;
       width: 100%;
+    }
+
+    .hero__tile:nth-child(3) {
+      display: none;
     }
   }
 
@@ -208,10 +207,6 @@ const COLLAGE = { w: 1240, h: 688, left: 94, top: 94 } as const;
     .hero__tile:nth-child(2),
     .hero__tile:nth-child(4) {
       display: none;
-    }
-
-    .hero__content {
-      margin-top: 52%;
     }
   }
 </style>

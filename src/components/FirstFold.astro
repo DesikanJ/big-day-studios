@@ -1,0 +1,407 @@
+---
+import OptimizedImage from '@/components/OptimizedImage.astro';
+import { whatsappUrl, site } from '@/config/site';
+
+/** Figma Desktop-1 artboard: 1440 × 1023 (hero 877 + stats 146) */
+const W = 1440;
+const H = 1023;
+
+const heroLead =
+  'Premium wedding, maternity & newborn photography that captures the warmth, tradition, and joy of your most cherished milestones.';
+
+/** Group 9 collage — absolute coords on artboard */
+const photos = [
+  { src: 'hero-4.png', alt: '', width: 480, height: 320, x: 94, y: 180, w: 179, h: 230 },
+  { src: 'hero-1.png', alt: '', width: 320, height: 479, x: 853, y: 143, w: 151, h: 194 },
+  { src: 'hero-2.png', alt: '', width: 320, height: 480, x: 1189, y: 222, w: 179, h: 230 },
+  { src: 'hero-3.png', alt: '', width: 480, height: 320, x: 1066, y: 588, w: 179, h: 230 },
+  { src: 'hero-5.png', alt: '', width: 320, height: 479, x: 183, y: 592, w: 162, h: 210 },
+] as const;
+
+const pct = (n: number, base: number) => `${(n / base) * 100}%`;
+---
+
+<div class="ff-wrap">
+<section class="ff" aria-label="Introduction">
+  <div class="ff__collage" aria-hidden="true">
+    {
+      photos.map((img, i) => (
+        <div
+          class="ff__photo"
+          style={`left:${pct(img.x, W)};top:${pct(img.y, H)};width:${pct(img.w, W)};height:${pct(img.h, H)}`}
+        >
+          <OptimizedImage
+            src={img.src}
+            alt={img.alt}
+            width={img.width}
+            height={img.height}
+            priority={i < 2}
+            fill
+            sizes="180px"
+          />
+        </div>
+      ))
+    }
+  </div>
+
+  <h1 class="ff__title">
+    Every moment,<br />beautifully yours.
+  </h1>
+
+  <p class="ff__lead">{heroLead}</p>
+
+  <div class="ff__actions">
+    <a
+      href={whatsappUrl()}
+      class="ff__btn ff__btn--primary btn btn--primary"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Book via Whatsapp
+    </a>
+    <a href="/gallery/" class="ff__btn ff__btn--outline btn btn--outline">View gallery</a>
+  </div>
+
+  <div class="ff__stats" aria-label="Studio highlights">
+    {
+      site.stats.map((stat, i) => (
+        <div
+          class="ff__stat"
+          style={`left:${pct([145, 475, 805, 1135][i], W)}`}
+        >
+          <p class="ff__stat-value">{stat.value}</p>
+          <p class="ff__stat-label">{stat.label}</p>
+        </div>
+      ))
+    }
+  </div>
+</section>
+</div>
+
+<style>
+  /* Full-bleed without horizontal scroll */
+  .ff-wrap {
+    width: 100%;
+    position: relative;
+  }
+
+  .ff {
+    --ff-w: 1440;
+    --ff-h: 1023;
+    width: 100%;
+    aspect-ratio: var(--ff-w) / var(--ff-h);
+    position: relative;
+    container-type: inline-size;
+    container-name: first-fold;
+    overflow: hidden;
+    color: var(--color-text);
+    background: transparent;
+  }
+
+  .ff > * {
+    z-index: 1;
+  }
+
+  /* Collage — behind copy (Figma layer order) */
+  .ff__collage {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .ff__collage {
+      transition: transform 0.2s ease-out;
+    }
+  }
+
+  .ff__photo {
+    position: absolute;
+    overflow: hidden;
+    border-radius: var(--radius);
+  }
+
+  /* Copy — above collage */
+  .ff__title {
+    position: absolute;
+    z-index: 2;
+    left: calc(265 / var(--ff-w) * 100%);
+    top: calc(240 / var(--ff-h) * 100%);
+    width: calc(911 / var(--ff-w) * 100%);
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: calc(120 / var(--ff-w) * 100cqw);
+    font-weight: 400;
+    line-height: 1.04;
+    text-transform: uppercase;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .ff__lead {
+    position: absolute;
+    z-index: 2;
+    left: calc(440 / var(--ff-w) * 100%);
+    top: calc(552 / var(--ff-h) * 100%);
+    width: calc(561 / var(--ff-w) * 100%);
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: calc(16 / var(--ff-w) * 100cqw);
+    line-height: 1.25;
+    text-align: center;
+    color: var(--color-muted);
+    pointer-events: none;
+  }
+
+  .ff__btn {
+    padding: calc(16 / var(--ff-w) * 100cqw) calc(30 / var(--ff-w) * 100cqw);
+    font-size: calc(16 / var(--ff-w) * 100cqw);
+    line-height: 1.2;
+  }
+
+  .ff__actions {
+    position: absolute;
+    z-index: 3;
+    left: calc(498 / var(--ff-w) * 100%);
+    top: calc(682 / var(--ff-h) * 100%);
+    width: calc(444 / var(--ff-w) * 100%);
+    height: calc(52 / var(--ff-h) * 100%);
+    min-height: 52px;
+  }
+
+  .ff__btn {
+    position: absolute;
+    top: 0;
+  }
+
+  .ff__btn--primary {
+    left: 0;
+  }
+
+  .ff__btn--outline {
+    left: calc(264 / 444 * 100%);
+    background: transparent;
+    background-image: none;
+    border: 1px solid transparent;
+    border-image: var(--gradient-border) 1;
+    color: var(--color-accent);
+  }
+
+  /* Stats — Group 8 @ y:877 */
+  .ff__stats {
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    top: calc(877 / var(--ff-h) * 100%);
+    width: 100%;
+    height: calc(146 / var(--ff-h) * 100%);
+    border-top: 0.4px solid transparent;
+    border-image: var(--gradient-border) 1;
+  }
+
+  .ff__stat {
+    position: absolute;
+    top: calc(40 / 146 * 100%);
+    width: calc(160 / var(--ff-w) * 100%);
+    text-align: center;
+  }
+
+  .ff__stat-value {
+    margin: 0 0 calc(14 / var(--ff-w) * 100cqw);
+    font-family: var(--font-serif);
+    font-size: calc(38 / var(--ff-w) * 100cqw);
+    font-weight: 400;
+    line-height: calc(40 / var(--ff-w) * 100cqw);
+    text-transform: uppercase;
+  }
+
+  .ff__stat-label {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: calc(14 / var(--ff-w) * 100cqw);
+    line-height: calc(18 / var(--ff-w) * 100cqw);
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  /* ── Mobile / tablet: stack layout, no overlapping elements ── */
+  @container first-fold (max-width: 900px) {
+    .ff {
+      aspect-ratio: auto;
+      min-height: 44rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        'photos photos photos'
+        'title title title'
+        'lead lead lead'
+        'actions actions actions'
+        'stats stats stats';
+      gap: 0.75rem;
+      padding: 1rem var(--figma-gutter) 0;
+      align-content: start;
+    }
+
+    .ff__menu,
+    .ff__logo,
+    .ff__contact,
+    .ff__drawer {
+      display: none;
+    }
+
+    .ff__collage {
+      position: absolute;
+      inset: 0;
+      grid-area: photos;
+    }
+
+    .ff__photo {
+      display: none;
+    }
+
+    .ff__photo:nth-child(1),
+    .ff__photo:nth-child(2) {
+      display: block;
+      position: absolute;
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    .ff__photo:nth-child(1) {
+      left: 2%;
+      top: 12%;
+      width: 22%;
+      height: auto;
+      aspect-ratio: 179 / 230;
+    }
+
+    .ff__photo:nth-child(2) {
+      right: 2%;
+      left: auto;
+      top: 10%;
+      width: 20%;
+      height: auto;
+      aspect-ratio: 151 / 194;
+    }
+
+    .ff__title {
+      position: relative;
+      grid-area: title;
+      left: auto;
+      top: auto;
+      width: 100%;
+      margin-top: 42%;
+      font-size: clamp(2rem, 9vw, 3.25rem);
+      pointer-events: auto;
+    }
+
+    .ff__lead {
+      position: relative;
+      grid-area: lead;
+      left: auto;
+      top: auto;
+      width: 100%;
+      max-width: 28rem;
+      margin-inline: auto;
+      font-size: clamp(0.875rem, 3.5vw, 1rem);
+      pointer-events: auto;
+    }
+
+    .ff__actions {
+      position: relative;
+      grid-area: actions;
+      left: auto;
+      top: auto;
+      width: 100%;
+      height: auto;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.625rem;
+      margin-top: 0.5rem;
+    }
+
+    .ff__btn {
+      position: static;
+      width: min(100%, 18rem);
+      font-size: 0.875rem;
+      padding: 0.875rem 1.5rem;
+    }
+
+    .ff__btn--outline {
+      left: auto;
+    }
+
+    .ff__stats {
+      position: relative;
+      grid-area: stats;
+      left: auto;
+      top: auto;
+      height: auto;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      padding: 1.5rem 0;
+      margin-top: 0.5rem;
+    }
+
+    .ff__stat {
+      position: static;
+      width: auto;
+      left: auto !important;
+    }
+
+    .ff__stat-value {
+      font-size: clamp(1.5rem, 6vw, 2rem);
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+    }
+
+    .ff__stat-label {
+      font-size: 0.75rem;
+      line-height: 1.2;
+    }
+  }
+</style>
+
+<script>
+  const section = document.querySelector('.ff');
+  const collage = section?.querySelector('.ff__collage');
+
+  if (section && collage) {
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const maxShift = 18;
+
+    const onMove = (event: Event) => {
+      const e = event as MouseEvent;
+      const rect = section.getBoundingClientRect();
+      const nx = (e.clientX - rect.left) / rect.width - 0.5;
+      const ny = (e.clientY - rect.top) / rect.height - 0.5;
+      collage.style.transform = `translate3d(${-nx * maxShift}px, ${-ny * maxShift}px, 0)`;
+    };
+
+    const onLeave = () => {
+      collage.style.transform = '';
+    };
+
+    const bindParallax = () => {
+      section.removeEventListener('mousemove', onMove);
+      section.removeEventListener('mouseleave', onLeave);
+
+      if (finePointer.matches && !reducedMotion.matches) {
+        section.addEventListener('mousemove', onMove);
+        section.addEventListener('mouseleave', onLeave);
+      } else {
+        onLeave();
+      }
+    };
+
+    bindParallax();
+    finePointer.addEventListener('change', bindParallax);
+    reducedMotion.addEventListener('change', bindParallax);
+  }
+</script>

@@ -1,0 +1,181 @@
+---
+/** Iris opens → full circle → hold for title + photo reveal (stay on frame 4) */
+const frames = [
+  '/images/shutter/scroll-frame-1.svg',
+  '/images/shutter/scroll-frame-2.svg',
+  '/images/shutter/scroll-frame-3.svg',
+  '/images/shutter/scroll-frame-4.svg',
+] as const;
+---
+
+<section class="shutter-scroll" aria-label="Gallery transition" data-shutter-scroll>
+  <div class="shutter-scroll__sticky">
+    <div class="shutter-scroll__stage" data-shutter-stage>
+      {
+        frames.map((src, i) => (
+          <img
+            class="shutter-scroll__frame"
+            src={src}
+            alt=""
+            width={1440}
+            height={810}
+            data-shutter-frame={i}
+            loading={i === 0 ? 'eager' : 'lazy'}
+            decoding="async"
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .shutter-scroll {
+    position: relative;
+    height: 600vh;
+    height: 600lvh;
+    margin-top: -1px;
+    z-index: 5;
+  }
+
+  .shutter-scroll__sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    overflow: hidden;
+    background: #030303;
+    z-index: 5;
+  }
+
+  :global(html.lens-photos-active) .shutter-scroll__sticky {
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  .shutter-scroll__stage {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    opacity: var(--iris-opacity, 1);
+  }
+
+  .shutter-scroll__frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0;
+    will-change: opacity;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shutter-scroll {
+      height: auto;
+    }
+
+    .shutter-scroll__sticky {
+      position: relative;
+      height: auto;
+      min-height: 12rem;
+      aspect-ratio: 1440 / 810;
+    }
+
+    .shutter-scroll__frame {
+      opacity: 0;
+    }
+
+    .shutter-scroll__frame:last-child {
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  const section = document.querySelector('[data-shutter-scroll]') as HTMLElement | null;
+
+  /* Shared scroll timeline — keep in sync with WorksPreview.astro */
+  const LENS = {
+    OPEN_END: 0.38,
+    TITLE_IN: 0.38,
+    PHOTOS_START: 0.46,
+    IRIS_FADE_START: 0.55,
+    IRIS_FADE_END: 0.72,
+  };
+
+  if (section) {
+    const stage = section.querySelector('[data-shutter-stage]') as HTMLElement | null;
+    const frameEls = section.querySelectorAll('[data-shutter-frame]');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const clamp = (v: number, lo = 0, hi = 1) => Math.min(hi, Math.max(lo, v));
+
+    const frameWeight = (index: number, progress: number): number => {
+      if (progress < LENS.OPEN_END) {
+        const t = (progress / LENS.OPEN_END) * 3;
+        const left = Math.min(2, Math.floor(t));
+        const blend = t - left;
+        if (index === left) return 1 - blend;
+        if (index === left + 1) return blend;
+        return 0;
+      }
+      return index === 3 ? 1 : 0;
+    };
+
+    const applyWeights = (progress: number) => {
+      frameEls.forEach((el, i) => {
+        (el as HTMLElement).style.opacity = String(frameWeight(i, progress));
+      });
+    };
+
+    const update = () => {
+      if (reducedMotion.matches) {
+        frameEls.forEach((el, i) => {
+          (el as HTMLElement).style.opacity = i === frameEls.length - 1 ? '1' : '0';
+        });
+        document.documentElement.classList.remove('lens-photos-active');
+        document.documentElement.style.setProperty('--shutter-progress', '1');
+        return;
+      }
+
+      const rect = section.getBoundingClientRect();
+      const scrollRange = section.offsetHeight - window.innerHeight;
+      if (scrollRange <= 0) return;
+
+      const progress = clamp(-rect.top / scrollRange);
+
+      applyWeights(progress);
+      document.documentElement.style.setProperty('--shutter-progress', String(progress));
+      document.documentElement.classList.toggle('lens-photos-active', progress >= LENS.PHOTOS_START);
+
+      const irisOpacity =
+        progress < LENS.IRIS_FADE_START
+          ? 1
+          : progress > LENS.IRIS_FADE_END
+            ? 0
+            : 1 - (progress - LENS.IRIS_FADE_START) / (LENS.IRIS_FADE_END - LENS.IRIS_FADE_START);
+      if (stage) stage.style.setProperty('--iris-opacity', String(clamp(irisOpacity)));
+
+      document.documentElement.classList.toggle('lens-handoff-done', rect.bottom <= 0);
+    };
+
+    applyWeights(0);
+
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        update();
+        ticking = false;
+      });
+    };
+
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    reducedMotion.addEventListener('change', update);
+  }
+</script>

@@ -5,6 +5,7 @@ import {
   responsiveWidths,
   srcSet,
   usesCloudinaryForSrc,
+  type ImageTransform,
 } from '@/lib/cloudinary';
 
 interface Props {
@@ -22,6 +23,7 @@ interface Props {
   placeholder?: boolean;
   /** Cap default `src` width (smaller = faster first paint). */
   maxWidth?: number;
+  crop?: 'limit' | 'fill' | 'fit' | 'scale';
 }
 
 const {
@@ -36,14 +38,22 @@ const {
   natural = false,
   placeholder = true,
   maxWidth = 1280,
+  crop,
 } = Astro.props;
 
 const cloud = usesCloudinaryForSrc(src);
 const cap = Math.min(width, maxWidth);
 const widths = responsiveWidths(cap, maxWidth);
 const defaultW = widths[widths.length - 1] ?? cap;
-const mainSrc = imageUrl(src, { width: defaultW, dpr: cloud ? 'auto' : undefined });
-const set = srcSet(src, widths);
+const transform: Omit<ImageTransform, 'width'> = {
+  crop,
+  height: crop === 'fill' ? height : undefined,
+};
+const mainSrc = imageUrl(src, { width: defaultW, ...transform, dpr: cloud ? 'auto' : undefined });
+const set =
+  crop === 'fill'
+    ? `${imageUrl(src, { width: cap, height, crop: 'fill', dpr: cloud ? 'auto' : undefined })} ${cap}w, ${imageUrl(src, { width: cap * 2, height: height * 2, crop: 'fill', dpr: cloud ? 'auto' : undefined })} ${cap * 2}w`
+    : srcSet(src, widths, transform);
 const lqip = placeholder && cloud ? placeholderUrl(src) : null;
 ---
 

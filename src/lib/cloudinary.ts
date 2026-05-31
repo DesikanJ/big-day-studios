@@ -56,10 +56,10 @@ export function imageUrl(src: string, transform: ImageTransform = {}): string {
   }
 
   const cloud = cloudName();
-  const parts: string[] = ['c_limit'];
+  const cropMode = transform.crop ?? 'limit';
+  const parts: string[] = [`c_${cropMode}`];
   if (transform.width) parts.push(`w_${transform.width}`);
   if (transform.height) parts.push(`h_${transform.height}`);
-  if (transform.crop && transform.crop !== 'limit') parts.push(`c_${transform.crop}`);
   parts.push(`q_${transform.quality ?? 'auto:good'}`, `f_${transform.format ?? 'auto'}`);
   if (transform.dpr) parts.push(`dpr_${transform.dpr}`);
 

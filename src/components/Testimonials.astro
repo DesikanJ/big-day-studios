@@ -1,91 +1,191 @@
 ---
 import OptimizedImage from '@/components/OptimizedImage.astro';
+import { testimonials } from '@/data/testimonials';
+import { getGallery } from '@/data/galleries';
+
+const wedding = getGallery('wedding')?.photos ?? [];
+const sideLeft = wedding[0] ?? { src: 'gallery-1.png', alt: '', width: 1160, height: 773 };
+const sideRight = wedding[1] ?? { src: 'gallery-2.png', alt: '', width: 1160, height: 773 };
 ---
 
 <section class="testimonials" id="testimonials">
-  <div class="container">
-    <p class="section-label">Kind words</p>
-    <h2 class="section-title">Families who trusted us</h2>
-    <article class="testimonial-card">
-      <span class="testimonial-card__quote" aria-hidden="true">"</span>
-      <blockquote class="testimonial-card__text">
-        The maternity shoot was everything we dreamed of. The team made us so comfortable, and the photos are absolutely stunning. We'll treasure these forever.
-      </blockquote>
-      <div class="testimonial-card__author">
-        <OptimizedImage
-          src="testimonial-avatar.png"
-          alt=""
-          width={34}
-          height={34}
-          sizes="34px"
-          class="testimonial-card__avatar"
-        />
-        <div>
-          <p class="testimonial-card__name">Priya & Anand</p>
-          <p class="testimonial-card__meta">Maternity Shoot · Adyar</p>
-        </div>
+  <div class="testimonials__inner">
+    <div class="testimonials__side testimonials__side--left" aria-hidden="true">
+      <OptimizedImage
+        src={sideLeft.src}
+        alt=""
+        width={sideLeft.width}
+        height={sideLeft.height}
+        sizes="212px"
+      />
+    </div>
+
+    <div class="testimonials__main">
+      <h2 class="section-title testimonials__title">What Our Families Say</h2>
+
+      <div class="testimonials__grid">
+        {
+          testimonials.map((item) => (
+            <article class="testimonial-card">
+              <span class="testimonial-card__quote" aria-hidden="true">"</span>
+              <blockquote class="testimonial-card__text">{item.quote}</blockquote>
+              <div class="testimonial-card__author">
+                <span class="testimonial-card__avatar" aria-hidden="true" />
+                <div>
+                  <p class="testimonial-card__name">{item.name}</p>
+                  <p class="testimonial-card__meta">{item.meta}</p>
+                </div>
+              </div>
+            </article>
+          ))
+        }
       </div>
-    </article>
+    </div>
+
+    <div class="testimonials__side testimonials__side--right" aria-hidden="true">
+      <OptimizedImage
+        src={sideRight.src}
+        alt=""
+        width={sideRight.width}
+        height={sideRight.height}
+        sizes="212px"
+      />
+    </div>
   </div>
 </section>
 
 <style>
   .testimonials {
-    padding: 4rem 0;
+    padding: 373px var(--figma-gutter) 80px;
+    background: var(--color-bg);
+    position: relative;
   }
 
-  .testimonials .section-title {
-    margin-bottom: 2rem;
+  .testimonials__inner {
+    max-width: var(--figma-max);
+    margin: 0 auto;
+    display: grid;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  @media (min-width: 1200px) {
+    .testimonials__inner {
+      grid-template-columns: 212px 1fr 212px;
+      gap: 26px;
+    }
+  }
+
+  .testimonials__side {
+    display: none;
+    overflow: hidden;
+    border-radius: var(--radius);
+  }
+
+  @media (min-width: 1200px) {
+    .testimonials__side {
+      display: block;
+    }
+
+    .testimonials__side--left {
+      margin-top: 50px;
+    }
+
+    .testimonials__side--right {
+      margin-top: 50px;
+    }
+  }
+
+  .testimonials__side :global(.photo-frame) {
+    aspect-ratio: 212 / 290;
+    width: 100%;
+  }
+
+  .testimonials__main {
+    min-width: 0;
+  }
+
+  .testimonials__title {
+    max-width: 547px;
+    margin: 0 auto 70px;
+  }
+
+  .testimonials__grid {
+    display: grid;
+    gap: 26px;
+  }
+
+  @media (min-width: 1100px) {
+    .testimonials__grid {
+      grid-template-columns: repeat(3, minmax(0, 396px));
+      justify-content: center;
+    }
   }
 
   .testimonial-card {
     position: relative;
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 2rem;
-    border: 1px solid var(--color-accent-light);
+    display: flex;
+    flex-direction: column;
+    min-height: 260px;
+    padding: 20px 30px 24px;
+    border: 1px solid transparent;
     border-radius: var(--radius);
-    background: var(--color-bg);
+    background-image: linear-gradient(var(--color-bg), var(--color-bg)), var(--gradient-border);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
   }
 
   .testimonial-card__quote {
     font-family: var(--font-serif);
-    font-size: 4rem;
+    font-size: 70px;
     line-height: 1;
     color: var(--color-accent);
-    position: absolute;
-    top: 0.5rem;
-    left: 1.5rem;
+    margin-bottom: 10px;
   }
 
   .testimonial-card__text {
     color: var(--color-quote);
-    font-size: 1.05rem;
-    line-height: 1.7;
-    margin: 2rem 0 1.5rem;
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0 0 30px;
     font-style: normal;
+    flex: 1;
   }
 
   .testimonial-card__author {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 14px;
+    margin-top: auto;
   }
 
   .testimonial-card__avatar {
     width: 34px;
     height: 34px;
     border-radius: 10px;
-    object-fit: cover;
+    background: var(--color-surface-2);
+    flex-shrink: 0;
   }
 
   .testimonial-card__name {
-    font-size: 0.9rem;
+    font-size: 14px;
+    line-height: 18px;
     color: var(--color-placeholder);
   }
 
   .testimonial-card__meta {
-    font-size: 0.8rem;
+    font-size: 10px;
+    line-height: 12px;
     color: var(--color-accent);
+  }
+
+  @media (max-width: 768px) {
+    .testimonials {
+      padding: 4rem var(--figma-gutter) 3rem;
+    }
+
+    .testimonials__title {
+      margin-bottom: 2rem;
+    }
   }
 </style>

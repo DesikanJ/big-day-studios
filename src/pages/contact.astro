@@ -7,12 +7,14 @@ const sessionOptions = [...categories]
   .sort((a, b) => a.order - b.order)
   .map((c) => c.title);
 
-const formKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY;
+const rawFormKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY?.trim();
+const formKey =
+  rawFormKey && rawFormKey !== 'your_access_key_here' ? rawFormKey : undefined;
 ---
 
 <BaseLayout
   title="Contact & Book a Photoshoot"
-  description="Contact Big Day Studios in Chennai — wedding, maternity, newborn & family photography. WhatsApp +91 98404 51199 or send an enquiry."
+  description="Contact Big Day Studios in Chennai — wedding, maternity, newborn & family photography. WhatsApp +91 79042 68507 or send an enquiry."
 >
   <section class="contact container">
     <div class="contact__intro">
@@ -62,10 +64,15 @@ const formKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY;
           <button type="submit" class="btn btn--primary">Send message</button>
         </form>
       ) : (
-        <p class="contact__note">
-          Add <code>PUBLIC_WEB3FORMS_ACCESS_KEY</code> to <code>.env</code> to enable the contact form.
-          WhatsApp booking works without it.
-        </p>
+        <div class="contact__fallback">
+          <p>
+            For the quickest reply, message us on WhatsApp with your preferred date and session type —
+            we typically respond within a few hours.
+          </p>
+          <a href={whatsappUrl()} class="btn btn--primary" target="_blank" rel="noopener noreferrer">
+            Chat on WhatsApp
+          </a>
+        </div>
       )
     }
   </section>
@@ -141,15 +148,15 @@ const formKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY;
     color: var(--color-text);
   }
 
-  .contact__note {
-    color: var(--color-muted);
-    padding: 1.5rem;
-    border: 1px dashed var(--color-border);
+  .contact__fallback {
+    padding: 2rem;
+    border: 1px solid var(--color-border);
     border-radius: var(--radius);
-  }
-
-  .contact__note code {
-    color: var(--color-accent-light);
-    font-size: 0.85em;
+    background: var(--color-surface);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    color: var(--color-muted);
+    line-height: 1.6;
   }
 </style>
