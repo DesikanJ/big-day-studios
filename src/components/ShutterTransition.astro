@@ -1,5 +1,5 @@
 ---
-/** Iris opens → full circle → hold for title + photo reveal (stay on frame 4) */
+/** Iris opens → title + photos emerge in one tight premium beat */
 const frames = [
   '/images/shutter/scroll-frame-1.svg',
   '/images/shutter/scroll-frame-2.svg',
@@ -32,8 +32,8 @@ const frames = [
 <style>
   .shutter-scroll {
     position: relative;
-    height: 600vh;
-    height: 600lvh;
+    height: 260vh;
+    height: 260lvh;
     margin-top: -1px;
     z-index: 5;
   }
@@ -58,6 +58,8 @@ const frames = [
     width: 100%;
     height: 100%;
     opacity: var(--iris-opacity, 1);
+    transform: scale(var(--iris-scale, 1));
+    will-change: opacity, transform;
   }
 
   .shutter-scroll__frame {
@@ -94,34 +96,33 @@ const frames = [
 </style>
 
 <script>
-  const section = document.querySelector('[data-shutter-scroll]') as HTMLElement | null;
+  import { LENS, clamp, easeOut, lensSegment, shutterProgress } from '@/lib/lensScroll';
 
-  /* Shared scroll timeline — keep in sync with WorksPreview.astro */
-  const LENS = {
-    OPEN_END: 0.38,
-    TITLE_IN: 0.38,
-    PHOTOS_START: 0.46,
-    IRIS_FADE_START: 0.55,
-    IRIS_FADE_END: 0.72,
-  };
+  const section = document.querySelector('[data-shutter-scroll]') as HTMLElement | null;
 
   if (section) {
     const stage = section.querySelector('[data-shutter-stage]') as HTMLElement | null;
     const frameEls = section.querySelectorAll('[data-shutter-frame]');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-    const clamp = (v: number, lo = 0, hi = 1) => Math.min(hi, Math.max(lo, v));
-
     const frameWeight = (index: number, progress: number): number => {
       if (progress < LENS.OPEN_END) {
         const t = (progress / LENS.OPEN_END) * 3;
         const left = Math.min(2, Math.floor(t));
-        const blend = t - left;
+        const blend = easeOut(t - left);
         if (index === left) return 1 - blend;
         if (index === left + 1) return blend;
         return 0;
       }
-      return index === 3 ? 1 : 0;
+      /* Brief hold on full circle, then dissolve with photos */
+      if (progress < LENS.IRIS_FADE_START) {
+        return index === 3 ? 1 : 0;
+      }
+      if (progress < LENS.IRIS_FADE_END) {
+        const fade = (progress - LENS.IRIS_FADE_START) / (LENS.IRIS_FADE_END - LENS.IRIS_FADE_START);
+        return index === 3 ? 1 - easeOut(fade) : 0;
+      }
+      return 0;
     };
 
     const applyWeights = (progress: number) => {
@@ -140,25 +141,21 @@ const frames = [
         return;
       }
 
-      const rect = section.getBoundingClientRect();
-      const scrollRange = section.offsetHeight - window.innerHeight;
-      if (scrollRange <= 0) return;
-
-      const progress = clamp(-rect.top / scrollRange);
+      const progress = shutterProgress(section);
 
       applyWeights(progress);
       document.documentElement.style.setProperty('--shutter-progress', String(progress));
       document.documentElement.classList.toggle('lens-photos-active', progress >= LENS.PHOTOS_START);
 
-      const irisOpacity =
-        progress < LENS.IRIS_FADE_START
-          ? 1
-          : progress > LENS.IRIS_FADE_END
-            ? 0
-            : 1 - (progress - LENS.IRIS_FADE_START) / (LENS.IRIS_FADE_END - LENS.IRIS_FADE_START);
-      if (stage) stage.style.setProperty('--iris-opacity', String(clamp(irisOpacity)));
+      const irisOpacity = 1 - lensSegment(progress, LENS.IRIS_FADE_START, LENS.IRIS_FADE_END);
+      const irisScale = 1 + lensSegment(progress, LENS.IRIS_FADE_START, LENS.IRIS_FADE_END) * 0.04;
 
-      document.documentElement.classList.toggle('lens-handoff-done', rect.bottom <= 0);
+      if (stage) {
+        stage.style.setProperty('--iris-opacity', String(clamp(irisOpacity)));
+        stage.style.setProperty('--iris-scale', String(irisScale));
+      }
+
+      document.documentElement.classList.toggle('lens-handoff-done', section.getBoundingClientRect().bottom <= 0);
     };
 
     applyWeights(0);

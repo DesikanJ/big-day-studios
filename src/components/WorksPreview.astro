@@ -4,67 +4,73 @@ import { categories } from '@/data/categories';
 import { getGallery } from '@/data/galleries';
 
 const fallback = [
-  { src: 'gallery-1.png', alt: 'Wedding work', w: 1160, h: 773 },
-  { src: 'gallery-2.png', alt: 'Portrait work', w: 1160, h: 773 },
-  { src: 'gallery-3.png', alt: 'Celebration work', w: 1160, h: 773 },
-  { src: 'gallery-4.png', alt: 'Studio portrait', w: 1160, h: 773 },
-  { src: 'gallery-5.png', alt: 'Baby portrait', w: 832, h: 1159 },
-  { src: 'gallery-6.png', alt: 'Birthday portrait', w: 795, h: 1159 },
+  { src: 'gallery-1.png', alt: 'Wedding work', caption: 'Wedding Photography', w: 1160, h: 773 },
+  { src: 'gallery-2.png', alt: 'Portrait work', caption: 'Portrait Session', w: 1160, h: 773 },
+  { src: 'gallery-3.png', alt: 'Celebration work', caption: 'Celebration', w: 1160, h: 773 },
+  { src: 'gallery-4.png', alt: 'Studio portrait', caption: 'Studio Portrait', w: 1160, h: 773 },
+  { src: 'gallery-5.png', alt: 'Baby portrait', caption: 'Baby Photoshoot', w: 832, h: 1159 },
+  { src: 'gallery-6.png', alt: 'Birthday portrait', caption: 'Birthday', w: 795, h: 1159 },
 ];
 
-const pool = categories.flatMap((cat) => getGallery(cat.slug)?.photos ?? []).slice(0, 12);
+const pool = categories.flatMap((cat) =>
+  (getGallery(cat.slug)?.photos ?? []).slice(0, 2).map((p) => ({
+    src: p.src,
+    alt: p.alt,
+    caption: cat.title,
+    href: `/gallery/${cat.slug}/`,
+    w: p.width,
+    h: p.height,
+  })),
+);
+
 const works = (pool.length >= 6 ? pool : pool.length > 0 ? pool : fallback)
   .slice(0, 12)
   .map((p) => ({
     src: p.src,
     alt: p.alt,
-    w: p.width,
-    h: p.height,
+    caption: p.caption,
+    href: 'href' in p ? p.href : `/gallery/`,
+    w: p.w,
+    h: p.h,
   }));
-
-const heroWorks = works.slice(0, 3);
 ---
 
 <section class="works" id="works" data-works-section>
-  <!-- Temporary overlay — only during iris scroll, removed once settled -->
-  <div class="works__lens-scene" data-works-lens-scene aria-hidden="true">
-    <h2 class="section-title works__lens-title" data-works-lens-title aria-hidden="true">
-      Moments We've Preserved
-    </h2>
-    <div class="works__lens-row">
-      {
-        heroWorks.map((item, i) => (
-          <div class="works__lens-cell" data-lens-cell={i}>
-            <OptimizedImage
-              src={item.src}
-              alt={item.alt}
-              width={item.w}
-              height={item.h}
-              sizes="(max-width: 640px) 30vw, 392px"
-            />
-          </div>
-        ))
-      }
-    </div>
-  </div>
-
-  <div class="works__inner" data-works-inner>
-    <div class="works__title-wrap">
-      <h2 class="section-title works__title">Moments We've Preserved</h2>
-    </div>
+  <div class="works__inner">
+    <header class="works__header">
+      <p class="section-label works__eyebrow">Selected Work</p>
+      <div class="works__title-wrap">
+        <h2 class="section-title works__title" data-works-title>Moments We've Preserved</h2>
+        <span class="works__rule" aria-hidden="true"></span>
+      </div>
+    </header>
 
     <div class="works__grid" data-works-grid>
       {
         works.map((item, i) => (
-          <div class:list={['works__item', i < 3 && 'works__item--hero']} data-works-hero={i < 3 ? i : undefined}>
-            <OptimizedImage
-              src={item.src}
-              alt={item.alt}
-              width={item.w}
-              height={item.h}
-              sizes="(max-width: 640px) 100vw, 392px"
-            />
-          </div>
+          <article
+            class:list={['works__item', i < 3 && 'works__item--hero']}
+            data-works-item
+            data-works-hero={i < 3 ? i : undefined}
+          >
+            <a class="works__link" href={item.href}>
+              <div class="works__item-frame">
+                <div class="works__media" data-works-media>
+                  <OptimizedImage
+                    src={item.src}
+                    alt={item.alt}
+                    width={item.w}
+                    height={item.h}
+                    sizes="(max-width: 640px) 100vw, 392px"
+                  />
+                </div>
+                <div class="works__overlay">
+                  <span class="works__caption">{item.caption}</span>
+                  <span class="works__cta">View gallery</span>
+                </div>
+              </div>
+            </a>
+          </article>
         ))
       }
     </div>
@@ -73,81 +79,44 @@ const heroWorks = works.slice(0, 3);
 
 <style>
   .works {
-    margin-top: -20vh;
-    margin-top: -20lvh;
-    padding: 20vh var(--figma-gutter) 120px;
-    padding-top: 20lvh;
+    margin-top: -32vh;
+    margin-top: -32lvh;
+    padding: 0 var(--figma-gutter) clamp(6rem, 12vw, 140px);
     background: var(--color-bg);
     position: relative;
     z-index: 4;
   }
 
-  :global(html.lens-photos-active) .works:not(.is-settled) {
+  :global(html.lens-photos-active) .works {
     z-index: 6;
     background: transparent;
+    margin-top: -38vh;
+    margin-top: -38lvh;
+    padding-top: 0;
   }
 
-  /* Normal in-flow section once animation completes */
-  .works.is-settled {
-    margin-top: 0;
-    padding-top: 6rem;
+  :global(html.lens-handoff-done) .works {
     z-index: 1;
     background: var(--color-bg);
+    margin-top: 0;
+    padding-top: clamp(5rem, 10vw, 7.5rem);
   }
 
-  .works__lens-scene {
-    position: fixed;
-    inset: 0;
-    z-index: 7;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: var(--figma-gutter);
+  :global(html.lens-handoff-done) .works::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(420px, 60vw);
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgb(201 169 98 / 0.55) 50%,
+      transparent 100%
+    );
     pointer-events: none;
-  }
-
-  .works__lens-scene.is-active {
-    display: flex;
-  }
-
-  .works.is-settled .works__lens-scene {
-    display: none !important;
-  }
-
-  .works__lens-title {
-    max-width: min(900px, 92vw);
-    margin: 0 auto;
-    text-align: center;
-    line-height: 1.15;
-    opacity: 0;
-    transform: translateY(8px);
-    will-change: opacity, transform;
-  }
-
-  .works__lens-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: clamp(8px, 2.5vw, 72px);
-    width: min(1320px, 100%);
-    margin-top: clamp(1.5rem, 4vh, 3rem);
-  }
-
-  .works__lens-cell {
-    flex: 1 1 0;
-    max-width: 392px;
-    overflow: hidden;
-    border-radius: var(--radius);
-    transform: scale(0.08);
-    opacity: 0;
-    transform-origin: center center;
-    will-change: transform, opacity;
-  }
-
-  .works__lens-cell :global(.photo-frame) {
-    aspect-ratio: 392 / 440;
-    width: 100%;
   }
 
   .works__inner {
@@ -155,31 +124,64 @@ const heroWorks = works.slice(0, 3);
     margin: 0 auto;
   }
 
-  /* Hidden during overlay animation — visible once settled in document flow */
-  .works:not(.is-settled) .works__inner {
-    visibility: hidden;
+  .works__header {
+    text-align: center;
+    margin-bottom: clamp(3rem, 6vw, 5rem);
   }
 
-  .works.is-settled .works__inner {
-    visibility: visible;
+  :global(html.lens-photos-active) .works__header {
+    margin-bottom: clamp(1.25rem, 3vh, 2rem);
+  }
+
+  :global(html.lens-photos-active) .works__eyebrow {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  :global(html.lens-handoff-done) .works__eyebrow {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .works__eyebrow {
+    margin-bottom: 0.75rem;
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
   }
 
   .works__title-wrap {
-    min-height: clamp(3.5rem, 8vw, 5.5rem);
-    margin: 0 auto 3.5rem;
+    min-height: clamp(3rem, 7vw, 4.5rem);
     max-width: 900px;
+    margin: 0 auto;
   }
 
   .works__title {
     max-width: 900px;
     margin: 0 auto;
-    text-align: center;
-    line-height: 1.15;
+    line-height: 1.1;
+    opacity: var(--title-opacity, 0);
+    transform: translateY(calc((1 - var(--title-opacity, 0)) * 14px));
+    filter: blur(calc((1 - var(--title-opacity, 0)) * 4px));
+    will-change: opacity, transform, filter;
+  }
+
+  .works__rule {
+    display: block;
+    width: clamp(48px, 8vw, 72px);
+    height: 1px;
+    margin: 1.25rem auto 0;
+    background: var(--color-accent);
+    opacity: calc(var(--title-opacity, 0) * 0.85);
+    transform: scaleX(calc(0.4 + var(--title-opacity, 0) * 0.6));
+    transform-origin: center;
+    will-change: opacity, transform;
   }
 
   .works__grid {
     display: grid;
-    gap: 72px 72px;
+    gap: clamp(2rem, 5vw, 5rem) clamp(1.5rem, 4vw, 4.5rem);
     grid-template-columns: 1fr;
     justify-content: center;
   }
@@ -193,31 +195,135 @@ const heroWorks = works.slice(0, 3);
   @media (min-width: 1100px) {
     .works__grid {
       grid-template-columns: repeat(3, 392px);
-      justify-content: center;
+      gap: 4.5rem 4.5rem;
+    }
+
+    .works__item:nth-child(3n + 2) {
+      margin-top: 2.75rem;
+    }
+
+    .works__item:nth-child(n + 4):nth-child(3n + 1) {
+      margin-top: 1.25rem;
     }
   }
 
   .works__item {
+    --reveal: 0;
+    --parallax-y: 0;
+  }
+
+  .works__link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    outline: none;
+  }
+
+  .works__link:focus-visible .works__item-frame {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+  }
+
+  .works__item-frame {
+    position: relative;
     overflow: hidden;
     border-radius: var(--radius);
+    background: rgb(12 12 12 / 0.6);
+    box-shadow:
+      0 0 0 1px rgb(201 169 98 / calc(var(--reveal) * 0.12)),
+      0 calc(var(--reveal) * 28px) calc(var(--reveal) * 48px) rgb(0 0 0 / calc(var(--reveal) * 0.35));
+    clip-path: inset(calc((1 - var(--reveal)) * 14%) round var(--radius));
+    transform: translateY(calc((1 - var(--reveal)) * 24px));
+    will-change: clip-path, transform, box-shadow;
+  }
+
+  .works__media {
+    transform: scale(calc(1.14 - var(--reveal) * 0.14))
+      translateY(calc(var(--parallax-y) * 1px));
+    transform-origin: center center;
+    will-change: transform;
   }
 
   .works__item :global(.photo-frame) {
     aspect-ratio: 392 / 440;
     width: 100%;
+    transition: filter 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .works__link:hover :global(.photo-frame),
+  .works__link:focus-visible :global(.photo-frame) {
+    filter: brightness(1.06);
+  }
+
+  .works__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.75rem 1.25rem 1.25rem;
+    background: linear-gradient(
+      to top,
+      rgb(3 3 3 / 0.92) 0%,
+      rgb(3 3 3 / 0.35) 42%,
+      transparent 72%
+    );
+    opacity: 0;
+    transform: translateY(6px);
+    transition:
+      opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+
+  .works__link:hover .works__overlay,
+  .works__link:focus-visible .works__overlay {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .works__caption {
+    font-family: var(--font-serif);
+    font-size: clamp(1rem, 1.4vw, 1.125rem);
+    line-height: 1.25;
+    color: var(--color-text);
+    letter-spacing: 0.01em;
+  }
+
+  .works__cta {
+    margin-top: 0.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-accent);
   }
 
   @media (max-width: 768px) {
-    .works.is-settled {
+    :global(html.lens-handoff-done) .works {
       padding-top: 4rem;
     }
 
-    .works__title-wrap {
-      margin-bottom: 2rem;
+    .works__header {
+      margin-bottom: 2.25rem;
     }
 
     .works__grid {
-      gap: 1.5rem;
+      gap: 1.75rem;
+    }
+
+    .works__item:nth-child(3n + 2) {
+      margin-top: 0;
+    }
+
+    .works__overlay {
+      opacity: 1;
+      transform: none;
+      background: linear-gradient(to top, rgb(3 3 3 / 0.88) 0%, transparent 55%);
+    }
+
+    .works__cta {
+      display: none;
     }
   }
 
@@ -227,151 +333,146 @@ const heroWorks = works.slice(0, 3);
       padding-top: 4rem;
     }
 
-    .works__lens-scene {
-      display: none !important;
+    .works__title,
+    .works__rule {
+      opacity: 1;
+      transform: none;
+      filter: none;
     }
 
-    .works:not(.is-settled) .works__inner,
-    .works.is-settled .works__inner {
-      visibility: visible;
+    .works__eyebrow {
+      opacity: 1;
+      transform: none;
+    }
+
+    .works__item {
+      --reveal: 1;
+      --parallax-y: 0;
+    }
+
+    .works__item-frame {
+      clip-path: none;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .works__media {
+      transform: none;
+    }
+
+    .works__item :global(.photo-frame) {
+      transition: none;
     }
   }
 </style>
 
 <script>
+  import { LENS, clamp, easePremium, lensSegment, shutterProgress } from '@/lib/lensScroll';
+  import { lerp, parallaxTarget, revealTarget } from '@/lib/galleryScroll';
+
   const section = document.getElementById('works') as HTMLElement | null;
   const shutter = document.querySelector('[data-shutter-scroll]') as HTMLElement | null;
-  const lensScene = document.querySelector('[data-works-lens-scene]') as HTMLElement | null;
-  const lensTitle = document.querySelector('[data-works-lens-title]') as HTMLElement | null;
-  const lensCells = [...document.querySelectorAll('[data-lens-cell]')] as HTMLElement[];
+  const heroItems = [...document.querySelectorAll('[data-works-hero]')] as HTMLElement[];
+  const scrollItems = [...document.querySelectorAll('[data-works-item]')] as HTMLElement[];
 
-  const TITLE_IN = 0.38;
-  const TITLE_FULL = 0.46;
-  const PHOTOS_START = 0.46;
-  const PHOTOS_END = 0.82;
-
-  if (section && shutter && lensScene && lensTitle && lensCells.length === 3) {
+  if (section) {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const LERP = 0.09;
 
-    const clamp = (v: number, lo = 0, hi = 1) => Math.min(hi, Math.max(lo, v));
-    const easeOut = (t: number) => 1 - (1 - t) ** 3;
-    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+    type ItemState = { reveal: number; parallax: number };
+    const state = new Map<HTMLElement, ItemState>();
+    scrollItems.forEach((el) => state.set(el, { reveal: 0, parallax: 0 }));
 
-    let settled = false;
-
-    const getProgress = () => {
-      const rect = shutter.getBoundingClientRect();
-      const range = shutter.offsetHeight - window.innerHeight;
-      if (range <= 0) return 1;
-      return clamp(-rect.top / range);
+    const applyStyles = (el: HTMLElement, reveal: number, parallax: number) => {
+      el.style.setProperty('--reveal', String(reveal));
+      el.style.setProperty('--parallax-y', String(parallax));
     };
 
-    const settle = () => {
-      if (settled) return;
-      settled = true;
-      section.classList.add('is-settled');
-      lensScene.classList.remove('is-active');
-      lensScene.setAttribute('aria-hidden', 'true');
-      document.documentElement.classList.remove('lens-photos-active');
-    };
+    const applyHeroReveal = (p: number) => {
+      const photoT = lensSegment(p, LENS.PHOTOS_START, LENS.PHOTOS_END, easePremium);
 
-    const unsettle = () => {
-      settled = false;
-      section.classList.remove('is-settled');
-    };
-
-    const resetOverlay = () => {
-      lensScene.classList.remove('is-active');
-      lensScene.setAttribute('aria-hidden', 'true');
-      lensTitle.style.opacity = '0';
-      lensTitle.style.transform = 'translateY(8px)';
-      lensCells.forEach((cell) => {
-        cell.style.transform = 'scale(0.08)';
-        cell.style.opacity = '0';
+      heroItems.forEach((el) => {
+        const index = Number(el.dataset.worksHero ?? 0);
+        const stagger = index * 0.07;
+        const local = clamp((photoT - stagger) / (1 - stagger * 0.65));
+        const reveal = easePremium(local);
+        const s = state.get(el)!;
+        s.reveal = reveal;
+        applyStyles(el, reveal, 0);
       });
     };
 
-    const updateScene = () => {
+    const applyTitle = (p: number) => {
+      const opacity = lensSegment(p, LENS.TITLE_IN, LENS.TITLE_FULL, easePremium);
+      section.style.setProperty('--title-opacity', String(opacity));
+    };
+
+    const shutterHandoffComplete = () => {
+      if (!shutter) return true;
+      const p = shutterProgress(shutter);
+      return p >= LENS.PHOTOS_END || shutter.getBoundingClientRect().bottom <= 0;
+    };
+
+    const tickScrollGallery = () => {
+      scrollItems.forEach((el) => {
+        const s = state.get(el)!;
+        const targetReveal = revealTarget(el);
+        const targetParallax = parallaxTarget(el);
+        s.reveal = lerp(s.reveal, targetReveal, LERP);
+        s.parallax = lerp(s.parallax, targetParallax, LERP);
+        if (Math.abs(s.reveal - targetReveal) < 0.002) s.reveal = targetReveal;
+        if (Math.abs(s.parallax - targetParallax) < 0.15) s.parallax = targetParallax;
+        applyStyles(el, s.reveal, s.parallax);
+      });
+    };
+
+    const updateShutterPhase = () => {
       if (reducedMotion.matches) {
-        settle();
+        section.style.setProperty('--title-opacity', '1');
+        scrollItems.forEach((el) => applyStyles(el, 1, 0));
         return;
       }
 
-      const p = getProgress();
-      const shutterRect = shutter.getBoundingClientRect();
-
-      /* Iris section gone — lock into normal page flow */
-      if (shutterRect.bottom <= 0) {
-        settle();
+      if (!shutter) {
+        tickScrollGallery();
         return;
       }
 
-      /* Already settled — stay in document flow, never re-show overlay */
-      if (settled) {
-        if (p < TITLE_IN - 0.05 && shutterRect.bottom > window.innerHeight * 0.5) {
-          unsettle();
-        } else {
-          return;
-        }
-      }
+      const p = shutterProgress(shutter);
+      applyTitle(p);
 
-      if (p < TITLE_IN) {
-        resetOverlay();
-        return;
-      }
-
-      lensScene.classList.add('is-active');
-      lensScene.setAttribute('aria-hidden', 'false');
-
-      if (p < TITLE_FULL) {
-        const t = easeOut((p - TITLE_IN) / (TITLE_FULL - TITLE_IN));
-        lensTitle.style.opacity = String(t);
-        lensTitle.style.transform = `translateY(${lerp(8, 0, t)}px)`;
-        lensCells.forEach((cell) => {
-          cell.style.transform = 'scale(0.08)';
-          cell.style.opacity = '0';
+      if (!shutterHandoffComplete()) {
+        applyHeroReveal(p);
+        scrollItems.forEach((el, i) => {
+          if (i >= 3) applyStyles(el, 0, 0);
         });
         return;
       }
 
-      lensTitle.style.opacity = '1';
-      lensTitle.style.transform = 'translateY(0)';
-
-      if (p < PHOTOS_START) return;
-
-      const photoT = easeOut((p - PHOTOS_START) / (PHOTOS_END - PHOTOS_START));
-
-      lensCells.forEach((cell, i) => {
-        const stagger = i * 0.08;
-        const local = clamp((photoT - stagger) / (1 - stagger * 0.75));
-        const scale = lerp(0.08, 1, easeOut(local));
-        const opacity = lerp(0, 1, easeOut(local));
-        cell.style.transform = `scale(${scale})`;
-        cell.style.opacity = String(opacity);
-      });
-
-      if (p >= PHOTOS_END) {
-        settle();
-      }
+      section.style.setProperty('--title-opacity', '1');
+      tickScrollGallery();
     };
 
-    let ticking = false;
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        updateScene();
-        ticking = false;
-      });
+    let rafId = 0;
+    const loop = () => {
+      updateShutterPhase();
+      rafId = requestAnimationFrame(loop);
     };
 
-    updateScene();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
+    if (reducedMotion.matches) {
+      updateShutterPhase();
+    } else {
+      rafId = requestAnimationFrame(loop);
+    }
+
+    window.addEventListener('resize', updateShutterPhase, { passive: true });
     reducedMotion.addEventListener('change', () => {
-      if (reducedMotion.matches) settle();
-      else unsettle();
-      updateScene();
+      cancelAnimationFrame(rafId);
+      if (reducedMotion.matches) {
+        updateShutterPhase();
+      } else {
+        rafId = requestAnimationFrame(loop);
+      }
     });
   }
 </script>

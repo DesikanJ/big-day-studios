@@ -66,21 +66,21 @@ const IMG_H = 407;
     position: relative;
   }
 
-  /* Extra scroll runway = slower, smoother parallax transitions */
+  /* Slower, longer runway — Hannah-style unhurried gallery scroll */
   .category-stage {
-    height: 165vh;
-    height: 165lvh;
+    height: 180vh;
+    height: 180lvh;
     position: relative;
   }
 
   .category-stage--first {
-    height: 185vh;
-    height: 185lvh;
+    height: 200vh;
+    height: 200lvh;
   }
 
   .category-stage:last-child {
-    height: 130vh;
-    height: 130lvh;
+    height: 140vh;
+    height: 140lvh;
   }
 
   .category-panel {
@@ -243,7 +243,7 @@ const IMG_H = 407;
       if (copy) copy.style.opacity = '1';
     });
 
-    const LERP = 0.09;
+    const LERP = 0.06;
     let animating = false;
     let rafId = 0;
 
@@ -265,14 +265,21 @@ const IMG_H = 407;
         const scrollRange = Math.max(1, stageH - vh);
         const progress = clamp(-rect.top / scrollRange);
 
-        /* Longer, overlapping enter / leave curves */
+        /* Scroll-scrub parallax: image drifts with scroll position */
+        const scrub = (progress - 0.5) * 2;
+        const scrubY = scrub * 44;
+
+        /* Bell-curve scale — peaks when panel is centred */
+        const centerBoost = 1 - Math.min(1, Math.abs(progress - 0.5) * 2);
+        const centerScale = 0.92 + centerBoost * 0.08;
+
         const settle = smoothstep(easeOutCubic(clamp(progress / 0.68)));
         const leave = smoothstep(easeInOutCubic(clamp((progress - 0.42) / 0.58)));
 
         if (i === 0) {
-          target.mediaY = -leave * 36;
-          target.copyY = -leave * 18;
-          target.mediaScale = 1 - leave * 0.03;
+          target.mediaY = scrubY - leave * 36;
+          target.copyY = scrubY * 0.45 - leave * 18;
+          target.mediaScale = centerScale - leave * 0.03;
           target.mediaOp = 1 - leave * 0.22;
           target.copyOp = 1 - leave * 0.28;
           return;
@@ -283,9 +290,9 @@ const IMG_H = 407;
         const leaveMediaY = leave * 32;
         const leaveCopyY = leave * 16;
 
-        target.mediaY = enterMediaY - leaveMediaY;
-        target.copyY = enterCopyY - leaveCopyY;
-        target.mediaScale = 0.88 + settle * 0.12 - leave * 0.03;
+        target.mediaY = scrubY + enterMediaY - leaveMediaY;
+        target.copyY = scrubY * 0.45 + enterCopyY - leaveCopyY;
+        target.mediaScale = 0.88 + settle * 0.12 - leave * 0.03 + centerBoost * 0.06;
         target.mediaOp = 0.45 + settle * 0.55 - leave * 0.18;
         target.copyOp = settle * (1 - leave * 0.35);
       });
