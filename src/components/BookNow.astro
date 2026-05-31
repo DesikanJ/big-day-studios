@@ -182,7 +182,6 @@ const social = site.seo.sameAs;
     padding: 0 var(--figma-gutter);
     display: grid;
     gap: 48px;
-    position: relative;
   }
 
   @media (min-width: 1100px) {
@@ -192,10 +191,15 @@ const social = site.seo.sameAs;
       align-items: start;
     }
 
-    .book-now__panel::before,
-    .book-now__panel::after {
+    .book-now__form-col {
+      position: relative;
+    }
+
+    /* Single divider centred in the column gap */
+    .book-now__form-col::before {
       content: '';
       position: absolute;
+      left: -56px;
       top: 0;
       bottom: 0;
       width: 1px;
@@ -203,12 +207,24 @@ const social = site.seo.sameAs;
       pointer-events: none;
     }
 
-    .book-now__panel::before {
-      left: calc(330px + 56px);
+    .book-now__form-col:has(.book-now__fallback)::before {
+      display: none;
     }
 
-    .book-now__panel::after {
-      right: calc(360px + 56px);
+    /* Right rule only when the full form is shown — not the WhatsApp fallback */
+    .book-now__form:has(.book-now__fields)::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--gradient-border-soft);
+      pointer-events: none;
+    }
+
+    .book-now__form:has(.book-now__fields) {
+      position: relative;
     }
   }
 
