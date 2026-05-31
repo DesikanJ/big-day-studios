@@ -6,13 +6,14 @@ const year = new Date().getFullYear();
 
 <footer class="footer">
   <div class="container footer__grid">
-    <div>
+    <div class="footer__col footer__col--brand">
       <a href="/" class="footer__brand" aria-label={`${site.name} — home`}>
         <img src={site.logo} alt="" width={100} height={40} class="footer__logo-img" loading="lazy" decoding="async" />
+        <span class="footer__wordmark">Big day studios</span>
       </a>
-      <p class="footer__muted">{site.description}</p>
+      <p class="footer__muted footer__tagline">{site.description}</p>
     </div>
-    <div>
+    <div class="footer__col">
       <p class="footer__heading">Explore</p>
       <ul class="footer__links">
         <li><a href="/gallery/wedding/">Wedding photography Chennai</a></li>
@@ -23,7 +24,7 @@ const year = new Date().getFullYear();
         <li><a href="/contact/">Contact</a></li>
       </ul>
     </div>
-    <div>
+    <div class="footer__col">
       <p class="footer__heading">Book a session</p>
       <a href={whatsappUrl()} class="footer__wa" target="_blank" rel="noopener noreferrer">
         WhatsApp us
@@ -40,8 +41,13 @@ const year = new Date().getFullYear();
   .footer {
     margin-top: 4rem;
     padding: 3rem 0 2rem;
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
     border-top: 1px solid var(--color-border);
     background: #0a0a0a;
+  }
+
+  .footer .container {
+    padding-inline: var(--figma-gutter);
   }
 
   .footer__grid {
@@ -52,13 +58,23 @@ const year = new Date().getFullYear();
   @media (min-width: 768px) {
     .footer__grid {
       grid-template-columns: 2fr 1fr 1fr;
+      gap: 2.5rem;
     }
   }
 
   .footer__brand {
     display: inline-block;
     margin-bottom: 0.75rem;
-    line-height: 0;
+    line-height: 1.2;
+  }
+
+  .footer__wordmark {
+    display: none;
+    font-family: var(--font-serif);
+    font-size: 1.375rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    color: var(--color-text);
   }
 
   .footer__logo-img {
@@ -86,6 +102,11 @@ const year = new Date().getFullYear();
   .footer__muted {
     color: var(--color-muted);
     font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .footer__tagline {
+    max-width: 22rem;
   }
 
   .footer__links {
@@ -97,6 +118,13 @@ const year = new Date().getFullYear();
     gap: 0.5rem;
   }
 
+  .footer__links a {
+    color: var(--color-muted);
+    font-size: 0.875rem;
+    line-height: 1.45;
+    transition: color 0.2s ease;
+  }
+
   .footer__links a:hover {
     color: var(--color-accent-light);
   }
@@ -105,7 +133,9 @@ const year = new Date().getFullYear();
     display: inline-block;
     margin-bottom: 0.5rem;
     color: var(--color-accent-light);
+    font-size: 0.9375rem;
     font-weight: 500;
+    line-height: 1.4;
   }
 
   .footer__bottom {
@@ -114,5 +144,78 @@ const year = new Date().getFullYear();
     border-top: 1px solid var(--color-border);
     color: var(--color-muted);
     font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 767px) {
+    .footer {
+      margin-top: 3rem;
+      padding-top: 2.25rem;
+      padding-bottom: calc(2.5rem + env(safe-area-inset-bottom, 0px));
+    }
+
+    .footer__grid {
+      gap: 0;
+    }
+
+    .footer__col {
+      padding: 1.5rem 0;
+    }
+
+    .footer__col--brand {
+      padding-top: 0;
+      padding-bottom: 1.25rem;
+    }
+
+    .footer__col + .footer__col {
+      border-top: 1px solid rgb(51 58 58 / 0.45);
+    }
+
+    .footer__logo-img {
+      display: none;
+    }
+
+    .footer__wordmark {
+      display: block;
+    }
+
+    .footer__tagline {
+      font-size: 0.8125rem;
+      line-height: 1.6;
+      color: var(--color-muted);
+    }
+
+    .footer__heading {
+      margin-bottom: 0.75rem;
+      font-size: 0.6875rem;
+    }
+
+    .footer__links {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 1rem;
+      row-gap: 0.5rem;
+    }
+
+    .footer__links a {
+      font-size: 0.75rem;
+      line-height: 1.4;
+      color: var(--color-muted);
+    }
+
+    .footer__wa {
+      font-size: 0.875rem;
+    }
+
+    .footer__col .footer__muted {
+      font-size: 0.8125rem;
+    }
+
+    .footer__bottom {
+      margin-top: 0.25rem;
+      padding-top: 1.5rem;
+      font-size: 0.6875rem;
+      text-align: center;
+    }
   }
 </style>

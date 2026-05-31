@@ -44,22 +44,24 @@ const pct = (n: number, base: number) => `${(n / base) * 100}%`;
     }
   </div>
 
-  <h1 class="ff__title">
-    Every moment,<br />beautifully yours.
-  </h1>
+  <div class="ff__copy">
+    <h1 class="ff__title">
+      Every moment,<br />beautifully yours.
+    </h1>
 
-  <p class="ff__lead">{heroLead}</p>
+    <p class="ff__lead">{heroLead}</p>
 
-  <div class="ff__actions">
-    <a
-      href={whatsappUrl()}
-      class="ff__btn ff__btn--primary btn btn--primary"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      Book via Whatsapp
-    </a>
-    <a href="/gallery/" class="ff__btn ff__btn--outline btn btn--outline">View gallery</a>
+    <div class="ff__actions">
+      <a
+        href={whatsappUrl()}
+        class="ff__btn ff__btn--primary btn btn--primary"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Book via Whatsapp
+      </a>
+      <a href="/gallery/" class="ff__btn ff__btn--outline btn btn--outline">View gallery</a>
+    </div>
   </div>
 
   <div class="ff__stats" aria-label="Studio highlights">
@@ -85,6 +87,12 @@ const pct = (n: number, base: number) => `${(n / base) * 100}%`;
     position: relative;
   }
 
+  @media (max-width: 767px) {
+    .ff-wrap {
+      margin-bottom: 0.5rem;
+    }
+  }
+
   .ff {
     --ff-w: 1440;
     --ff-h: 1023;
@@ -100,6 +108,10 @@ const pct = (n: number, base: number) => `${(n / base) * 100}%`;
 
   .ff > * {
     z-index: 1;
+  }
+
+  .ff__copy {
+    position: static;
   }
 
   /* Collage — behind copy (Figma layer order) */
@@ -226,109 +238,136 @@ const pct = (n: number, base: number) => `${(n / base) * 100}%`;
     color: var(--color-muted);
   }
 
-  /* ── Mobile / tablet: stack layout, no overlapping elements ── */
-  @container first-fold (max-width: 900px) {
+  /* ── Phone: Figma look, flex stack so nothing overlaps ── */
+  @media (max-width: 767px) {
     .ff {
       aspect-ratio: auto;
-      min-height: 44rem;
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-template-areas:
-        'photos photos photos'
-        'title title title'
-        'lead lead lead'
-        'actions actions actions'
-        'stats stats stats';
-      gap: 0.75rem;
-      padding: 1rem var(--figma-gutter) 0;
-      align-content: start;
-    }
-
-    .ff__menu,
-    .ff__logo,
-    .ff__contact,
-    .ff__drawer {
-      display: none;
+      min-height: calc(100svh - 4.5rem);
+      display: flex;
+      flex-direction: column;
+      padding: 0 var(--figma-gutter);
+      overflow: hidden;
     }
 
     .ff__collage {
       position: absolute;
       inset: 0;
-      grid-area: photos;
+      z-index: 0;
     }
 
-    .ff__photo {
+    .ff::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        radial-gradient(
+          ellipse 100% 70% at 50% 42%,
+          rgb(3 3 3 / 0.82) 0%,
+          rgb(3 3 3 / 0.45) 55%,
+          rgb(3 3 3 / 0.2) 100%
+        );
+    }
+
+    .ff__photo:nth-child(3) {
       display: none;
     }
 
     .ff__photo:nth-child(1),
-    .ff__photo:nth-child(2) {
-      display: block;
-      position: absolute;
-      opacity: 0.45;
-      pointer-events: none;
+    .ff__photo:nth-child(2),
+    .ff__photo:nth-child(4),
+    .ff__photo:nth-child(5) {
+      opacity: 0.5;
     }
 
     .ff__photo:nth-child(1) {
-      left: 2%;
-      top: 12%;
-      width: 22%;
-      height: auto;
-      aspect-ratio: 179 / 230;
+      left: 0;
+      top: 6%;
+      width: 28%;
     }
 
     .ff__photo:nth-child(2) {
-      right: 2%;
+      right: 0;
       left: auto;
-      top: 10%;
-      width: 20%;
-      height: auto;
-      aspect-ratio: 151 / 194;
+      top: 5%;
+      width: 26%;
+    }
+
+    .ff__photo:nth-child(4) {
+      right: 0;
+      left: auto;
+      bottom: 22%;
+      top: auto;
+      width: 26%;
+    }
+
+    .ff__photo:nth-child(5) {
+      left: 0;
+      bottom: 24%;
+      top: auto;
+      width: 24%;
+    }
+
+    .ff__copy {
+      position: relative;
+      z-index: 3;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      width: 100%;
+      max-width: 22rem;
+      margin: 0 auto;
+      padding: 2.5rem 0 1rem;
+      text-align: center;
     }
 
     .ff__title {
       position: relative;
-      grid-area: title;
       left: auto;
       top: auto;
       width: 100%;
-      margin-top: 42%;
-      font-size: clamp(2rem, 9vw, 3.25rem);
-      pointer-events: auto;
+      font-size: clamp(1.75rem, 9vw, 2.5rem);
+      line-height: 1.08;
+      text-shadow: 0 2px 20px rgb(0 0 0 / 0.6);
+      pointer-events: none;
     }
 
     .ff__lead {
       position: relative;
-      grid-area: lead;
       left: auto;
       top: auto;
       width: 100%;
-      max-width: 28rem;
-      margin-inline: auto;
-      font-size: clamp(0.875rem, 3.5vw, 1rem);
-      pointer-events: auto;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      color: #b4c2c1;
+      text-shadow: 0 1px 12px rgb(0 0 0 / 0.7);
+      pointer-events: none;
     }
 
     .ff__actions {
       position: relative;
-      grid-area: actions;
       left: auto;
       top: auto;
+      transform: none;
       width: 100%;
+      max-width: 18rem;
       height: auto;
-      min-height: 0;
       display: flex;
       flex-direction: column;
-      align-items: center;
       gap: 0.625rem;
-      margin-top: 0.5rem;
+      margin-top: 0.25rem;
+      pointer-events: auto;
     }
 
     .ff__btn {
       position: static;
-      width: min(100%, 18rem);
-      font-size: 0.875rem;
-      padding: 0.875rem 1.5rem;
+      width: 100%;
+      font-size: 0.8125rem;
+      padding: 0.8125rem 1.125rem;
     }
 
     .ff__btn--outline {
@@ -337,32 +376,37 @@ const pct = (n: number, base: number) => `${(n / base) * 100}%`;
 
     .ff__stats {
       position: relative;
-      grid-area: stats;
+      z-index: 3;
+      flex-shrink: 0;
       left: auto;
       top: auto;
+      width: 100%;
       height: auto;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 1.25rem;
-      padding: 1.5rem 0;
-      margin-top: 0.5rem;
+      gap: 1rem 0.75rem;
+      padding: 1.25rem 0 1.5rem;
+      margin-top: auto;
+      border-top: 0.4px solid transparent;
+      border-image: var(--gradient-border) 1;
     }
 
     .ff__stat {
       position: static;
       width: auto;
       left: auto !important;
+      text-align: center;
     }
 
     .ff__stat-value {
-      font-size: clamp(1.5rem, 6vw, 2rem);
-      line-height: 1.2;
-      margin-bottom: 0.5rem;
+      font-size: clamp(1.25rem, 5.5vw, 1.625rem);
+      line-height: 1.15;
+      margin-bottom: 0.375rem;
     }
 
     .ff__stat-label {
-      font-size: 0.75rem;
-      line-height: 1.2;
+      font-size: 0.625rem;
+      line-height: 1.25;
     }
   }
 </style>
