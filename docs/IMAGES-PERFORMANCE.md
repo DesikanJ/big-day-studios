@@ -16,14 +16,14 @@ For a photography studio, **use Cloudinary on the free tier** and keep `PUBLIC_C
 
 When Cloudinary is configured, each photo uses:
 
-1. **`srcset`** — browser picks 320w … 1920w based on screen and `sizes`
-2. **`f_auto`** — AVIF or WebP on modern phones, JPEG fallback elsewhere
-3. **`q_auto:good`** — sharp look, smaller than raw JPEG
-4. **`c_limit`** — never upscale a small file (no blurry stretch)
-5. **`dpr_auto`** — crisp on Retina without sending huge files to every phone
-6. **LQIP blur** — tiny blurred preview, then fade-in (feels instant)
-7. **`loading="lazy"`** — below-fold images load only when scrolled near
-8. **`fetchpriority="high"`** — hero/LCP image loads first
+1. **`srcset`** browser picks 320w … 1920w based on screen and `sizes`
+2. **`f_auto`** AVIF or WebP on modern phones, JPEG fallback elsewhere
+3. **`q_auto:good`** sharp look, smaller than raw JPEG
+4. **`c_limit`** never upscale a small file (no blurry stretch)
+5. **`dpr_auto`** crisp on Retina without sending huge files to every phone
+6. **LQIP blur** tiny blurred preview, then fade-in (feels instant)
+7. **`loading="lazy"`** below-fold images load only when scrolled near
+8. **`fetchpriority="high"`** hero/LCP image loads first
 
 ---
 
@@ -56,7 +56,7 @@ When Cloudinary is configured, each photo uses:
 - **sRGB** color space
 - One folder per category → upload batch to Cloudinary
 
-Avoid putting 5MB+ PNGs in Git — they slow builds and mobile loads.
+Avoid putting 5MB+ PNGs in Git they slow builds and mobile loads.
 
 ---
 
@@ -74,13 +74,13 @@ Wrong `sizes` = wrong file picked = lag or soft images.
 
 ## Check performance after changes
 
-- [PageSpeed Insights](https://pagespeed.web.dev/) — mobile, home + one gallery URL
+- [PageSpeed Insights](https://pagespeed.web.dev/) mobile, home + one gallery URL
 - Target: **LCP &lt; 2.5s**, no “serve images in next-gen formats” warning once Cloudinary is on
 
 ---
 
 ## Optional upgrades later
 
-- **Cloudflare Polish** (paid) — extra optimization at edge
-- **Sanity CMS** — swap photos without Git
-- **Native `<picture>`** — only needed if not using Cloudinary `f_auto`
+- **Cloudflare Polish** (paid) extra optimization at edge
+- **Sanity CMS** swap photos without Git
+- **Native `<picture>`** only needed if not using Cloudinary `f_auto`

@@ -16,7 +16,7 @@ export function pageTitle(page?: string): string {
   return `${page} | ${site.name} Chennai`;
 }
 
-/** Meta description — keep under ~160 characters when possible */
+/** Meta description keep under ~160 characters when possible */
 export function truncateDescription(text: string, max = 158): string {
   const t = text.replace(/\s+/g, ' ').trim();
   if (t.length <= max) return t;

@@ -19,7 +19,7 @@ export const testimonials: Testimonial[] = [
   },
   {
     quote:
-      "Our daughter's 1st birthday photos came out so beautiful. The photographers were patient and so good with kids. Got our album in just 4 days — impressed!!",
+      "Our daughter's 1st birthday photos came out so beautiful. The photographers were patient and so good with kids. Got our album in just 4 days impressed!!",
     name: 'Ramya & Vijay',
     meta: 'Baby Birthday Shoot · Anna Nagar',
   },

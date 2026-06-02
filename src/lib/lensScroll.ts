@@ -5,7 +5,7 @@ export const LENS = {
   /** Title fades in inside the circle */
   TITLE_IN: 0.3,
   TITLE_FULL: 0.36,
-  /** Photos begin while title is still settling — no dead gap */
+  /** Photos begin while title is still settling no dead gap */
   PHOTOS_START: 0.34,
   PHOTOS_END: 0.56,
   /** Iris dissolves as photos emerge */
@@ -15,7 +15,7 @@ export const LENS = {
 
 export const clamp = (v: number, lo = 0, hi = 1) => Math.min(hi, Math.max(lo, v));
 
-/** Smooth deceleration — premium UI feel */
+/** Smooth deceleration premium UI feel */
 export const easeOut = (t: number) => 1 - (1 - t) ** 4;
 
 /** Snappy settle for photo scale */

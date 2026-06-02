@@ -1,66 +1,147 @@
 ---
-import { site } from '@/config/site';
-
-const areas = site.seo.areasServed;
+/** Figma default 7-column location grid, row 3 spans 2 + 3 + 2 */
+const row1 = ['Chennai', 'Tambaram', 'Anna Nagar', 'Adyar', 'Velachery', 'Chrompet', 'Pallavaram'];
+const row2 = ['OMR', 'ECR', 'Mogappair', 'T Nagar', 'Porur', 'Nanganallur', 'Avadi'];
+const row3 = [
+  { label: 'Chengalpattu', span: 2 },
+  { label: 'Thiruvallur', span: 3 },
+  { label: 'Kanchipuram', span: 2 },
+] as const;
 ---
 
-<section class="local-areas" aria-labelledby="local-areas-heading">
+<section class="local-areas" id="areas" aria-labelledby="local-areas-heading">
   <div class="local-areas__inner">
-    <p class="section-label">Chennai & nearby</p>
-    <h2 id="local-areas-heading" class="local-areas__title">
-      Photography across Chennai and surrounding areas
-    </h2>
-    <p class="local-areas__lead">
-      Based in Chennai, we photograph weddings, maternity sessions, newborns, birthdays, and families
-      across the city — studio sessions and on-location shoots. Travelling for events in nearby
-      towns on request.
-    </p>
-    <ul class="local-areas__list">
-      {areas.map((area) => <li>{area}</li>)}
-    </ul>
+    <header class="local-areas__header">
+      <h2 id="local-areas-heading" class="section-title local-areas__title">
+        Photography Across Chennai And Surrounding Areas
+      </h2>
+      <p class="section-lead local-areas__lead">
+        Based in Chennai, we photograph weddings, maternity sessions, newborns, birthdays, and
+        families across the city studio sessions and on-location shoots. Travelling for events in
+        nearby towns on request.
+      </p>
+    </header>
+
+    <div class="local-areas__grid" role="list">
+      {row1.map((label) => (
+        <div class="local-areas__cell figma-border-box--soft" role="listitem">
+          {label}
+        </div>
+      ))}
+      {row2.map((label) => (
+        <div class="local-areas__cell figma-border-box--soft" role="listitem">
+          {label}
+        </div>
+      ))}
+      {row3.map(({ label, span }) => (
+        <div
+          class:list={[
+            'local-areas__cell',
+            'figma-border-box--soft',
+            span === 2 && 'local-areas__cell--span-2',
+            span === 3 && 'local-areas__cell--span-3',
+          ]}
+          role="listitem"
+        >
+          {label}
+        </div>
+      ))}
+    </div>
   </div>
 </section>
 
 <style>
   .local-areas {
-    padding: 3rem var(--figma-gutter);
-    border-top: 1px solid var(--color-border);
-    background: rgb(10 10 10 / 0.6);
+    padding: clamp(5rem, 10vw, 7.5rem) var(--figma-gutter);
+    background: var(--color-bg);
   }
 
   .local-areas__inner {
     width: 100%;
-    max-width: 48rem;
+    max-width: min(1200px, calc(var(--figma-max) - 2 * var(--figma-gutter)));
     margin-inline: auto;
+    text-align: center;
+  }
+
+  .local-areas__header {
+    margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
   }
 
   .local-areas__title {
-    font-family: var(--font-serif);
-    font-size: clamp(1.5rem, 3vw, 2rem);
-    font-weight: 400;
-    margin: 0 0 1rem;
+    max-width: 900px;
+    margin: 0 auto 1.25rem;
+    text-wrap: balance;
   }
 
   .local-areas__lead {
-    color: var(--color-muted);
-    line-height: 1.6;
-    margin: 0 0 1.25rem;
+    max-width: 620px;
+    margin: 0 auto;
+    line-height: 1.35;
   }
 
-  .local-areas__list {
+  /* Figma default: 7 equal columns, gold hairline borders, ~12px gutters */
+  .local-areas__grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 12px;
+    width: 100%;
+  }
+
+  .local-areas__cell {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+    align-items: center;
+    justify-content: center;
+    min-height: clamp(88px, 9vw, 118px);
+    padding: 0.75rem 0.5rem;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.2;
+    text-align: center;
+    color: var(--color-text);
+    border-radius: 0;
+    cursor: default;
+    outline: none;
   }
 
-  .local-areas__list li {
-    font-size: 0.8125rem;
-    padding: 0.35rem 0.75rem;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    color: var(--color-muted);
+  .local-areas__cell--span-2 {
+    grid-column: span 2;
+  }
+
+  .local-areas__cell--span-3 {
+    grid-column: span 3;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .local-areas__cell {
+      cursor: pointer;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .local-areas__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .local-areas__cell {
+      min-height: 72px;
+      font-size: 13px;
+    }
+
+    .local-areas__cell--span-3 {
+      grid-column: span 2;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .local-areas__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .local-areas__cell--span-2,
+    .local-areas__cell--span-3 {
+      grid-column: span 2;
+    }
   }
 </style>

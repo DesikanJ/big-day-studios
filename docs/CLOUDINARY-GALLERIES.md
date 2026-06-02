@@ -1,4 +1,4 @@
-# Cloudinary galleries — your checklist
+# Cloudinary galleries your checklist
 
 Your Media Library folders map to website galleries like this:
 
@@ -39,7 +39,7 @@ CLOUDINARY_API_KEY=your_api_key_here
 CLOUDINARY_API_SECRET=your_api_secret_here
 ```
 
-Your folders are under **Home** (e.g. `Wedding`, `Baby Photoshoot`). You do **not** need `PUBLIC_CLOUDINARY_FOLDER` — the sync script uses Cloudinary’s **asset folder** labels, not file paths.
+Your folders are under **Home** (e.g. `Wedding`, `Baby Photoshoot`). You do **not** need `PUBLIC_CLOUDINARY_FOLDER` the sync script uses Cloudinary’s **asset folder** labels, not file paths.
 
 If sync shows `0 images` but you see files in the UI, wait until uploads finish (check the upload bar at the bottom of Cloudinary), then run sync again.
 
@@ -92,7 +92,7 @@ Do **not** set `PUBLIC_CLOUDINARY_FOLDER` unless your files live under a parent 
 
 | Problem | Fix |
 |---------|-----|
-| `0 image(s)` for a folder | Folder name mismatch — must match table above |
+| `0 image(s)` for a folder | Folder name mismatch must match table above |
 | Images in `big-day/Wedding` but sync finds 0 | Set `PUBLIC_CLOUDINARY_FOLDER=big-day` |
 | Gallery page empty | Run sync and push `galleries.generated.ts` |
 | Broken images on site | Set `PUBLIC_CLOUDINARY_CLOUD_NAME` in Cloudflare |

@@ -1,5 +1,5 @@
 # Creates github.com/DesikanJ/big-day-studios and pushes main.
-# Requires: GitHub CLI (gh) logged in — install: winget install GitHub.cli
+# Requires: GitHub CLI (gh) logged in install: winget install GitHub.cli
 # Or create the repo manually: https://github.com/new?name=big-day-studios
 
 $ErrorActionPreference = "Stop"

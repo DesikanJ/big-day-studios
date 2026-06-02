@@ -1,11 +1,11 @@
-/** Public Cloudinary cloud name (safe to commit — visible in image URLs) */
+/** Public Cloudinary cloud name (safe to commit visible in image URLs) */
 export const CLOUDINARY_CLOUD_NAME = 'dtpsk76yw';
 
 export const site = {
   name: 'Big Day Studios',
   /** Header/footer brand mark (PNG in public/images/) */
   logo: '/images/logo.png',
-  logoAlt: 'Big Day Studios — wedding and portrait photography, Chennai',
+  logoAlt: 'Big Day Studios wedding and portrait photography, Chennai',
   tagline: 'Every moment, beautifully yours.',
   url: 'https://bigdaystudios.in',
   description:
@@ -23,7 +23,7 @@ export const site = {
   seo: {
     defaultTitle: 'Wedding & Maternity Photographer in Chennai',
     locale: 'en_IN',
-    /** Approximate studio / service area centre (Chennai) — update if you have exact coordinates */
+    /** Approximate studio / service area centre (Chennai) update if you have exact coordinates */
     geo: { latitude: 13.0827, longitude: 80.2707 },
     streetAddress: '' as string,
     postalCode: '' as string,
@@ -62,7 +62,7 @@ export const site = {
     faqs: [
       {
         q: 'Do you offer wedding photography in Chennai?',
-        a: 'Yes. Big Day Studios covers weddings across Chennai and Tamil Nadu — candid moments, traditional ceremonies, and cinematic portraits.',
+        a: 'Yes. Big Day Studios covers weddings across Chennai and Tamil Nadu candid moments, traditional ceremonies, and cinematic portraits.',
       },
       {
         q: 'Where is your maternity and baby photoshoot studio?',
@@ -74,7 +74,7 @@ export const site = {
       },
       {
         q: 'Do you travel outside Chennai?',
-        a: 'Yes — we shoot on location across Chennai neighbourhoods and can travel to nearby cities for weddings and events.',
+        a: 'Yes we shoot on location across Chennai neighbourhoods and can travel to nearby cities for weddings and events.',
       },
     ],
   },

@@ -32,7 +32,7 @@ const social = site.seo.sameAs;
       and Birthday celebrations. Let's capture your story.
     </h2>
     <p class="book-now__lead">
-      Limited slots available every week. Reach out now to check availability for your date — we'd
+      Limited slots available every week. Reach out now to check availability for your date we'd
       love to be part of your celebration.
     </p>
   </div>
@@ -78,7 +78,7 @@ const social = site.seo.sameAs;
         formKey ? (
           <form class="book-now__form" action="https://api.web3forms.com/submit" method="POST">
             <input type="hidden" name="access_key" value={formKey} />
-            <input type="hidden" name="subject" value="New booking enquiry — Big Day Studios" />
+            <input type="hidden" name="subject" value="New booking enquiry Big Day Studios" />
             <input type="checkbox" name="botcheck" class="sr-only" tabindex="-1" autocomplete="off" />
 
             <div class="book-now__fields">
@@ -128,7 +128,7 @@ const social = site.seo.sameAs;
           </form>
         ) : (
           <div class="book-now__fallback">
-            <p>Message us on WhatsApp to check availability — we reply within a few hours.</p>
+            <p>Message us on WhatsApp to check availability we reply within a few hours.</p>
             <a href={whatsappUrl()} class="btn btn--primary" target="_blank" rel="noopener noreferrer">
               Let's talk on WhatsApp
             </a>
@@ -211,7 +211,7 @@ const social = site.seo.sameAs;
       display: none;
     }
 
-    /* Right rule only when the full form is shown — not the WhatsApp fallback */
+    /* Right rule only when the full form is shown not the WhatsApp fallback */
     .book-now__form:has(.book-now__fields)::after {
       content: '';
       position: absolute;

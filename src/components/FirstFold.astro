@@ -9,7 +9,7 @@ const H = 1023;
 const heroLead =
   'Premium wedding, maternity & newborn photography that captures the warmth, tradition, and joy of your most cherished milestones.';
 
-/** Group 9 collage — absolute coords on artboard */
+/** Group 9 collage absolute coords on artboard */
 const photos = [
   { src: 'hero-4.png', alt: '', width: 480, height: 320, x: 94, y: 105, w: 179, h: 230 },
   { src: 'hero-1.png', alt: '', width: 320, height: 479, x: 853, y: 68, w: 151, h: 194 },
@@ -114,7 +114,7 @@ const pct = (n: number, base: number) => `${(n / base) * 100}%`;
     position: static;
   }
 
-  /* Collage — behind copy (Figma layer order) */
+  /* Collage behind copy (Figma layer order) */
   .ff__collage {
     position: absolute;
     inset: 0;
@@ -135,7 +135,7 @@ const pct = (n: number, base: number) => `${(n / base) * 100}%`;
     border-radius: var(--radius);
   }
 
-  /* Copy — above collage */
+  /* Copy above collage */
   .ff__title {
     position: absolute;
     z-index: 2;
@@ -201,7 +201,7 @@ const pct = (n: number, base: number) => `${(n / base) * 100}%`;
     color: var(--color-accent);
   }
 
-  /* Stats — Group 8 @ y:877 */
+  /* Stats Group 8 @ y:877 */
   .ff__stats {
     position: absolute;
     z-index: 2;

@@ -1,80 +1,168 @@
----
-import { site } from '@/config/site';
----
-
-<section class="seo-faq" aria-labelledby="seo-faq-heading">
-  <div class="seo-faq__inner">
-    <p class="section-label">FAQ</p>
-    <h2 id="seo-faq-heading" class="seo-faq__title">Common questions</h2>
-    <div class="seo-faq__list">
-      {
-        site.seo.faqs.map((faq) => (
-          <details class="seo-faq__item">
-            <summary>{faq.q}</summary>
-            <p>{faq.a}</p>
-          </details>
-        ))
-      }
-    </div>
-  </div>
-</section>
-
-<style>
-  .seo-faq {
-    padding: 3rem var(--figma-gutter);
-    border-top: 1px solid var(--color-border);
-  }
-
-  .seo-faq__inner {
-    width: 100%;
-    max-width: 40rem;
-    margin-inline: auto;
-  }
-
-  .seo-faq__title {
-    font-family: var(--font-serif);
-    font-size: clamp(1.5rem, 3vw, 2rem);
-    font-weight: 400;
-    margin: 0 0 1.5rem;
-  }
-
-  .seo-faq__list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    width: 100%;
-  }
-
-  .seo-faq__item {
-    width: 100%;
-    min-width: 0;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    padding: 0 1rem;
-    background: var(--color-surface);
-    overflow: hidden;
-  }
-
-  .seo-faq__item summary {
-    cursor: pointer;
-    padding: 1rem 0;
-    font-weight: 500;
-    list-style: none;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-  }
-
-  .seo-faq__item summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .seo-faq__item p {
-    margin: 0 0 1rem;
-    color: var(--color-muted);
-    line-height: 1.6;
-    font-size: 0.9375rem;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-  }
-</style>
-
+---
+import { site } from '@/config/site';
+---
+
+<section class="seo-faq" id="faq" aria-labelledby="seo-faq-heading">
+  <div class="seo-faq__inner">
+    <header class="seo-faq__header">
+      <p class="section-label">FAQ</p>
+      <h2 id="seo-faq-heading" class="section-title seo-faq__title">Common questions</h2>
+    </header>
+
+    <div class="seo-faq__list">
+      {
+        site.seo.faqs.map((faq) => (
+          <details class="seo-faq__item figma-border-box--soft">
+            <summary>
+              <span class="seo-faq__question">{faq.q}</span>
+              <span class="seo-faq__icon" aria-hidden="true" />
+            </summary>
+            <div class="seo-faq__answer">
+              <p>{faq.a}</p>
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .seo-faq {
+    padding: clamp(5rem, 10vw, 7.5rem) var(--figma-gutter) clamp(6rem, 12vw, 8rem);
+    background: var(--color-bg);
+  }
+
+  .seo-faq__inner {
+    width: 100%;
+    max-width: 894px;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .seo-faq__header {
+    margin-bottom: clamp(2rem, 4vw, 2.75rem);
+  }
+
+  .seo-faq__title {
+    margin: 0 auto;
+  }
+
+  .seo-faq__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    text-align: left;
+  }
+
+  .seo-faq__item {
+    width: 100%;
+    border-radius: var(--radius);
+    overflow: hidden;
+    outline: none;
+  }
+
+  .seo-faq__item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    cursor: pointer;
+    padding: 1rem 1.25rem;
+    list-style: none;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.35;
+    color: inherit;
+    outline: none;
+  }
+
+  .seo-faq__item summary:focus-visible {
+    outline: none;
+  }
+
+  .seo-faq__item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .seo-faq__question {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .seo-faq__icon {
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    position: relative;
+  }
+
+  .seo-faq__icon::before,
+  .seo-faq__icon::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background: var(--color-accent-light);
+    transform: translate(-50%, -50%);
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  .seo-faq__icon::before {
+    width: 100%;
+    height: 1px;
+  }
+
+  .seo-faq__icon::after {
+    width: 1px;
+    height: 100%;
+  }
+
+  .seo-faq__item[open] .seo-faq__icon::after {
+    transform: translate(-50%, -50%) scaleY(0);
+    opacity: 0;
+  }
+
+  .seo-faq__answer {
+    padding: 0 1.25rem 1rem;
+    border-top: 1px solid rgb(255 255 255 / 0.06);
+  }
+
+  .seo-faq__answer p {
+    margin: 0.875rem 0 0;
+    color: var(--color-muted);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    .seo-faq {
+      padding: 4rem var(--figma-gutter) 5rem;
+    }
+
+    .seo-faq__item summary {
+      padding: 0.875rem 1rem;
+      font-size: 0.9375rem;
+    }
+
+    .seo-faq__answer {
+      padding: 0 1rem 0.875rem;
+    }
+  }
+</style>
+
+<script>
+  /** One FAQ open at a time matches accordion UX in Figma */
+  const items = [...document.querySelectorAll('.seo-faq__item')] as HTMLDetailsElement[];
+
+  items.forEach((item) => {
+    item.addEventListener('toggle', () => {
+      if (!item.open) return;
+      items.forEach((other) => {
+        if (other !== item) other.open = false;
+      });
+    });
+  });
+</script>

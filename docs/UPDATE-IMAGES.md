@@ -2,7 +2,7 @@
 
 You can replace images **any time**. After you push to GitHub, Cloudflare rebuilds the site in about 1–2 minutes.
 
-## Method 1 — Replace files (easiest)
+## Method 1 Replace files (easiest)
 
 1. Export photos from Lightroom (or phone) as **JPEG**, long edge **1600–2000px**.
 2. Copy files into `public/images/` (overwrite old names or use new names).
@@ -30,7 +30,7 @@ git push
 
 ### Gallery pages (per category)
 
-Edit `src/data/galleries.ts` — each photo needs:
+Edit `src/data/galleries.ts` each photo needs:
 
 ```ts
 { src: 'your-file.jpg', alt: 'Short description for SEO', width: 1600, height: 1067 }
@@ -44,7 +44,7 @@ Edit `src/data/categories.ts` → `coverImage: 'your-wedding-cover.jpg'`.
 
 ---
 
-## Method 2 — Cloudinary (many photos)
+## Method 2 Cloudinary (many photos)
 
 1. Sign up at [cloudinary.com](https://cloudinary.com) (free tier).
 2. Upload folders: `big-day/wedding/`, `big-day/maternity/`, etc.
@@ -65,11 +65,11 @@ Redeploy after changing env vars.
 
 - **Landscape** for banners and service cards (3:2).
 - **Portrait** OK for hero collage tiles.
-- Avoid tiny images — they get upscaled and look soft.
+- Avoid tiny images they get upscaled and look soft.
 - Keep files under ~500 KB each (compress at [squoosh.app](https://squoosh.app) if needed).
 
 ---
 
 ## Wrong image on a category?
 
-The site does not auto-match photos to “Wedding” / “Maternity” — you assign them in `categories.ts` and `galleries.ts`. Use the correct cover and gallery list per category.
+The site does not auto-match photos to “Wedding” / “Maternity” you assign them in `categories.ts` and `galleries.ts`. Use the correct cover and gallery list per category.

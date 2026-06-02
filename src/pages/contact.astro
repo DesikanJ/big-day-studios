@@ -14,14 +14,14 @@ const formKey =
 
 <BaseLayout
   title="Contact & Book a Photoshoot"
-  description="Contact Big Day Studios in Chennai — wedding, maternity, newborn & family photography. WhatsApp +91 79042 68507 or send an enquiry."
+  description="Contact Big Day Studios in Chennai wedding, maternity, newborn & family photography. WhatsApp +91 79042 68507 or send an enquiry."
 >
   <section class="contact container">
     <div class="contact__intro">
       <p class="section-label">Contact</p>
       <h1 class="section-title">Let's plan your session</h1>
       <p class="section-lead">
-        The fastest way to reach us is WhatsApp. Or send a message below — we typically reply within a few hours.
+        The fastest way to reach us is WhatsApp. Or send a message below we typically reply within a few hours.
       </p>
       <div class="contact__direct">
         <a href={whatsappUrl()} class="btn btn--primary" target="_blank" rel="noopener noreferrer">
@@ -40,7 +40,7 @@ const formKey =
           method="POST"
         >
           <input type="hidden" name="access_key" value={formKey} />
-          <input type="hidden" name="subject" value="New enquiry — Big Day Studios" />
+          <input type="hidden" name="subject" value="New enquiry Big Day Studios" />
           <input type="checkbox" name="botcheck" class="sr-only" tabindex="-1" autocomplete="off" />
           <label>
             <span>Name</span>

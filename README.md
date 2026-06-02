@@ -1,4 +1,4 @@
-# Big Day Studios — Website
+# Big Day Studios Website
 
 Performance-focused marketing site for **Big Day Studios** (Chennai photography). Built with [Astro](https://astro.build) for fast ad landing pages and gallery browsing.
 
@@ -18,7 +18,7 @@ Performance-focused marketing site for **Big Day Studios** (Chennai photography)
 cd c:\BigDayStudios
 npm install
 cp .env.example .env
-# Edit .env — WhatsApp number, form key, Cloudinary (optional)
+# Edit .env WhatsApp number, form key, Cloudinary (optional)
 npm run dev
 ```
 
@@ -28,10 +28,10 @@ Open http://localhost:4321
 
 Copy `.env.example` to `.env`:
 
-- `PUBLIC_WHATSAPP_NUMBER` — e.g. `919876543210` (no + or spaces)
-- `PUBLIC_WEB3FORMS_ACCESS_KEY` — from web3forms.com (free)
-- `PUBLIC_CLOUDINARY_CLOUD_NAME` — when you move images off the repo
-- `PUBLIC_SITE_URL` — production URL for SEO
+- `PUBLIC_WHATSAPP_NUMBER` e.g. `919876543210` (no + or spaces)
+- `PUBLIC_WEB3FORMS_ACCESS_KEY` from web3forms.com (free)
+- `PUBLIC_CLOUDINARY_CLOUD_NAME` when you move images off the repo
+- `PUBLIC_SITE_URL` production URL for SEO
 
 Without Cloudinary, images load from `public/images/` (Figma exports included for launch).
 
@@ -93,4 +93,4 @@ public/images/  # Static photos (replace with real stills)
 
 ## License
 
-Private — Big Day Studios.
+Private Big Day Studios.

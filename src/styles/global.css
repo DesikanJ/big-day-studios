@@ -38,6 +38,8 @@
     #392302 57%,
     #b57518 100%
   );
+  /* Figma 256:511 hover metallic gradient fill */
+  --gradient-fill-hover: linear-gradient(-69deg, #b57518 0%, #392302 43%, #b48643 100%);
   --gradient-btn: linear-gradient(
     235deg,
     #b57518 0%,
@@ -211,4 +213,26 @@ p {
   background-origin: border-box;
   background-clip: padding-box, border-box;
   border-radius: var(--radius);
+}
+
+/* Figma default soft gold hairline (Local Areas grid, FAQ rows, etc.) */
+.figma-border-box--soft {
+  border: 1px solid transparent;
+  background-color: var(--color-bg);
+  background-image: linear-gradient(var(--color-bg), var(--color-bg)), var(--gradient-border-soft);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Figma 256:511 default → metallic gradient fill on hover */
+@media (hover: hover) and (pointer: fine) {
+  .figma-border-box--soft:is(:hover, :focus-visible),
+  .figma-border-box--soft:has(:focus-visible),
+  .figma-border-box--soft-hover-parent:hover .figma-border-box--soft {
+    background-image: var(--gradient-fill-hover);
+    background-origin: border-box;
+    background-clip: border-box;
+    box-shadow: none;
+  }
 }
