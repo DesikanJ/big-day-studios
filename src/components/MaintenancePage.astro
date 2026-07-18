@@ -1,0 +1,223 @@
+---
+import { site, whatsappUrl } from '@/config/site';
+---
+
+<section class="maintenance" aria-labelledby="maintenance-title">
+  <div class="maintenance__glow" aria-hidden="true"></div>
+  <div class="maintenance__rings" aria-hidden="true">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <div class="maintenance__frame">
+    <img
+      class="maintenance__logo"
+      src={site.logo}
+      alt={site.logoAlt}
+      width="180"
+      height="72"
+    />
+
+    <p class="maintenance__label">A short pause</p>
+    <h1 id="maintenance-title">Under Maintenance</h1>
+    <p class="maintenance__message">
+      We’re preparing something beautiful. Our website will be back shortly.
+    </p>
+
+    <div class="maintenance__rule" aria-hidden="true"></div>
+
+    <p class="maintenance__contact">
+      For urgent bookings,
+      <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer">message us on WhatsApp</a>.
+    </p>
+  </div>
+
+  <p class="maintenance__location">{site.name} · {site.location}</p>
+</section>
+
+<style>
+  .maintenance {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    place-items: center;
+    min-height: 100svh;
+    padding: clamp(1.25rem, 4vw, 3.75rem);
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 78% 18%, rgb(180 134 67 / 0.2), transparent 28rem),
+      radial-gradient(circle at 14% 84%, rgb(105 63 1 / 0.18), transparent 24rem),
+      var(--color-bg);
+  }
+
+  .maintenance__glow {
+    position: absolute;
+    z-index: -2;
+    top: 50%;
+    left: 50%;
+    width: min(72vw, 900px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(181 117 24 / 0.14), transparent 67%);
+    transform: translate(-50%, -50%);
+    filter: blur(8px);
+  }
+
+  .maintenance__rings {
+    position: absolute;
+    z-index: -1;
+    top: 50%;
+    left: 50%;
+    width: min(82vw, 980px);
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    opacity: 0.42;
+  }
+
+  .maintenance__rings span {
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgb(180 134 67 / 0.3);
+    border-radius: 50%;
+  }
+
+  .maintenance__rings span:nth-child(2) {
+    inset: 12%;
+    border-color: rgb(57 35 2 / 0.8);
+  }
+
+  .maintenance__rings span:nth-child(3) {
+    inset: 25%;
+    border-color: rgb(181 117 24 / 0.24);
+  }
+
+  .maintenance__frame {
+    width: min(100%, 820px);
+    padding: clamp(2.5rem, 7vw, 5.75rem) clamp(1.5rem, 8vw, 6rem);
+    text-align: center;
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    background-image:
+      linear-gradient(rgb(3 3 3 / 0.9), rgb(3 3 3 / 0.9)),
+      var(--gradient-border);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    box-shadow: 0 30px 90px rgb(0 0 0 / 0.55);
+    backdrop-filter: blur(12px);
+  }
+
+  .maintenance__logo {
+    width: clamp(125px, 16vw, 180px);
+    height: auto;
+    margin: 0 auto clamp(1.5rem, 4vw, 2.5rem);
+  }
+
+  .maintenance__label {
+    margin-bottom: 0.45rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 4vw, 3rem);
+    line-height: 1.1;
+    color: var(--color-accent);
+  }
+
+  h1 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: clamp(3rem, 8.5vw, 7.25rem);
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+
+  .maintenance__message {
+    max-width: 540px;
+    margin: clamp(1.5rem, 4vw, 2.25rem) auto 0;
+    font-size: clamp(0.95rem, 1.8vw, 1.125rem);
+    line-height: 1.55;
+    color: var(--color-muted);
+    text-wrap: balance;
+  }
+
+  .maintenance__rule {
+    width: 72px;
+    height: 1px;
+    margin: clamp(1.75rem, 4vw, 2.5rem) auto;
+    background: var(--gradient-border);
+  }
+
+  .maintenance__contact {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--color-muted);
+  }
+
+  .maintenance__contact a {
+    color: var(--color-accent-light);
+    text-decoration: underline;
+    text-decoration-color: rgb(239 191 121 / 0.35);
+    text-underline-offset: 0.25em;
+    transition: color 0.2s ease, text-decoration-color 0.2s ease;
+  }
+
+  .maintenance__contact a:hover {
+    color: var(--color-text);
+    text-decoration-color: currentColor;
+  }
+
+  .maintenance__location {
+    position: absolute;
+    bottom: clamp(1rem, 3vw, 2rem);
+    left: 50%;
+    width: max-content;
+    max-width: calc(100% - 2rem);
+    font-size: 0.6875rem;
+    line-height: 1.4;
+    letter-spacing: 0.16em;
+    text-align: center;
+    text-transform: uppercase;
+    color: rgb(146 162 161 / 0.62);
+    transform: translateX(-50%);
+  }
+
+  @media (max-height: 680px) {
+    .maintenance {
+      padding-block: 1rem 3rem;
+    }
+
+    .maintenance__frame {
+      padding-block: 1.75rem;
+    }
+
+    .maintenance__logo {
+      margin-bottom: 1rem;
+    }
+
+    .maintenance__message {
+      margin-top: 1rem;
+    }
+
+    .maintenance__rule {
+      margin-block: 1.25rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .maintenance__rings {
+      animation: maintenance-breathe 8s ease-in-out infinite alternate;
+    }
+  }
+
+  @keyframes maintenance-breathe {
+    from {
+      opacity: 0.3;
+      transform: translate(-50%, -50%) scale(0.98);
+    }
+
+    to {
+      opacity: 0.5;
+      transform: translate(-50%, -50%) scale(1.02);
+    }
+  }
+</style>

@@ -32,8 +32,21 @@ Copy `.env.example` to `.env`:
 - `PUBLIC_WEB3FORMS_ACCESS_KEY` from web3forms.com (free)
 - `PUBLIC_CLOUDINARY_CLOUD_NAME` when you move images off the repo
 - `PUBLIC_SITE_URL` production URL for SEO
+- `PUBLIC_MAINTENANCE_MODE` set to `true` to replace every route with the maintenance screen
 
 Without Cloudinary, images load from `public/images/` (Figma exports included for launch).
+
+### Maintenance mode
+
+The reusable maintenance screen is disabled by default. To preview it locally, add this to `.env`
+and restart the dev server:
+
+```env
+PUBLIC_MAINTENANCE_MODE=true
+```
+
+To enable it on the live site, set the same variable to `true` in Cloudflare Pages and redeploy.
+Set it back to `false` (or remove it) and redeploy to restore the full website.
 
 ## Adding photos
 
