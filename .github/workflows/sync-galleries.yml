@@ -1,0 +1,52 @@
+name: Sync Cloudinary galleries
+
+# Near real-time gallery updates:
+# - Every 15 minutes (backup)
+# - Manual run from Actions tab
+# - Cloudinary webhook → /api/sync-galleries → repository_dispatch
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+  repository_dispatch:
+    types: [cloudinary-sync]
+
+concurrency:
+  group: sync-galleries
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Sync galleries from Cloudinary
+        env:
+          PUBLIC_CLOUDINARY_CLOUD_NAME: ${{ secrets.PUBLIC_CLOUDINARY_CLOUD_NAME }}
+          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+        run: npm run sync:galleries
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/galleries.generated.ts
+          if git diff --staged --quiet; then
+            echo "No gallery list changes"
+            exit 0
+          fi
+          git commit -m "Sync gallery photos from Cloudinary"
+          git push
