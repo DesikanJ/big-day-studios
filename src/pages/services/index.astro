@@ -1,0 +1,148 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SeoBreadcrumbs from '@/components/SeoBreadcrumbs.astro';
+import { categories } from '@/data/categories';
+import { site } from '@/config/site';
+import { breadcrumbJsonLd, truncateDescription } from '@/lib/seo';
+
+const sorted = [...categories].sort((a, b) => a.order - b.order);
+const description = truncateDescription(
+  `Photography services in Keelkattalai, Chennai — wedding, maternity, baby, birthday, family, celebrity & passport size photos at Big Day Studios.`,
+);
+---
+
+<BaseLayout
+  title="Photography Services in Keelkattalai, Chennai"
+  description={description}
+  jsonLd={[
+    breadcrumbJsonLd([
+      { name: 'Home', path: '/' },
+      { name: 'Services', path: '/services/' },
+    ]),
+  ]}
+>
+  <section class="services-hub container">
+    <SeoBreadcrumbs
+      items={[
+        { label: 'Home', href: '/' },
+        { label: 'Services' },
+      ]}
+    />
+    <p class="section-label">What we offer</p>
+    <h1 class="section-title">Photography Services in Keelkattalai, Chennai</h1>
+    <p class="section-lead">
+      From passport size photos to weddings and maternity sessions — book at our Keelkattalai studio
+      or on location across Chennai.
+    </p>
+
+    <ul class="services-hub__list">
+      {
+        sorted.map((cat) => (
+          <li>
+            <a href={`/gallery/${cat.slug}/`} class="services-hub__card figma-border-box--soft">
+              <h2>{cat.title}</h2>
+              <p class="services-hub__tag">{cat.tagline}</p>
+              <p>{cat.description}</p>
+              {cat.slug === 'passport' ? (
+                <span class="services-hub__extra">
+                  Also see our dedicated{' '}
+                  <span class="services-hub__link-label">passport photos page</span>
+                </span>
+              ) : null}
+            </a>
+            {cat.slug === 'passport' ? (
+              <p class="services-hub__passport-link">
+                <a href="/services/passport-photos/">Passport size photo studio details →</a>
+              </p>
+            ) : null}
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="services-hub__note">
+      Studio: {site.location}. Call or WhatsApp {site.phone}.
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .services-hub {
+    padding: 3rem 0 4rem;
+    text-align: center;
+  }
+
+  .services-hub .section-title {
+    margin-bottom: 1rem;
+  }
+
+  .services-hub__list {
+    list-style: none;
+    margin: 2.5rem auto 0;
+    padding: 0;
+    display: grid;
+    gap: 1.25rem;
+    max-width: 720px;
+    text-align: left;
+  }
+
+  .services-hub__card {
+    display: block;
+    padding: 1.25rem 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s;
+  }
+
+  .services-hub__card:hover {
+    border-color: var(--color-accent-light);
+  }
+
+  .services-hub__card h2 {
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    font-weight: 400;
+    margin: 0 0 0.35rem;
+  }
+
+  .services-hub__tag {
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-accent-light);
+    margin: 0 0 0.5rem;
+  }
+
+  .services-hub__card p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 0.9375rem;
+    line-height: 1.45;
+  }
+
+  .services-hub__extra {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--color-muted);
+  }
+
+  .services-hub__link-label {
+    color: var(--color-accent-light);
+  }
+
+  .services-hub__passport-link {
+    margin: 0.5rem 0 0;
+    font-size: 0.875rem;
+  }
+
+  .services-hub__passport-link a {
+    color: var(--color-accent-light);
+  }
+
+  .services-hub__note {
+    margin-top: 2.5rem;
+    color: var(--color-muted);
+    font-size: 0.875rem;
+  }
+</style>

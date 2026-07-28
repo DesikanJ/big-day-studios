@@ -9,8 +9,9 @@ export const site = {
   tagline: 'Every moment, beautifully yours.',
   url: 'https://bigdaystudios.in',
   description:
-    'Premium wedding, maternity, newborn & family photography in Chennai. Cinematic portraits, studio & on-location shoots across Tamil Nadu.',
-  location: 'Keelkattalai, Chennai, Tamil Nadu',
+    'Wedding, maternity, newborn, family & passport size photography in Keelkattalai, Chennai. Studio and on-location shoots across Tamil Nadu.',
+  location:
+    '29e, First Floor, Saroja Ammal Complex, Medavakkam Main Rd, Keelkattalai, Chennai, Tamil Nadu 600117',
   email: 'pari@bigdaystudios.com',
   phone: '+91 79042 68507',
   googleRating: '4.9',
@@ -21,14 +22,16 @@ export const site = {
     { value: '4.9 ★', label: 'Google Ratings' },
   ],
   seo: {
-    defaultTitle: 'Wedding & Maternity Photographer in Chennai',
+    defaultTitle: 'Wedding, Maternity & Passport Photos in Keelkattalai, Chennai',
     locale: 'en_IN',
-    /** Approximate studio / service area centre (Chennai) update if you have exact coordinates */
-    geo: { latitude: 13.0827, longitude: 80.2707 },
-    streetAddress: '' as string,
-    postalCode: '' as string,
+    /** Approx. Keelkattalai / Medavakkam Main Rd — replace with exact pin from Google Maps if available */
+    geo: { latitude: 12.9547, longitude: 80.2042 },
+    streetAddress: '29e, First Floor, Saroja Ammal Complex, Medavakkam Main Rd' as string,
+    postalCode: '600117' as string,
     priceRange: '₹₹',
+    /** Paste your Google Business Profile / Maps link when ready */
     googleMapsUrl: '' as string,
+    /** Instagram / Facebook profile URLs for sameAs schema */
     sameAs: [] as string[],
     services: [
       'Wedding photography',
@@ -38,8 +41,9 @@ export const site = {
       'Birthday photography',
       'Family photoshoot',
       'Celebrity & event photography',
+      'Passport size photography',
+      'Visa photograph',
     ],
-    /** Cities & neighbourhoods for local search (Chennai + nearby) */
     areasServed: [
       'Keelkattalai',
       'Chennai',
@@ -63,11 +67,15 @@ export const site = {
     faqs: [
       {
         q: 'Do you offer wedding photography in Chennai?',
-        a: 'Yes. Big Day Studios covers weddings across Chennai and Tamil Nadu candid moments, traditional ceremonies, and cinematic portraits.',
+        a: 'Yes. Big Day Studios covers weddings across Chennai and Tamil Nadu — candid moments, traditional ceremonies, and cinematic portraits.',
       },
       {
         q: 'Where is your maternity and baby photoshoot studio?',
-        a: 'Our studio in Keelkattalai, Chennai is set up for maternity, newborn, and baby sessions with a temperature-controlled, baby-safe environment.',
+        a: 'Our studio is at 29e, First Floor, Saroja Ammal Complex, Medavakkam Main Rd, Keelkattalai, Chennai 600117 — set up for maternity, newborn, and baby sessions with a temperature-controlled, baby-safe environment.',
+      },
+      {
+        q: 'Do you take passport size photos in Keelkattalai?',
+        a: 'Yes. We offer passport size and visa photographs at our Keelkattalai studio on Medavakkam Main Road — compliant sizing for Indian and international applications. Message us on WhatsApp to book.',
       },
       {
         q: 'How do I book a photoshoot?',
@@ -75,7 +83,7 @@ export const site = {
       },
       {
         q: 'Do you travel outside Chennai?',
-        a: 'Yes we shoot on location across Chennai neighbourhoods including Keelkattalai and can travel to nearby cities for weddings and events.',
+        a: 'Yes — we shoot on location across Chennai neighbourhoods including Keelkattalai and can travel to nearby cities for weddings and events.',
       },
     ],
   },
@@ -83,6 +91,6 @@ export const site = {
 
 export function whatsappUrl(message?: string): string {
   const number = import.meta.env.PUBLIC_WHATSAPP_NUMBER ?? '919840451199';
-  const text = message ?? 'Hi Big Day Studios! I would like to book a photoshoot in Chennai.';
+  const text = message ?? 'Hi Big Day Studios! I would like to book a photoshoot in Keelkattalai, Chennai.';
   return `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
 }

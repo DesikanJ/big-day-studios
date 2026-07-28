@@ -1,0 +1,207 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SeoBreadcrumbs from '@/components/SeoBreadcrumbs.astro';
+import { site, whatsappUrl } from '@/config/site';
+import {
+  breadcrumbJsonLd,
+  standaloneServiceJsonLd,
+  truncateDescription,
+} from '@/lib/seo';
+
+const title = 'Passport Size Photo Studio in Keelkattalai, Chennai';
+const description = truncateDescription(
+  'Passport size and visa photographs in Keelkattalai, Chennai. Correct proportions for Indian passports and international visas. Quick studio service at Big Day Studios.',
+);
+
+const passportFaqs = [
+  {
+    q: 'Do you take passport size photos in Keelkattalai?',
+    a: 'Yes. Big Day Studios offers passport size and visa photographs at our Keelkattalai, Chennai studio.',
+  },
+  {
+    q: 'What documents or sizes do you support?',
+    a: 'We prepare photos to the required proportions for Indian passports and common visa formats. Tell us the country or application type when you book.',
+  },
+  {
+    q: 'How do I book passport photos?',
+    a: `Message us on WhatsApp at ${site.phone} with your preferred time. Walk-ins may be possible when the studio is free — WhatsApp first is best.`,
+  },
+];
+
+const passportFaqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: passportFaqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.q,
+    acceptedAnswer: { '@type': 'Answer', text: faq.a },
+  })),
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={[
+    breadcrumbJsonLd([
+      { name: 'Home', path: '/' },
+      { name: 'Services', path: '/services/' },
+      { name: 'Passport Photos', path: '/services/passport-photos/' },
+    ]),
+    standaloneServiceJsonLd({
+      name: title,
+      description,
+      path: '/services/passport-photos/',
+      serviceType: 'Passport size photography',
+    }),
+    passportFaqJsonLd,
+  ]}
+>
+  <article class="passport container">
+    <SeoBreadcrumbs
+      items={[
+        { label: 'Home', href: '/' },
+        { label: 'Services', href: '/services/' },
+        { label: 'Passport Photos' },
+      ]}
+    />
+
+    <p class="section-label">Keelkattalai studio</p>
+    <h1 class="section-title">Passport Size Photos in Keelkattalai, Chennai</h1>
+    <p class="section-lead">
+      Need passport or visa photographs quickly? Visit Big Day Studios in Keelkattalai for compliant
+      passport size photos — and the same studio for wedding, maternity, baby, and family sessions.
+    </p>
+
+    <div class="btn-group passport__cta">
+      <a
+        href={whatsappUrl(
+          'Hi Big Day Studios! I need passport size / visa photos in Keelkattalai. When can I come in?',
+        )}
+        class="btn btn--primary"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Book passport photos on WhatsApp
+      </a>
+      <a href="/gallery/passport/" class="btn btn--outline">View passport gallery</a>
+    </div>
+
+    <section class="passport__section" aria-labelledby="why-passport">
+      <h2 id="why-passport">Passport & visa photos done right</h2>
+      <ul>
+        <li>Correct proportions for Indian passport applications</li>
+        <li>Support for common international visa photo requirements</li>
+        <li>Clean studio lighting for clear, official-looking portraits</li>
+        <li>Based in Keelkattalai, Chennai — easy for nearby neighbourhoods</li>
+      </ul>
+    </section>
+
+    <section class="passport__section" aria-labelledby="also-offer">
+      <h2 id="also-offer">Also available at the same studio</h2>
+      <p>
+        While you are here, you can also book{' '}
+        <a href="/gallery/wedding/">wedding photography</a>,{' '}
+        <a href="/gallery/maternity/">maternity shoots</a>,{' '}
+        <a href="/gallery/baby-photoshoot/">baby photoshoots</a>,{' '}
+        <a href="/gallery/birthday/">birthday</a>, and{' '}
+        <a href="/gallery/family-photoshoot/">family portraits</a>.
+      </p>
+    </section>
+
+    <section class="passport__section" aria-labelledby="passport-faq">
+      <h2 id="passport-faq">Frequently asked questions</h2>
+      <div class="passport__faq">
+        {
+          passportFaqs.map((faq) => (
+            <details>
+              <summary>{faq.q}</summary>
+              <p>{faq.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+
+    <p class="passport__location">
+      {site.name}<br />
+      {site.location}<br />
+      {site.phone}
+    </p>
+  </article>
+</BaseLayout>
+
+<style>
+  .passport {
+    padding: 3rem 0 4rem;
+    max-width: 40rem;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .passport__cta {
+    margin: 1.75rem 0 2.5rem;
+    justify-content: center;
+  }
+
+  .passport__section {
+    text-align: left;
+    margin-bottom: 2rem;
+  }
+
+  .passport__section h2 {
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    font-weight: 400;
+    margin: 0 0 0.75rem;
+  }
+
+  .passport__section ul {
+    margin: 0;
+    padding-left: 1.25rem;
+    color: var(--color-muted);
+    line-height: 1.55;
+  }
+
+  .passport__section p {
+    margin: 0;
+    color: var(--color-muted);
+    line-height: 1.55;
+  }
+
+  .passport__section a {
+    color: var(--color-accent-light);
+  }
+
+  .passport__faq {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .passport__faq details {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 0 1rem;
+    background: var(--color-surface);
+    text-align: left;
+  }
+
+  .passport__faq summary {
+    cursor: pointer;
+    padding: 1rem 0;
+    font-weight: 500;
+  }
+
+  .passport__faq p {
+    margin: 0 0 1rem;
+    color: var(--color-muted);
+    font-size: 0.9375rem;
+  }
+
+  .passport__location {
+    margin-top: 2rem;
+    font-size: 0.875rem;
+    color: var(--color-muted);
+  }
+</style>

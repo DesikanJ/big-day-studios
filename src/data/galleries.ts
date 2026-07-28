@@ -46,6 +46,10 @@ const placeholderGalleries: Gallery[] = [
     categorySlug: 'celebrity',
     photos: [{ src: 'gallery-2.png', alt: 'Celebrity portrait', width: 1160, height: 773 }],
   },
+  {
+    categorySlug: 'passport',
+    photos: [{ src: 'gallery-3.png', alt: 'Passport size photo', width: 1160, height: 773 }],
+  },
 ];
 
 function mergeGalleries(): Gallery[] {

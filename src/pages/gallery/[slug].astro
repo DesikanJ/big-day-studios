@@ -47,6 +47,15 @@ if (!category) {
     <p class="section-label">{category.tagline}</p>
     <h1 class="section-title">{category.title}</h1>
     <p class="section-lead">{category.description}</p>
+    {
+      category.slug === 'passport' && (
+        <p class="section-lead" style="margin-top: 0.5rem">
+          Looking for details on sizing and booking? See our{' '}
+          <a href="/services/passport-photos/">passport size photo studio page</a> for Keelkattalai,
+          Chennai.
+        </p>
+      )
+    }
     <div class="btn-group" style="margin-top: 1.5rem">
       <a
         href={whatsappUrl(`Hi! I'd like to book a ${category.title} session.`)}

@@ -10,6 +10,7 @@ export default defineConfig({
     },
   },
   site: 'https://bigdaystudios.in',
+  trailingSlash: 'always',
   compressHTML: true,
   build: {
     inlineStylesheets: 'auto',

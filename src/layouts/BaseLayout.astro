@@ -116,8 +116,10 @@ const structuredData = maintenanceMode
           <meta itemprop="telephone" content={site.phone} />
           <meta itemprop="email" content={site.email} />
           <span itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
-            <meta itemprop="addressLocality" content="Chennai" />
+            <meta itemprop="streetAddress" content={site.seo.streetAddress || 'Keelkattalai'} />
+            <meta itemprop="addressLocality" content="Keelkattalai" />
             <meta itemprop="addressRegion" content="Tamil Nadu" />
+            <meta itemprop="postalCode" content={site.seo.postalCode || '600117'} />
             <meta itemprop="addressCountry" content="IN" />
           </span>
           {!hideHeader && <Header />}

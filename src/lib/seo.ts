@@ -27,22 +27,24 @@ export function localBusinessJsonLd() {
   const origin = siteOrigin();
   const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
-    '@type': ['LocalBusiness', 'ProfessionalService'],
+    '@type': ['LocalBusiness', 'ProfessionalService', 'PhotographyBusiness'],
     '@id': `${origin}/#business`,
     name: site.name,
+    alternateName: 'Big Day Studios Keelkattalai',
     description: site.description,
     url: origin,
     telephone: site.phone,
     email: site.email,
-    image: `${origin}/images/gallery-1.png`,
+    image: `${origin}/images/logo.png`,
+    logo: `${origin}/images/logo.png`,
     priceRange: site.seo.priceRange,
     address: {
       '@type': 'PostalAddress',
-      addressLocality: 'Chennai',
+      streetAddress: site.seo.streetAddress || 'Keelkattalai',
+      addressLocality: 'Keelkattalai',
       addressRegion: 'Tamil Nadu',
+      postalCode: site.seo.postalCode || '600117',
       addressCountry: 'IN',
-      ...(site.seo.streetAddress ? { streetAddress: site.seo.streetAddress } : {}),
-      ...(site.seo.postalCode ? { postalCode: site.seo.postalCode } : {}),
     },
     geo: {
       '@type': 'GeoCoordinates',
@@ -50,17 +52,22 @@ export function localBusinessJsonLd() {
       longitude: site.seo.geo.longitude,
     },
     areaServed: site.seo.areasServed.map((name) => ({
-      '@type': 'City',
+      '@type': name === 'Chennai' || name === 'Keelkattalai' ? 'City' : 'Place',
       name,
     })),
     knowsAbout: site.seo.services,
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
-      name: 'Photography services',
+      name: 'Photography services in Keelkattalai, Chennai',
       itemListElement: site.seo.services.map((name, i) => ({
         '@type': 'Offer',
         position: i + 1,
-        itemOffered: { '@type': 'Service', name, areaServed: 'Chennai, Tamil Nadu' },
+        itemOffered: {
+          '@type': 'Service',
+          name,
+          areaServed: ['Keelkattalai', 'Chennai', 'Tamil Nadu'],
+          provider: { '@id': `${origin}/#business` },
+        },
       })),
     },
   };
@@ -70,7 +77,7 @@ export function localBusinessJsonLd() {
   }
 
   if (site.seo.sameAs.length) {
-    schema.sameAs = site.seo.sameAs;
+    schema.sameAs = [...site.seo.sameAs];
   }
 
   return schema;
@@ -91,7 +98,6 @@ export function webSiteJsonLd() {
 }
 
 export function breadcrumbJsonLd(items: { name: string; path: string }[]) {
-  const origin = siteOrigin();
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -114,12 +120,34 @@ export function servicePageJsonLd(category: Category) {
     description: category.seoDescription,
     url: pageUrl,
     provider: { '@id': `${origin}/#business` },
-    areaServed: {
-      '@type': 'City',
-      name: 'Chennai',
-      containedInPlace: { '@type': 'State', name: 'Tamil Nadu' },
-    },
+    areaServed: [
+      { '@type': 'City', name: 'Keelkattalai' },
+      { '@type': 'City', name: 'Chennai', containedInPlace: { '@type': 'State', name: 'Tamil Nadu' } },
+    ],
     serviceType: category.title,
+  };
+}
+
+/** Dedicated landing page schema (e.g. passport service URL) */
+export function standaloneServiceJsonLd(opts: {
+  name: string;
+  description: string;
+  path: string;
+  serviceType: string;
+}) {
+  const origin = siteOrigin();
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: opts.name,
+    description: opts.description,
+    url: absoluteUrl(opts.path),
+    provider: { '@id': `${origin}/#business` },
+    areaServed: [
+      { '@type': 'City', name: 'Keelkattalai' },
+      { '@type': 'City', name: 'Chennai' },
+    ],
+    serviceType: opts.serviceType,
   };
 }
 
@@ -142,6 +170,8 @@ export function sitemapUrls(
   const paths = [
     { path: '/', changefreq: 'weekly', priority: '1.0' },
     { path: '/gallery/', changefreq: 'weekly', priority: '0.9' },
+    { path: '/services/', changefreq: 'weekly', priority: '0.9' },
+    { path: '/services/passport-photos/', changefreq: 'monthly', priority: '0.95' },
     { path: '/contact/', changefreq: 'monthly', priority: '0.8' },
     ...extraPaths,
   ];

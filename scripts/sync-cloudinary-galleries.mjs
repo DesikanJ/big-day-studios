@@ -17,6 +17,7 @@ const CATEGORY_FOLDERS = [
   { slug: 'birthday', folder: 'Birthday', title: 'Birthday' },
   { slug: 'family-photoshoot', folder: 'Family Photoshoot', title: 'Family Photoshoot' },
   { slug: 'celebrity', folder: 'Celebrity', title: 'Celebrity' },
+  { slug: 'passport', folder: 'Passport', title: 'Passport Photos' },
 ];
 
 const EXCLUDED = new Set(['samples', 'sample']);

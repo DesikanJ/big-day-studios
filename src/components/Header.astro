@@ -152,6 +152,9 @@ const nav = [
   }
 
   .header__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
     font-size: 13px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -167,8 +170,11 @@ const nav = [
   .header__menu {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 6px;
-    padding: 0;
+    min-width: 48px;
+    min-height: 48px;
+    padding: 12px 7px;
     background: none;
     border: none;
     cursor: pointer;

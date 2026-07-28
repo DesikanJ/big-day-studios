@@ -96,6 +96,19 @@ export const categories: Category[] = [
     order: 6,
     coverFallback: 'gallery-2.png',
   },
+  {
+    slug: 'passport',
+    title: 'Passport Photos',
+    tagline: 'Quick & Compliant',
+    description:
+      'Passport size and visa photographs at our Keelkattalai studio — correct proportions for Indian and international applications.',
+    seoTitle: 'Passport Size Photo Studio in Keelkattalai, Chennai',
+    seoDescription:
+      'Passport size and visa photos in Keelkattalai, Chennai. Quick studio service with correct sizing for Indian passports and foreign visas. Book Big Day Studios today.',
+    cloudinaryFolder: 'Passport',
+    order: 7,
+    coverFallback: 'gallery-3.png',
+  },
 ];
 
 export function getCategory(slug: string): Category | undefined {
