@@ -107,7 +107,7 @@ export const categories: Category[] = [
       'Passport size and visa photos in Keelkattalai, Chennai. Quick studio service with correct sizing for Indian passports and foreign visas. Book Big Day Studios today.',
     cloudinaryFolder: 'Passport',
     order: 7,
-    coverFallback: 'gallery-3.png',
+    coverFallback: 'category-passport.png',
   },
 ];
 
