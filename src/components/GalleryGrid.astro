@@ -17,26 +17,32 @@ const lightboxSlides = photos.map((p) => ({
 
 <div class="gallery-grid" data-gallery>
   {
-    photos.map((photo, i) => (
-      <figure class="gallery-grid__item">
-        <button
-          type="button"
-          class="gallery-grid__trigger"
-          data-index={i}
-          aria-label={`View larger: ${photo.alt}`}
-        >
-          <OptimizedImage
-            src={photo.src}
-            alt={photo.alt}
-            width={photo.width}
-            height={photo.height}
-            priority={i < 2}
-            maxWidth={768}
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          />
-        </button>
-      </figure>
-    ))
+    photos.map((photo, i) => {
+      /** Portrait samples (e.g. passport) keep headroom; landscape stays 4∶3 */
+      const ar =
+        photo.height > photo.width ? `${photo.width} / ${photo.height}` : '4 / 3';
+      return (
+        <figure class="gallery-grid__item">
+          <button
+            type="button"
+            class="gallery-grid__trigger"
+            data-index={i}
+            aria-label={`View larger: ${photo.alt}`}
+            style={`--gallery-ar: ${ar}`}
+          >
+            <OptimizedImage
+              src={photo.src}
+              alt={photo.alt}
+              width={photo.width}
+              height={photo.height}
+              priority={i < 2}
+              maxWidth={768}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            />
+          </button>
+        </figure>
+      );
+    })
   }
 </div>
 
@@ -144,7 +150,7 @@ const lightboxSlides = photos.map((p) => ({
   }
 
   .gallery-grid__trigger :global(.photo-frame) {
-    aspect-ratio: 4 / 3;
+    aspect-ratio: var(--gallery-ar, 4 / 3);
   }
 
   /* Lightbox */

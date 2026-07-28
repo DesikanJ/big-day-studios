@@ -52,8 +52,8 @@ const placeholderGalleries: Gallery[] = [
       {
         src: 'category-passport.png',
         alt: 'Passport size studio photograph sample',
-        width: 900,
-        height: 1200,
+        width: 1850,
+        height: 2035,
       },
     ],
   },
