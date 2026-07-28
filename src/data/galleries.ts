@@ -51,7 +51,13 @@ const placeholderGalleries: Gallery[] = [
     photos: [
       {
         src: 'category-passport-v3.png',
-        alt: 'Passport size studio photograph sample',
+        alt: 'Passport size studio photograph sample (male)',
+        width: 1850,
+        height: 2035,
+      },
+      {
+        src: 'category-passport-female.png',
+        alt: 'Passport size studio photograph sample (female)',
         width: 1850,
         height: 2035,
       },
