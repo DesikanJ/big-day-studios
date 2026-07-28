@@ -24,7 +24,7 @@ export const site = {
   seo: {
     defaultTitle: 'Wedding, Maternity & Passport Photos in Keelkattalai, Chennai',
     locale: 'en_IN',
-    /** Approx. Keelkattalai / Medavakkam Main Rd — replace with exact pin from Google Maps if available */
+    /** Approx. Keelkattalai / Medavakkam Main Rd, replace with exact pin from Google Maps if available */
     geo: { latitude: 12.9547, longitude: 80.2042 },
     streetAddress: '29e, First Floor, Saroja Ammal Complex, Medavakkam Main Rd' as string,
     postalCode: '600117' as string,
@@ -67,15 +67,15 @@ export const site = {
     faqs: [
       {
         q: 'Do you offer wedding photography in Chennai?',
-        a: 'Yes. Big Day Studios covers weddings across Chennai and Tamil Nadu — candid moments, traditional ceremonies, and cinematic portraits.',
+        a: 'Yes. Big Day Studios covers weddings across Chennai and Tamil Nadu: candid moments, traditional ceremonies, and cinematic portraits.',
       },
       {
         q: 'Where is your maternity and baby photoshoot studio?',
-        a: 'Our studio is at 29e, First Floor, Saroja Ammal Complex, Medavakkam Main Rd, Keelkattalai, Chennai 600117 — set up for maternity, newborn, and baby sessions with a temperature-controlled, baby-safe environment.',
+        a: 'Our studio is at 29e, First Floor, Saroja Ammal Complex, Medavakkam Main Rd, Keelkattalai, Chennai 600117. It is set up for maternity, newborn, and baby sessions with a temperature-controlled, baby-safe environment.',
       },
       {
         q: 'Do you take passport size photos in Keelkattalai?',
-        a: 'Yes. We offer passport size and visa photographs at our Keelkattalai studio on Medavakkam Main Road — compliant sizing for Indian and international applications. Message us on WhatsApp to book.',
+        a: 'Yes. We offer passport size and visa photographs at our Keelkattalai studio on Medavakkam Main Road, with compliant sizing for Indian and international applications. Message us on WhatsApp to book.',
       },
       {
         q: 'How do I book a photoshoot?',
@@ -83,7 +83,7 @@ export const site = {
       },
       {
         q: 'Do you travel outside Chennai?',
-        a: 'Yes — we shoot on location across Chennai neighbourhoods including Keelkattalai and can travel to nearby cities for weddings and events.',
+        a: 'Yes, we shoot on location across Chennai neighbourhoods including Keelkattalai and can travel to nearby cities for weddings and events.',
       },
     ],
   },
