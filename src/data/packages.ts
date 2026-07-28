@@ -20,7 +20,7 @@ export const packages: Package[] = [
       '3-hour photo session',
       '1 professional photographer',
       '100+ edited digital photos',
-      'Online delivery in 5–7 days',
+      'Online delivery in 5-7 days',
       '2 outfit changes included',
     ],
   },
