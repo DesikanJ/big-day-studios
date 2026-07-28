@@ -15,11 +15,29 @@ export async function onRequestPost(context) {
   const url = new URL(request.url);
   const secret = url.searchParams.get('secret') || request.headers.get('x-sync-secret');
 
-  if (!env.SYNC_WEBHOOK_SECRET || secret !== env.SYNC_WEBHOOK_SECRET) {
-    return new Response(JSON.stringify({ ok: false, error: 'Unauthorized' }), {
-      status: 401,
-      headers: { 'Content-Type': 'application/json' },
-    });
+  const expected = typeof env.SYNC_WEBHOOK_SECRET === 'string' ? env.SYNC_WEBHOOK_SECRET.trim() : '';
+  const provided = typeof secret === 'string' ? secret.trim() : '';
+
+  if (!expected) {
+    return new Response(
+      JSON.stringify({
+        ok: false,
+        error: 'SYNC_WEBHOOK_SECRET not configured',
+        hint: 'In Cloudflare Pages → Settings → Environment variables → Production, add SYNC_WEBHOOK_SECRET (all caps), then Retry deployment.',
+      }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } },
+    );
+  }
+
+  if (!provided || provided !== expected) {
+    return new Response(
+      JSON.stringify({
+        ok: false,
+        error: 'Unauthorized',
+        hint: 'URL ?secret= must match SYNC_WEBHOOK_SECRET exactly (no spaces/quotes). Variable name must be all-caps SYNC_WEBHOOK_SECRET. Then Retry deployment.',
+      }),
+      { status: 401, headers: { 'Content-Type': 'application/json' } },
+    );
   }
 
   if (!env.GITHUB_SYNC_TOKEN) {
