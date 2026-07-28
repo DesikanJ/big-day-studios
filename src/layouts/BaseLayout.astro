@@ -31,9 +31,8 @@ const {
   hideHeader = false,
 } = Astro.props;
 
-const maintenanceMode =
-  import.meta.env.PUBLIC_MAINTENANCE_MODE === 'true' ||
-  process.env.PUBLIC_MAINTENANCE_MODE === 'true';
+/** Set PUBLIC_MAINTENANCE_MODE=true only for temporary downtime */
+const maintenanceMode = false;
 const metaTitle = maintenanceMode
   ? `Under Maintenance | ${site.name}`
   : title
@@ -42,8 +41,12 @@ const metaTitle = maintenanceMode
 const metaDescription = maintenanceMode
   ? `${site.name} is currently undergoing scheduled maintenance. We'll be back shortly.`
   : truncateDescription(description);
-const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url);
-const og = new URL(ogImage, Astro.site ?? site.url);
+const siteOrigin = Astro.site ?? new URL(site.url);
+const pathname = Astro.url.pathname.endsWith('/')
+  ? Astro.url.pathname
+  : `${Astro.url.pathname}/`;
+const canonical = new URL(pathname === '//' ? '/' : pathname, siteOrigin);
+const og = new URL(ogImage, siteOrigin);
 
 const structuredData = maintenanceMode
   ? []
@@ -61,6 +64,7 @@ const structuredData = maintenanceMode
       content={maintenanceMode || noindex ? 'noindex, nofollow' : 'index, follow'}
     />
     <meta name="author" content={site.name} />
+    <meta name="theme-color" content="#030303" />
     <meta name="geo.region" content="IN-TN" />
     <meta name="geo.placename" content="Chennai" />
     <meta name="geo.position" content={`${site.seo.geo.latitude};${site.seo.geo.longitude}`} />
@@ -73,10 +77,14 @@ const structuredData = maintenanceMode
     <meta property="og:title" content={metaTitle} />
     <meta property="og:description" content={metaDescription} />
     <meta property="og:image" content={og} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={metaTitle} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={metaTitle} />
     <meta name="twitter:description" content={metaDescription} />
     <meta name="twitter:image" content={og} />
+    <meta name="twitter:image:alt" content={metaTitle} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/images/logo.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
