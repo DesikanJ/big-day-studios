@@ -10,7 +10,7 @@ export const site = {
   url: 'https://bigdaystudios.in',
   description:
     'Premium wedding, maternity, newborn & family photography in Chennai. Cinematic portraits, studio & on-location shoots across Tamil Nadu.',
-  location: 'Chennai, Tamil Nadu',
+  location: 'Keelkattalai, Chennai, Tamil Nadu',
   email: 'pari@bigdaystudios.com',
   phone: '+91 79042 68507',
   googleRating: '4.9',
@@ -41,6 +41,7 @@ export const site = {
     ],
     /** Cities & neighbourhoods for local search (Chennai + nearby) */
     areasServed: [
+      'Keelkattalai',
       'Chennai',
       'Tambaram',
       'Anna Nagar',
@@ -66,7 +67,7 @@ export const site = {
       },
       {
         q: 'Where is your maternity and baby photoshoot studio?',
-        a: 'Our comfortable Chennai studio is set up for maternity, newborn, and baby sessions with a temperature-controlled, baby-safe environment.',
+        a: 'Our studio in Keelkattalai, Chennai is set up for maternity, newborn, and baby sessions with a temperature-controlled, baby-safe environment.',
       },
       {
         q: 'How do I book a photoshoot?',
@@ -74,7 +75,7 @@ export const site = {
       },
       {
         q: 'Do you travel outside Chennai?',
-        a: 'Yes we shoot on location across Chennai neighbourhoods and can travel to nearby cities for weddings and events.',
+        a: 'Yes we shoot on location across Chennai neighbourhoods including Keelkattalai and can travel to nearby cities for weddings and events.',
       },
     ],
   },

@@ -1,10 +1,11 @@
 ---
-/** Figma default 7-column location grid, row 3 spans 2 + 3 + 2 */
-const row1 = ['Chennai', 'Tambaram', 'Anna Nagar', 'Adyar', 'Velachery', 'Chrompet', 'Pallavaram'];
-const row2 = ['OMR', 'ECR', 'Mogappair', 'T Nagar', 'Porur', 'Nanganallur', 'Avadi'];
+/** Figma default 7-column location grid; Keelkattalai first as studio base */
+const row1 = ['Keelkattalai', 'Chennai', 'Tambaram', 'Anna Nagar', 'Adyar', 'Velachery', 'Chrompet'];
+const row2 = ['Pallavaram', 'OMR', 'ECR', 'Mogappair', 'T Nagar', 'Porur', 'Nanganallur'];
 const row3 = [
+  { label: 'Avadi', span: 1 },
   { label: 'Chengalpattu', span: 2 },
-  { label: 'Thiruvallur', span: 3 },
+  { label: 'Thiruvallur', span: 2 },
   { label: 'Kanchipuram', span: 2 },
 ] as const;
 ---
@@ -16,9 +17,9 @@ const row3 = [
         Photography Across Chennai And Surrounding Areas
       </h2>
       <p class="section-lead local-areas__lead">
-        Based in Chennai, we photograph weddings, maternity sessions, newborns, birthdays, and
-        families across the city studio sessions and on-location shoots. Travelling for events in
-        nearby towns on request.
+        Based in Keelkattalai, Chennai, we photograph weddings, maternity sessions, newborns,
+        birthdays, and families across the city — studio sessions and on-location shoots. Travelling
+        for events in nearby towns on request.
       </p>
     </header>
 
