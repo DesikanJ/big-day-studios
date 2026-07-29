@@ -79,6 +79,28 @@ This repo also includes `wrangler.toml` (`pages_build_output_dir = "./dist"`) an
 
 ---
 
+## 4. Canonical host (www → apex) — required for SEO
+
+Canonical URL: **`https://bigdaystudios.in`** (no `www`).
+
+Both `www` and apex currently resolve with HTTP 200, which Seobility flags as duplicate content. Fix in Cloudflare:
+
+1. Keep both apex and `www` DNS records **proxied** (orange cloud).
+2. **Rules → Redirect Rules → Create rule**:
+   - **Name:** `www to apex`
+   - **If:** Hostname equals `www.bigdaystudios.in`
+   - **Then:** Dynamic redirect → `concat("https://bigdaystudios.in", http.request.uri.path)`  
+     (or Static → `https://bigdaystudios.in` for homepage-only testing)
+   - **Status:** `301`
+3. **SSL/TLS:** Full (strict); enable **Always Use HTTPS**.
+4. Verify:
+   - `https://www.bigdaystudios.in/` → **301** → `https://bigdaystudios.in/`
+   - `http://www.bigdaystudios.in/` → **301** → `https://bigdaystudios.in/`
+
+Repo also includes `public/_redirects` as a Pages fallback. The Dashboard Redirect Rule is the reliable fix.
+
+---
+
 ## 4. After launch checklist
 
 - [ ] Real WhatsApp number in env

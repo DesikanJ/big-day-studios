@@ -4,16 +4,26 @@ import { testimonials } from '@/data/testimonials';
 import { getGallery } from '@/data/galleries';
 
 const wedding = getGallery('wedding')?.photos ?? [];
-const sideLeft = wedding[0] ?? { src: 'gallery-1.png', alt: '', width: 1160, height: 773 };
-const sideRight = wedding[1] ?? { src: 'gallery-2.png', alt: '', width: 1160, height: 773 };
+const sideLeft = wedding[0] ?? {
+  src: 'gallery-1.png',
+  alt: 'Wedding photography sample',
+  width: 1160,
+  height: 773,
+};
+const sideRight = wedding[1] ?? {
+  src: 'gallery-2.png',
+  alt: 'Wedding portrait sample',
+  width: 1160,
+  height: 773,
+};
 ---
 
 <section class="testimonials" id="testimonials">
   <div class="testimonials__inner">
-    <div class="testimonials__side testimonials__side--left" aria-hidden="true">
+    <div class="testimonials__side testimonials__side--left">
       <OptimizedImage
         src={sideLeft.src}
-        alt=""
+        alt={sideLeft.alt || 'Wedding photography sample'}
         width={sideLeft.width}
         height={sideLeft.height}
         sizes="212px"
@@ -42,10 +52,10 @@ const sideRight = wedding[1] ?? { src: 'gallery-2.png', alt: '', width: 1160, he
       </div>
     </div>
 
-    <div class="testimonials__side testimonials__side--right" aria-hidden="true">
+    <div class="testimonials__side testimonials__side--right">
       <OptimizedImage
         src={sideRight.src}
-        alt=""
+        alt={sideRight.alt || 'Wedding portrait sample'}
         width={sideRight.width}
         height={sideRight.height}
         sizes="212px"

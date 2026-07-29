@@ -84,6 +84,7 @@ Create the empty repo first: [New repository](https://github.com/new?name=big-da
    - **Node version:** 20
 4. Add environment variables (same as `.env`).
 5. GoDaddy → point domain nameservers to Cloudflare (or CNAME `www` to Pages URL).
+6. Add a Cloudflare **Redirect Rule**: `www.bigdaystudios.in` → **301** → `https://bigdaystudios.in` (see **DEPLOY.md** §4).
 
 ## Project structure
 

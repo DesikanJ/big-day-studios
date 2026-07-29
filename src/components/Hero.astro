@@ -9,17 +9,17 @@ const heroLead =
 const COLLAGE = { w: 1274, h: 675, left: 94, top: 143 } as const;
 
 const collagePhotos = [
-  { src: 'hero-4.png', alt: '', width: 480, height: 320, left: 0, top: 37, w: 179, h: 230 },
-  { src: 'hero-1.png', alt: '', width: 320, height: 479, left: 759, top: 0, w: 151, h: 194 },
-  { src: 'hero-2.png', alt: '', width: 320, height: 480, left: 1095, top: 79, w: 179, h: 230 },
-  { src: 'hero-3.png', alt: '', width: 480, height: 320, left: 972, top: 445, w: 179, h: 230 },
-  { src: 'hero-5.png', alt: '', width: 320, height: 479, left: 89, top: 449, w: 162, h: 210 },
+  { src: 'hero-4.png', alt: 'Couple wedding portrait', width: 480, height: 320, left: 0, top: 37, w: 179, h: 230 },
+  { src: 'hero-1.png', alt: 'Maternity portrait', width: 320, height: 479, left: 759, top: 0, w: 151, h: 194 },
+  { src: 'hero-2.png', alt: 'Family celebration portrait', width: 320, height: 480, left: 1095, top: 79, w: 179, h: 230 },
+  { src: 'hero-3.png', alt: 'Wedding reception moment', width: 480, height: 320, left: 972, top: 445, w: 179, h: 230 },
+  { src: 'hero-5.png', alt: 'Newborn baby portrait', width: 320, height: 479, left: 89, top: 449, w: 162, h: 210 },
 ] as const;
 ---
 
 <section class="hero" aria-label="Introduction">
   <div class="hero__stage">
-    <div class="hero__collage" aria-hidden="true">
+    <div class="hero__collage">
       {
         collagePhotos.map((img, i) => (
           <div

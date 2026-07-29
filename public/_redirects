@@ -1,0 +1,6 @@
+# Canonical host: apex HTTPS (non-www)
+# Also configure Cloudflare Redirect Rules so www always 301s to apex
+# (Dashboard → Rules → Redirect Rules) — required for reliable host redirects.
+https://www.bigdaystudios.in/* https://bigdaystudios.in/:splat 301
+http://www.bigdaystudios.in/* https://bigdaystudios.in/:splat 301
+http://bigdaystudios.in/* https://bigdaystudios.in/:splat 301

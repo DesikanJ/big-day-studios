@@ -22,7 +22,7 @@ export const site = {
     { value: '4.9 ★', label: 'Google Ratings' },
   ],
   seo: {
-    defaultTitle: 'Wedding, Maternity & Passport Photos in Keelkattalai, Chennai',
+    defaultTitle: 'Wedding & Maternity Photos in Keelkattalai',
     locale: 'en_IN',
     /** Approx. Keelkattalai / Medavakkam Main Rd, replace with exact pin from Google Maps if available */
     geo: { latitude: 12.9547, longitude: 80.2042 },
@@ -71,7 +71,7 @@ export const site = {
       },
       {
         q: 'Where is your maternity and baby photoshoot studio?',
-        a: 'Our studio is at 29e, First Floor, Saroja Ammal Complex, Medavakkam Main Rd, Keelkattalai, Chennai 600117. It is set up for maternity, newborn, and baby sessions with a temperature-controlled, baby-safe environment.',
+        a: 'We shoot maternity, newborn, and baby sessions at our temperature-controlled studio in Keelkattalai on Medavakkam Main Road. See the contact section for the full studio address.',
       },
       {
         q: 'Do you take passport size photos in Keelkattalai?',

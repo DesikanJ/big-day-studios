@@ -7,15 +7,15 @@ const W = 1440;
 const H = 1023;
 
 const heroLead =
-  'Premium wedding, maternity & newborn photography that captures the warmth, tradition, and joy of your most cherished milestones.';
+  'Every moment, beautifully yours - premium wedding, maternity & newborn photography that captures the warmth, tradition, and joy of your most cherished milestones.';
 
 /** Group 9 collage absolute coords on artboard */
 const photos = [
-  { src: 'hero-4.png', alt: '', width: 480, height: 320, x: 94, y: 105, w: 179, h: 230 },
-  { src: 'hero-1.png', alt: '', width: 320, height: 479, x: 853, y: 68, w: 151, h: 194 },
-  { src: 'hero-2.png', alt: '', width: 320, height: 480, x: 1189, y: 147, w: 179, h: 230 },
-  { src: 'hero-3.png', alt: '', width: 480, height: 320, x: 1066, y: 513, w: 179, h: 230 },
-  { src: 'hero-5.png', alt: '', width: 320, height: 479, x: 183, y: 517, w: 162, h: 210 },
+  { src: 'hero-4.png', alt: 'Couple wedding portrait', width: 480, height: 320, x: 94, y: 105, w: 179, h: 230 },
+  { src: 'hero-1.png', alt: 'Maternity portrait', width: 320, height: 479, x: 853, y: 68, w: 151, h: 194 },
+  { src: 'hero-2.png', alt: 'Family celebration portrait', width: 320, height: 480, x: 1189, y: 147, w: 179, h: 230 },
+  { src: 'hero-3.png', alt: 'Wedding reception moment', width: 480, height: 320, x: 1066, y: 513, w: 179, h: 230 },
+  { src: 'hero-5.png', alt: 'Newborn baby portrait', width: 320, height: 479, x: 183, y: 517, w: 162, h: 210 },
 ] as const;
 
 const pct = (n: number, base: number) => `${(n / base) * 100}%`;
@@ -23,7 +23,7 @@ const pct = (n: number, base: number) => `${(n / base) * 100}%`;
 
 <div class="ff-wrap">
 <section class="ff" aria-label="Introduction">
-  <div class="ff__collage" aria-hidden="true">
+  <div class="ff__collage">
     {
       photos.map((img, i) => (
         <div
