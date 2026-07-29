@@ -3,12 +3,18 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import SeoBreadcrumbs from '@/components/SeoBreadcrumbs.astro';
 import { categories } from '@/data/categories';
 import { site } from '@/config/site';
-import { breadcrumbJsonLd, truncateDescription } from '@/lib/seo';
+import { breadcrumbJsonLd, servicesHubJsonLd, truncateDescription } from '@/lib/seo';
 
 const sorted = [...categories].sort((a, b) => a.order - b.order);
 const description = truncateDescription(
   `Photography services in Keelkattalai, Chennai: wedding, maternity, baby, birthday, family, celebrity & passport size photos at Big Day Studios.`,
 );
+
+const hubItems = sorted.map((cat) => ({
+  name: cat.seoTitle,
+  path: cat.slug === 'passport' ? '/services/passport-photos/' : `/gallery/${cat.slug}/`,
+  description: cat.seoDescription,
+}));
 ---
 
 <BaseLayout
@@ -19,6 +25,7 @@ const description = truncateDescription(
       { name: 'Home', path: '/' },
       { name: 'Services', path: '/services/' },
     ]),
+    servicesHubJsonLd(hubItems),
   ]}
 >
   <section class="services-hub container">

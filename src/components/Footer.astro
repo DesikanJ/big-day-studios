@@ -16,13 +16,16 @@ const year = new Date().getFullYear();
     <div class="footer__col">
       <p class="footer__heading">Explore</p>
       <ul class="footer__links">
+        <li><a href="/services/">All services</a></li>
         <li><a href="/services/passport-photos/">Passport photos</a></li>
         <li><a href="/gallery/wedding/">Weddings</a></li>
         <li><a href="/gallery/maternity/">Maternity</a></li>
         <li><a href="/gallery/baby-photoshoot/">Baby sessions</a></li>
+        <li><a href="/gallery/birthday/">Birthdays</a></li>
+        <li><a href="/gallery/family-photoshoot/">Families</a></li>
         <li><a href="/gallery/">Galleries</a></li>
-        <li><a href="/#services">Services</a></li>
         <li><a href="/#areas">Areas we serve</a></li>
+        <li><a href="/#faq">FAQ</a></li>
         <li><a href="/contact/">Contact</a></li>
       </ul>
     </div>
@@ -31,6 +34,15 @@ const year = new Date().getFullYear();
       <a href={whatsappUrl()} class="footer__wa" target="_blank" rel="noopener noreferrer">
         WhatsApp us
       </a>
+      {
+        site.seo.googleMapsUrl ? (
+          <p class="footer__muted">
+            <a href={site.seo.googleMapsUrl} target="_blank" rel="noopener noreferrer">
+              Find us on Google Maps
+            </a>
+          </p>
+        ) : null
+      }
       <p class="footer__muted">
         <a href="/#book-now">Keelkattalai, Chennai</a>
       </p>

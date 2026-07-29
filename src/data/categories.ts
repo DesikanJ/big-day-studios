@@ -24,9 +24,9 @@ export const categories: Category[] = [
     tagline: 'Elegant & Cinematic',
     description:
       'Timeless wedding portraits and candid moments from engagement to the last dance.',
-    seoTitle: 'Wedding Photographer in Chennai',
+    seoTitle: 'Wedding Photographer in Keelkattalai, Chennai',
     seoDescription:
-      'Cinematic wedding photography in Chennai candid ceremonies, traditional rituals & portraits. Big Day Studios covers weddings across Tamil Nadu.',
+      'Cinematic wedding photography in Keelkattalai and across Chennai - candid ceremonies, traditional rituals and portraits. Big Day Studios covers weddings across Tamil Nadu.',
     cloudinaryFolder: 'Wedding',
     order: 1,
     coverFallback: 'category-wedding.png',
@@ -37,9 +37,9 @@ export const categories: Category[] = [
     tagline: 'Celebrate Motherhood',
     description:
       'Soft, glowing maternity portraits in our comfortable Chennai studio.',
-    seoTitle: 'Maternity Photoshoot Chennai',
+    seoTitle: 'Maternity Photoshoot Keelkattalai, Chennai',
     seoDescription:
-      'Maternity photography in Chennai glowing studio portraits & on-location shoots. Celebrate motherhood with Big Day Studios.',
+      'Maternity photography in Keelkattalai, Chennai - glowing studio portraits and on-location shoots. Celebrate motherhood with Big Day Studios.',
     cloudinaryFolder: 'Maternity',
     order: 2,
     coverFallback: 'category-maternity.png',
@@ -50,9 +50,9 @@ export const categories: Category[] = [
     tagline: 'Adorable & Safe',
     description:
       'Gentle newborn and baby sessions with a fully equipped, temperature-controlled setup.',
-    seoTitle: 'Baby & Newborn Photoshoot Chennai',
+    seoTitle: 'Baby & Newborn Photoshoot Keelkattalai',
     seoDescription:
-      'Baby and newborn photoshoots in Chennai safe, temperature-controlled studio with themed sets. Book your baby session today.',
+      'Baby and newborn photoshoots in Keelkattalai, Chennai - safe, temperature-controlled studio with themed sets. Book your baby session today.',
     cloudinaryFolder: 'Baby Photoshoot',
     order: 3,
     coverFallback: 'gallery-5.png',

@@ -51,6 +51,19 @@ export function localBusinessJsonLd() {
       latitude: site.seo.geo.latitude,
       longitude: site.seo.geo.longitude,
     },
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: site.googleRating,
+      bestRating: '5',
+      worstRating: '1',
+      reviewCount: String(site.googleReviewCount),
+    },
+    openingHoursSpecification: site.seo.openingHours.map((slot) => ({
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: slot.days,
+      opens: slot.opens,
+      closes: slot.closes,
+    })),
     areaServed: site.seo.areasServed.map((name) => ({
       '@type': name === 'Chennai' || name === 'Keelkattalai' ? 'City' : 'Place',
       name,
@@ -159,6 +172,24 @@ export function faqPageJsonLd() {
       '@type': 'Question',
       name: faq.q,
       acceptedAnswer: { '@type': 'Answer', text: faq.a },
+    })),
+  };
+}
+
+/** ItemList for the /services/ hub page */
+export function servicesHubJsonLd(
+  items: { name: string; path: string; description: string }[],
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Photography services in Keelkattalai, Chennai',
+    itemListElement: items.map((item, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: item.name,
+      url: absoluteUrl(item.path),
+      description: item.description,
     })),
   };
 }

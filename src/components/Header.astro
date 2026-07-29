@@ -10,10 +10,10 @@ const { forceSiteNav = false } = Astro.props;
 const path = Astro.url.pathname;
 const isHome = !forceSiteNav && (path === '/' || path === '');
 const nav = [
-  { href: '/#services', label: 'Services' },
+  { href: '/services/', label: 'Services' },
   { href: '/gallery/', label: 'Gallery' },
   { href: '/#testimonials', label: 'Reviews' },
-  { href: '/#book-now', label: 'Contact' },
+  { href: '/contact/', label: 'Contact' },
 ];
 ---
 

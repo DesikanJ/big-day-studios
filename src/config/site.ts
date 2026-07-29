@@ -15,6 +15,8 @@ export const site = {
   email: 'pari@bigdaystudios.com',
   phone: '+91 79042 68507',
   googleRating: '4.9',
+  /** Update to match your Google Business Profile review count */
+  googleReviewCount: 50,
   stats: [
     { value: '1000+', label: 'Happy Families' },
     { value: '8 +', label: 'Years of Experience' },
@@ -29,10 +31,21 @@ export const site = {
     streetAddress: '29e, First Floor, Saroja Ammal Complex, Medavakkam Main Rd' as string,
     postalCode: '600117' as string,
     priceRange: '₹₹',
-    /** Paste your Google Business Profile / Maps link when ready */
-    googleMapsUrl: '' as string,
-    /** Instagram / Facebook profile URLs for sameAs schema */
-    sameAs: [] as string[],
+    /** Google Maps / GBP share link - update with your exact GBP maps URL when you have it */
+    googleMapsUrl:
+      'https://www.google.com/maps/search/?api=1&query=Big+Day+Studios+Saroja+Ammal+Complex+Medavakkam+Main+Rd+Keelkattalai+Chennai+600117',
+    /**
+     * Public profile URLs for schema sameAs (GBP, Justdial, Instagram, Facebook).
+     * Paste your real Justdial listing URL and social profiles here.
+     */
+    sameAs: [
+      'https://www.google.com/maps/search/?api=1&query=Big+Day+Studios+Saroja+Ammal+Complex+Medavakkam+Main+Rd+Keelkattalai+Chennai+600117',
+    ] as string[],
+    /** Studio hours shown in LocalBusiness schema */
+    openingHours: [
+      { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], opens: '10:00', closes: '20:00' },
+      { days: ['Sunday'], opens: '10:00', closes: '18:00' },
+    ],
     services: [
       'Wedding photography',
       'Maternity photography',
@@ -84,6 +97,18 @@ export const site = {
       {
         q: 'Do you travel outside Chennai?',
         a: 'Yes, we shoot on location across Chennai neighbourhoods including Keelkattalai and can travel to nearby cities for weddings and events.',
+      },
+      {
+        q: 'Who is the best photographer near Medavakkam and Keelkattalai?',
+        a: 'Big Day Studios is a Keelkattalai photography studio on Medavakkam Main Road specialising in wedding, maternity, newborn, family, and passport photos for families across south Chennai.',
+      },
+      {
+        q: 'How long does photo delivery take?',
+        a: 'Most sessions are delivered within 3 to 7 days. Exact timelines depend on the package and event size, and we confirm this when you book.',
+      },
+      {
+        q: 'Do you shoot maternity and newborn photos in the same studio?',
+        a: 'Yes. Our Keelkattalai studio is set up for both maternity and newborn sessions with a safe, temperature-controlled environment for babies and expecting parents.',
       },
     ],
   },
