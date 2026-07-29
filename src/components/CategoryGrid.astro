@@ -18,7 +18,7 @@ const IMG_H = 407;
           class:list={['category-stage', i === 0 && 'category-stage--first']}
           data-category-stage={i}
         >
-          <a href={`/gallery/${cat.slug}/`} class="category-panel" data-category-panel>
+          <div class="category-panel" data-category-panel>
             {i === 0 && (
               <header class="categories__header">
                 <h2 class="section-title categories__title">Our Photography Services</h2>
@@ -49,7 +49,11 @@ const IMG_H = 407;
                 <p class="category-panel__desc">{cat.description}</p>
               </div>
             </div>
-          </a>
+
+            <a class="category-panel__hit" href={`/gallery/${cat.slug}/`}>
+              <span class="sr-only">Browse {cat.title} gallery</span>
+            </a>
+          </div>
         </div>
       ))
     }
@@ -94,9 +98,15 @@ const IMG_H = 407;
     max-height: 940px;
     padding: 0 var(--figma-gutter);
     text-align: center;
-    text-decoration: none;
     color: inherit;
     overflow: visible;
+  }
+
+  .category-panel__hit {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    border-radius: inherit;
   }
 
   .category-stage--first .category-panel {

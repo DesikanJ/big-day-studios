@@ -12,24 +12,37 @@ const fallback = [
   { src: 'gallery-6.png', alt: 'Birthday portrait', caption: 'Birthday', w: 795, h: 1159 },
 ];
 
+const slugCounts = new Map<string, number>();
+
 const pool = categories.flatMap((cat) =>
-  (getGallery(cat.slug)?.photos ?? []).slice(0, 2).map((p) => ({
-    src: p.src,
-    alt: p.alt,
-    caption: cat.title,
-    href: `/gallery/${cat.slug}/`,
-    w: p.width,
-    h: p.height,
-  })),
+  (getGallery(cat.slug)?.photos ?? []).slice(0, 2).map((p) => {
+    const n = (slugCounts.get(cat.slug) ?? 0) + 1;
+    slugCounts.set(cat.slug, n);
+    return {
+      src: p.src,
+      alt: p.alt,
+      caption: cat.title,
+      href: `/gallery/${cat.slug}/`,
+      linkLabel: n === 1 ? `${cat.title} gallery` : `More ${cat.title}`,
+      w: p.width,
+      h: p.height,
+    };
+  }),
 );
 
 const works = (pool.length >= 6 ? pool : pool.length > 0 ? pool : fallback)
   .slice(0, 12)
-  .map((p) => ({
+  .map((p, i) => ({
     src: p.src,
     alt: p.alt,
     caption: p.caption,
     href: 'href' in p ? p.href : `/gallery/`,
+    linkLabel:
+      'linkLabel' in p && p.linkLabel
+        ? p.linkLabel
+        : i === 0
+          ? 'Selected work gallery'
+          : `Portfolio image ${i + 1}`,
     w: p.w,
     h: p.h,
   }));
@@ -53,8 +66,8 @@ const works = (pool.length >= 6 ? pool : pool.length > 0 ? pool : fallback)
             data-works-item
             data-works-hero={i < 3 ? i : undefined}
           >
-            <a class="works__link" href={item.href}>
-              <div class="works__item-frame">
+            <div class="works__item-frame">
+              <a class="works__link" href={item.href}>
                 <div class="works__media" data-works-media>
                   <OptimizedImage
                     src={item.src}
@@ -64,12 +77,13 @@ const works = (pool.length >= 6 ? pool : pool.length > 0 ? pool : fallback)
                     sizes="(max-width: 640px) 100vw, 392px"
                   />
                 </div>
-                <div class="works__overlay">
-                  <span class="works__caption">{item.caption}</span>
-                  <span class="works__cta">View gallery</span>
-                </div>
+                <span class="sr-only">{item.linkLabel}</span>
+              </a>
+              <div class="works__overlay" aria-hidden="true">
+                <span class="works__caption">{item.caption}</span>
+                <span class="works__cta">View gallery</span>
               </div>
-            </a>
+            </div>
           </article>
         ))
       }
@@ -219,7 +233,7 @@ const works = (pool.length >= 6 ? pool : pool.length > 0 ? pool : fallback)
     outline: none;
   }
 
-  .works__link:focus-visible .works__item-frame {
+  .works__link:focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 4px;
   }
@@ -250,8 +264,8 @@ const works = (pool.length >= 6 ? pool : pool.length > 0 ? pool : fallback)
     transition: filter 0.55s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .works__link:hover :global(.photo-frame),
-  .works__link:focus-visible :global(.photo-frame) {
+  .works__item-frame:has(.works__link:hover) :global(.photo-frame),
+  .works__item-frame:has(.works__link:focus-visible) :global(.photo-frame) {
     filter: brightness(1.06);
   }
 
@@ -276,8 +290,8 @@ const works = (pool.length >= 6 ? pool : pool.length > 0 ? pool : fallback)
     pointer-events: none;
   }
 
-  .works__link:hover .works__overlay,
-  .works__link:focus-visible .works__overlay {
+  .works__item-frame:has(.works__link:hover) .works__overlay,
+  .works__item-frame:has(.works__link:focus-visible) .works__overlay {
     opacity: 1;
     transform: translateY(0);
   }

@@ -54,6 +54,7 @@ const social = site.seo.sameAs;
 
       <div class="book-now__block">
         <p class="book-now__block-label">Address</p>
+        <p class="book-now__block-text">{site.location}</p>
         {
           site.seo.googleMapsUrl ? (
             <a
@@ -62,11 +63,9 @@ const social = site.seo.sameAs;
               target="_blank"
               rel="noopener noreferrer"
             >
-              {site.location}
+              Directions to studio
             </a>
-          ) : (
-            <p class="book-now__block-text">{site.location}</p>
-          )
+          ) : null
         }
       </div>
 
