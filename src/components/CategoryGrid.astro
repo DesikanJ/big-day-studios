@@ -5,9 +5,9 @@ import { getCategoryCoverSrc } from '@/data/galleries';
 
 const sorted = [...categories].sort((a, b) => a.order - b.order);
 
-/** Figma Desktop-1 category image frame */
+/** Category cover frame — 4:5 portrait */
 const IMG_W = 370;
-const IMG_H = 407;
+const IMG_H = 463;
 ---
 
 <section class="categories" id="services">
@@ -157,7 +157,7 @@ const IMG_H = 407;
 
   .category-panel__media :global(.photo-frame) {
     width: 100%;
-    aspect-ratio: 370 / 407;
+    aspect-ratio: 4 / 5;
     border-radius: 2px;
     overflow: hidden;
   }
