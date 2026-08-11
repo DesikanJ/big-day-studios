@@ -5,9 +5,9 @@ import { getCategoryCoverSrc } from '@/data/galleries';
 
 const sorted = [...categories].sort((a, b) => a.order - b.order);
 
-/** Category cover frame — 4:5 portrait */
-const IMG_W = 370;
-const IMG_H = 463;
+/** Category cover frame — 5:4 landscape */
+const IMG_W = 520;
+const IMG_H = 416;
 ---
 
 <section class="categories" id="services">
@@ -39,7 +39,7 @@ const IMG_H = 463;
                   crop="fill"
                   maxWidth={740}
                   priority={i === 0}
-                  sizes="370px"
+                  sizes="520px"
                 />
               </div>
 
@@ -146,8 +146,8 @@ const IMG_H = 463;
   }
 
   .category-panel__media {
-    width: 370px;
-    max-width: min(370px, calc(100vw - 2 * var(--figma-gutter)));
+    width: 520px;
+    max-width: min(520px, calc(100vw - 2 * var(--figma-gutter)));
     flex-shrink: 0;
     overflow: hidden;
     transform-origin: center top;
@@ -157,13 +157,13 @@ const IMG_H = 463;
 
   .category-panel__media :global(.photo-frame) {
     width: 100%;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 5 / 4;
     border-radius: 2px;
     overflow: hidden;
   }
 
   .category-panel__copy {
-    width: min(100%, 370px);
+    width: min(100%, 520px);
     flex-shrink: 0;
     transform-origin: center top;
     will-change: transform, opacity;
